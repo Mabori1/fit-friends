@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFitUserDto } from './dto/create-fit-user.dto';
-import { UpdateFitUserDto } from './dto/update-fit-user.dto';
+import { CreateUserDto } from '../auth/dto/create-user.dto';
 
 @Injectable()
 export class FitUserService {
-  create(createFitUserDto: CreateFitUserDto) {
-    return 'This action adds a new fitUser';
-  }
+  constructor(private readonly fitUserRepository: FitUserMemoryRepository) {}
 
-  findAll() {
-    return `This action returns all fitUser`;
-  }
+  public async register(dto: CreateUserDto) {
+    const { email, firstname, lastname, password, dateBirth } = dto;
 
-  findOne(id: number) {
-    return `This action returns a #${id} fitUser`;
-  }
+    const blogUser = {
+      email,
+      firstname,
+      lastname,
+      role,
+      avatar: '',
+      dateBirth: dayjs(dateBirth).toDate(),
+      passwordHash: '',
+    };
 
-  update(id: number, updateFitUserDto: UpdateFitUserDto) {
-    return `This action updates a #${id} fitUser`;
-  }
+    const existUser = await this.blogUserRepository.findByEmail(email);
 
-  remove(id: number) {
-    return `This action removes a #${id} fitUser`;
+    if (existUser) {
+      throw new ConflictException(AUTH_USER_EXISTS);
+    }
+
+    const userEntity = await new BlogUserEntity(blogUser).setPassword(password);
+
+    return this.blogUserRepository.create(userEntity);
   }
 }

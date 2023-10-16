@@ -11,7 +11,7 @@ import { UserTypesTraining } from './user-types-training.enum';
 export interface IUser {
   userId?: number;
   name: string;
-  mail: string;
+  email: string;
   avatar?: string;
   passwordHash: string;
   gender: UserGender;

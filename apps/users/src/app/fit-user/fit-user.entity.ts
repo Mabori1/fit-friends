@@ -1,4 +1,5 @@
 import { compare, genSalt, hash } from 'bcrypt';
+import { SALT_ROUNDS } from '@fit-friends/shared/app-constants';
 import {
   IClient,
   IEntity,
@@ -17,7 +18,7 @@ import {
 
 export class FitUserEntity implements IEntity<FitUserEntity>, IUser {
   public name: string;
-  public mail: string;
+  public email: string;
   public avatar: string;
   public passwordHash!: string;
   public gender!: UserGender;
@@ -42,7 +43,7 @@ export class FitUserEntity implements IEntity<FitUserEntity>, IUser {
 
   public fillEntity(entity: IUser): void {
     this.name = entity.name;
-    this.mail = entity.mail;
+    this.email = entity.email;
     this.avatar = entity.avatar || '';
     this.passwordHash = entity.passwordHash;
     this.gender = entity.gender;
