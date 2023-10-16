@@ -7,8 +7,11 @@
   "dependencies": {
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
+    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.2",
     "axios": "^1.0.0",
+    "bcrypt": "5.1.1",
+    "class-transformer": "0.5.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"
@@ -20,7 +23,7 @@
     "@nx/jest": "16.10.0",
     "@nx/js": "16.10.0",
     "@nx/linter": "16.10.0",
-    "@nx/nest": "16.10.0",
+    "@nx/nest": "^16.10.0",
     "@nx/node": "16.10.0",
     "@nx/webpack": "16.10.0",
     "@nx/workspace": "16.10.0",

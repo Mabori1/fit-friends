@@ -14,7 +14,14 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@fit-friends/shared/app-constants": [
+        "shared/app-constants/src/index.ts"
+      ],
+      "@fit-friends/shared/app-types": ["shared/app-types/src/index.ts"],
+      "@fit-friends/util/util-core": ["util/util-core/src/index.ts"],
+      "@fit-friends/util/util-types": ["util/util-types/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
