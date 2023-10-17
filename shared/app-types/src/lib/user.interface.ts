@@ -15,7 +15,7 @@ export interface IUser {
   avatar?: string;
   passwordHash: string;
   gender: UserGender;
-  birthDate: string;
+  birthDate?: string;
   role: UserRoleType;
   description?: string;
   location: UserLocation;
@@ -23,8 +23,8 @@ export interface IUser {
   createdAt?: Date;
   client?: IClient | null;
   trainer?: ITrainer | null;
-  level?: UserLevel;
-  typesOfTraining?: UserTypesTraining[];
+  level: UserLevel;
+  typesOfTraining: UserTypesTraining[];
   orders?: IOrderTraining[];
   personalOrders?: IPersonalOrderTraining[];
   balance?: IUserBalance[];
@@ -34,16 +34,16 @@ export interface IUser {
 export interface IClient {
   clientId?: number;
   userId?: number;
-  timeOfTraining?: string;
-  caloryLosingPlanTotal?: number;
-  caloryLosingPlanDaily?: number;
+  timeOfTraining: string;
+  caloryLosingPlanTotal: number;
+  caloryLosingPlanDaily: number;
   isTrainingReadiness: boolean;
 }
 
 export interface ITrainer {
   trainerId?: number;
   userId?: number;
-  sertificates?: string[];
+  sertificat: string;
   merits?: string;
   isPersonalTraining?: boolean;
 }

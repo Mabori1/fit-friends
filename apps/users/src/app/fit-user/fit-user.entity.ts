@@ -21,7 +21,7 @@ export class FitUserEntity implements IEntity<FitUserEntity>, IUser {
   public email: string;
   public avatar: string;
   public passwordHash!: string;
-  public gender!: UserGender;
+  public gender: UserGender;
   public birthDate: string;
   public role: UserRoleType;
   public description: string;
@@ -30,8 +30,8 @@ export class FitUserEntity implements IEntity<FitUserEntity>, IUser {
   public createdAt: Date;
   public client?: IClient | null;
   public trainer?: ITrainer | null;
-  public level?: UserLevel;
-  public typesOfTraining?: UserTypesTraining[];
+  public level: UserLevel;
+  public typesOfTraining: UserTypesTraining[];
   public orders!: IOrderTraining[];
   public personalOrders!: IPersonalOrderTraining[];
   public balance!: IUserBalance[];
