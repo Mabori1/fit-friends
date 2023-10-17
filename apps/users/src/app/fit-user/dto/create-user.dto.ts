@@ -13,7 +13,13 @@ import {
   UserPasswordLength,
   UserTitleLength,
 } from '@fit-friends/shared/app-constants';
-import { UserRoleType } from '@fit-friends/shared/app-types';
+import {
+  UserGender,
+  UserLevel,
+  UserLocation,
+  UserRole,
+  UserTypesTraining,
+} from '@fit-friends/shared/app-types';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -54,7 +60,7 @@ export class CreateUserDto {
     example: 'мужской',
   })
   @IsString()
-  public gender: string;
+  public gender: UserGender;
 
   @ApiProperty({
     description: 'User birth date',
@@ -67,12 +73,26 @@ export class CreateUserDto {
     description: 'User role',
     example: 'тренер',
   })
-  public role: UserRoleType;
+  public role: UserRole;
 
   @ApiProperty({
     description: 'User location',
     example: 'пионерская',
   })
   @IsString()
-  public location: string;
+  public location: UserLocation;
+
+  @ApiProperty({
+    description: 'User level',
+    example: 'новичок',
+  })
+  @IsString()
+  public level: UserLevel;
+
+  @ApiProperty({
+    description: 'User types of training',
+    example: 'бег',
+  })
+  @IsString()
+  typesOfTraining: UserTypesTraining[];
 }

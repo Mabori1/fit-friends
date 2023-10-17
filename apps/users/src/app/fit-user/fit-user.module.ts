@@ -1,11 +1,23 @@
+import { getJwtOptions } from '@fit-friends/config/config-users';
 import { Module } from '@nestjs/common';
-import { FitUserService } from './fit-user.service';
-import { FitUserController } from './fit-user.controller';
-import { FitUserMemoryRepository } from './fit-user-memory.repository';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
+  imports: [
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: getJwtOptions,
+    }),
+    RefreshTokenModule,
+  ],
   controllers: [FitUserController],
-  providers: [FitUserService, FitUserMemoryRepository],
-  exports: [FitUserMemoryRepository],
+  providers: [
+    FitnessUserRepository,
+    FitnessUserService,
+    JwtRefreshStrategy,
+    JwtAccessStrategy,
+  ],
+  exports: [FitnessUserRepository, FitnessUserService],
 })
-export class FitUserModule {}
+export class FitnessUserModule {}

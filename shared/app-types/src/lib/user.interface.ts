@@ -5,7 +5,7 @@ import { IUserFriend } from './user-friend.interface';
 import { UserGender } from './user-gender.enum';
 import { UserLevel } from './user-level.enum';
 import { UserLocation } from './user-location.enum';
-import { UserRoleType } from './user-role.enum';
+import { UserRole } from './user-role.enum';
 import { UserTypesTraining } from './user-types-training.enum';
 
 export interface IUser {
@@ -16,7 +16,7 @@ export interface IUser {
   passwordHash: string;
   gender: UserGender;
   birthDate?: string;
-  role: UserRoleType;
+  role: UserRole;
   description?: string;
   location: UserLocation;
   backgraundPicture?: string;

@@ -57,42 +57,41 @@
           "ci": true,
           "codeCoverage": true
         }
-      },
-
-      "db:lint": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npx prisma validate --schema ./schema.prisma",
-          "cwd": "./src/prisma"
-        }
-      },
-      "db:migrate": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npx prisma migrate dev --schema ./schema.prisma --skip-generate --skip-seed",
-          "cwd": "config/config-db/prisma"
-        }
-      },
-      "db:reset": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npx prisma migrate reset --schema ./schema.prisma --force --skip-generate --skip-seed",
-          "cwd": "config/config-db/prisma"
-        }
-      },
-      "db:generate": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npx prisma generate --schema ./schema.prisma",
-          "cwd": "config/config-db/prisma"
-        }
-      },
-      "db:seed": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "npx ts-node seed.ts",
-          "cwd": "config/config-db/prisma"
-        }
+      }
+    },
+    "db:lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma validate --schema ./schema.prisma",
+        "cwd": "config/config-db/src/lib/prisma"
+      }
+    },
+    "db:migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate dev --schema ./schema.prisma --skip-generate --skip-seed",
+        "cwd": "config/config-db/src/lib/prisma"
+      }
+    },
+    "db:reset": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate reset --schema ./schema.prisma --force --skip-generate --skip-seed",
+        "cwd": "config/config-db/src/lib/prisma"
+      }
+    },
+    "db:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma generate --schema ./schema.prisma",
+        "cwd": "config/config-db/src/lib/prisma"
+      }
+    },
+    "db:seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx ts-node seed.ts",
+        "cwd": "config/config-db/src/lib/prisma"
       }
     }
   },

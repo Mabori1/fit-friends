@@ -1,1 +1,3 @@
-export * from './lib/config/config-db.module';
+export * from './lib/prisma/prisma.module';
+export * from './lib/prisma/prisma.service';
+export * from './lib/prisma/seed';

@@ -13,3 +13,5 @@ export * from './lib/user-friend.interface';
 export * from './lib/user.interface';
 export * from './lib/entity.interface';
 export * from './lib/token-payload.interface';
+export * from './lib/refresh-token-payload.interface';
+export * from './lib/user-filter.interface';
