@@ -63,7 +63,7 @@
         "executor": "nx:run-commands",
         "options": {
           "command": "npx prisma validate --schema ./schema.prisma",
-          "cwd": "config/config-db/prisma"
+          "cwd": "./src/prisma"
         }
       },
       "db:migrate": {
@@ -86,13 +86,13 @@
           "command": "npx prisma generate --schema ./schema.prisma",
           "cwd": "config/config-db/prisma"
         }
- },
-    "db:seed": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npx ts-node seed.ts",
-        "cwd": "libs/models/blog-models/prisma"
-      }
+      },
+      "db:seed": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "npx ts-node seed.ts",
+          "cwd": "config/config-db/prisma"
+        }
       }
     }
   },
