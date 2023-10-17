@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRoleType {
+  trainer
+  client
+}
+
+model UserEntity {
+  userId            Int                     @id @default(autoincrement()) @map("user_id")
+  name              String                  @default("") @map("user_name")
+  email             String                  @unique @default("") @map("user_mail")
+  avatar            String                  @default("") @map("user_avatar")
+  passwordHash      String                  @default("")
+  gender            String                  @default("") @map("user_gender")
+  birthDate         String                  @default("") @map("birth_date")
+  role              UserRoleType            @map("user_role")
+  description       String                  @default("")
+  location          String                  @default("")
+  backgraundPicture String                  @default("") @map("backgraund_picture")
+  createdAt         DateTime                @default(now()) @map("created_at")
+  client            Client?
+  trainer           Trainer?
+  level             String                  @default("") @map("user_level")
+  typesOfTraining   String[]                @map("types_of_traning")
+  orders            OrderTraining[]
+  personalOrders    PersonalOrderTraining[]
+  balance           UserBalance[]
+  friends           UserFriend[]
+
+  @@map("users")
+}
+
+model Client {
+  clientId              Int        @id @default(autoincrement()) @map("client_id")
+  user                  UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  userId                Int        @unique @map("user_id")
+  timeOfTraining        String     @default("") @map("time_of_training")
+  caloryLosingPlanTotal Int        @default(0) @map("calory_losing_plan_total")
+  caloryLosingPlanDaily Int        @default(0) @map("calory_losing_plan_daily")
+  isTrainingReadiness   Boolean    @default(false) @map("readiness_for_training")
+
+  @@map("clients")
+}
+
+model Trainer {
+  trainerId          Int        @id @default(autoincrement()) @map("trainer_id")
+  user               UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  userId             Int        @unique @map("user_id")
+  sertificat       String
+  merit              String     @default("")
+  isPersonalTraining Boolean    @default(false) @map("personal_training")
+
+  @@map("trainers")
+}
+
+model TrainingEntity {
+  trainingId        Int        @id @default(autoincrement()) @map("training_id")
+  title             String     @default("")
+  backgroundPicture String     @default("") @map("backgraund_picture")
+  levelOfUser       String     @default("") @map("level_of_user")
+  typeOfTraining    String     @default("") @map("type_of_training")
+  duration          String     @default("")
+  price             Int        @default(0)
+  caloriesQtt       Int        @default(0) @map("calories_qtt")
+  description       String     @default("")
+  createdAt         DateTime   @default(now()) @map("created_at")
+  trainingGender    String     @default("") @map("training_gender")
+  video             String     @default("")
+  rating            Float      @default(0)
+  trainerId         Int        @default(0)
+  isPromo           Boolean    @default(false) @map("is_promo")
+  feedbacks         Feedback[]
+
+  @@map("trainings")
+}
+
+model UserBalance {
+  userBalanceId Int        @id @default(autoincrement()) @map("user_balance_id")
+  user          UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  userId        Int        @map("user_id")
+  trainingId    Int        @map("training_id")
+  trainingQtt   Int        @map("training_qtt")
+
+  @@map("user_balances")
+}
+
+model Feedback {
+  feedbackId Int            @id @default(autoincrement()) @map("feedback_id")
+  userId     Int            @map("user_id")
+  training   TrainingEntity @relation(fields: [trainingId], references: [trainingId], onDelete: Cascade, onUpdate: Cascade)
+  trainingId Int            @map("training_id")
+  rating     Int            @default(0)
+  text       String         @default("")
+  createdAt  DateTime       @default(now()) @map("created_at")
+
+  @@map("feed_backs")
+}
+
+model OrderTraining {
+  orderTrainingId Int        @id @default(autoincrement()) @map("order_traiding_id")
+  user            UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  userId          Int        @map("user_id")
+  typeOfOrder     String     @default("")
+  trainingId      Int        @map("training_id")
+  price           Int        @default(0)
+  quantity        Int        @default(0)
+  typeOfPayment   String     @default("")
+  createdAt       DateTime   @default(now()) @map("created_at")
+
+  @@map("order_trainings")
+}
+
+model PersonalOrderTraining {
+  personalOrderTrainingId Int        @id @default(autoincrement()) @map("personal_order_training_id")
+  user                    UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  userId                  Int        @map("user_id")
+  trainerId               Int        @map("trainer_id")
+  createdAt               DateTime   @default(now()) @map("created_at")
+  updateAt                DateTime   @default(now()) @map("update_at")
+  orderCondition          String
+
+  @@map("personal_order_trainings")
+}
+
+model RefreshToken {
+  refreshTokenId Int      @id @default(autoincrement()) @map("refresh_token_id")
+  tokenId        String   @map("token_id")
+  userId         String   @map("user_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  expiresIn      DateTime @default(now()) @map("expires_in")
+
+  @@map("refresh_token_stores")
+}
+
+model UserFriend {
+  userFriendId Int        @id @default(autoincrement()) @map("user_friend_id")
+  user         UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  userId       Int        @map("user_id")
+  friendId     Int        @map("friend_id")
+  isConfirmed  Boolean    @default(false) @map("is_confirmed")
+
+  @@map("user_friends")
+}
+
+model File {
+  fileId       Int    @id @default(autoincrement()) @map("file_id")
+  hashName     String
+  mimetype     String
+  originalName String @map("original_name")
+  path         String
+  size         Int
+
+  @@map("files")
+}
+
+model Subscriber {
+  subscriberId Int    @id @default(autoincrement()) @map("subscriber_id")
+  email        String
+  name         String
+  trainerId    Int    @map("trainer_id")
+
+  @@map("subscribers")
+}
+
+model Notification {
+  notificationId      Int    @id @default(autoincrement()) @map("notification_id")
+  targetUserId        Int    @map("target_user_id")
+  typesOfNotification String
+  askingUserId        Int    @map("asking_user_id")
+
+  @@map("notifications")
+}
