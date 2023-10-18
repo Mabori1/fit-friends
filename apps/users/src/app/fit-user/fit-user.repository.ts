@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
+import { FitUserEntity } from './fit-user.entity';
+import { IUser, IUserFilter } from '@fit-friends/shared/app-types';
+import { PrismaService } from '@fit-friends/config/config-db';
+import { CRUDRepository } from '@fit-friends/util/util-types';
 
 @Injectable()
-export class FitnessUserRepository
-  implements CRUDRepository<FitnessUserEntity, number, User>
+export class FitUserRepository
+  implements CRUDRepository<FitUserEntity, number, IUser>
 {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(item: FitnessUserEntity): Promise<User> {
+  public async create(item: FitUserEntity): Promise<IUser> {
     const entityData = item.toObject();
     return this.prisma.userEntity.create({
       data: {
         ...entityData,
-        clientBody:
-          item.clientBody != null
+        client:
+          item.client != null
             ? {
-                create: item.clientBody,
+                create: item.client,
               }
             : undefined,
-        trainerBody:
-          item.trainerBody != null
+        trainer:
+          item.trainer != null
             ? {
-                create: item.trainerBody,
+                create: item.trainer,
               }
             : undefined,
         orders: {
@@ -29,7 +33,7 @@ export class FitnessUserRepository
         personalOrders: {
           connect: [],
         },
-        userBalance: {
+        balance: {
           connect: [],
         },
         friends: {
@@ -37,11 +41,11 @@ export class FitnessUserRepository
         },
       },
       include: {
-        clientBody: true,
-        trainerBody: true,
+        client: true,
+        trainer: true,
         orders: true,
         personalOrders: true,
-        userBalance: true,
+        balance: true,
         friends: true,
       },
     });
@@ -53,41 +57,43 @@ export class FitnessUserRepository
         userId,
       },
       include: {
-        clientBody: true,
-        trainerBody: true,
+        client: true,
+        trainer: true,
         orders: true,
         personalOrders: true,
-        userBalance: true,
+        balance: true,
       },
     });
   }
 
-  public async findById(userId: number): Promise<User | null> {
+  public async findById(userId: number): Promise<IUser | null> {
     return this.prisma.userEntity.findFirst({
       where: {
         userId,
       },
       include: {
-        clientBody: true,
-        trainerBody: true,
+        client: true,
+        trainer: true,
         orders: true,
         personalOrders: true,
-        userBalance: true,
+        balance: true,
         friends: true,
       },
     });
   }
-  public async findByEmail(userMail: string): Promise<User | null> {
+
+  public async findByEmail(email: string): Promise<IUser | null> {
     return this.prisma.userEntity.findFirst({
       where: {
-        userMail,
+        email,
       },
     });
   }
+
   public async update(
     userId: number,
-    userEntity: FitnessUserEntity
-  ): Promise<User> {
+    userEntity: FitUserEntity
+  ): Promise<IUser> {
     const entityData = userEntity.toObject();
     return this.prisma.userEntity.update({
       where: {
@@ -95,44 +101,44 @@ export class FitnessUserRepository
       },
       data: {
         ...entityData,
-        clientBody:
-          userEntity.clientBody != null
+        client:
+          userEntity.client != null
             ? {
                 update: {
                   timeOfTraining:
-                    userEntity.clientBody.timeOfTraining != null
-                      ? userEntity.clientBody.timeOfTraining
+                    userEntity.client.timeOfTraining != null
+                      ? userEntity.client.timeOfTraining
                       : undefined,
                   caloryLosingPlanTotal:
-                    userEntity.clientBody.caloryLosingPlanTotal != null
-                      ? userEntity.clientBody.caloryLosingPlanTotal
+                    userEntity.client.caloryLosingPlanTotal != null
+                      ? userEntity.client.caloryLosingPlanTotal
                       : undefined,
                   caloryLosingPlanDaily:
-                    userEntity.clientBody.caloryLosingPlanDaily != null
-                      ? userEntity.clientBody.caloryLosingPlanDaily
+                    userEntity.client.caloryLosingPlanDaily != null
+                      ? userEntity.client.caloryLosingPlanDaily
                       : undefined,
-                  readinessForTraining:
-                    userEntity.clientBody.readinessForTraining != null
-                      ? userEntity.clientBody.readinessForTraining
+                  isTrainingReadiness:
+                    userEntity.client.isTrainingReadiness != null
+                      ? userEntity.client.isTrainingReadiness
                       : undefined,
                 },
               }
             : undefined,
-        trainerBody:
-          userEntity.trainerBody != null
+        trainer:
+          userEntity.trainer != null
             ? {
                 update: {
-                  sertificates:
-                    userEntity.trainerBody.sertificates != null
-                      ? userEntity.trainerBody.sertificates
+                  sertificat:
+                    userEntity.trainer.sertificat != null
+                      ? userEntity.trainer.sertificat
                       : undefined,
                   merit:
-                    userEntity.trainerBody.merit != null
-                      ? userEntity.trainerBody.merit
+                    userEntity.trainer.merits != null
+                      ? userEntity.trainer.merits
                       : undefined,
-                  readinessForPrivate:
-                    userEntity.trainerBody.readinessForPrivate != null
-                      ? userEntity.trainerBody.readinessForPrivate
+                  isPersonalTraining:
+                    userEntity.trainer.isPersonalTraining != null
+                      ? userEntity.trainer.isPersonalTraining
                       : undefined,
                 },
               }
@@ -147,8 +153,8 @@ export class FitnessUserRepository
             ({ personalOrderTrainingId }) => ({ personalOrderTrainingId })
           ),
         },
-        userBalance: {
-          connect: userEntity.userBalance.map(({ userBalanceId }) => ({
+        balance: {
+          connect: userEntity.balance.map(({ userBalanceId }) => ({
             userBalanceId,
           })),
         },
@@ -159,36 +165,36 @@ export class FitnessUserRepository
         },
       },
       include: {
-        clientBody: true,
-        trainerBody: true,
+        client: true,
+        trainer: true,
         orders: true,
         personalOrders: true,
-        userBalance: true,
+        balance: true,
         friends: true,
       },
     });
   }
   public async find(
     limit: number,
-    filter: UserFilter,
+    filter: IUserFilter,
     page: number
-  ): Promise<User[]> | null {
+  ): Promise<IUser[]> | null {
     return this.prisma.userEntity.findMany({
       where: {
-        location: { in: filter.locations },
+        location: { in: filter.location },
 
-        levelOfExperience: { contains: filter.levelOfExperience },
+        level: { contains: filter.level },
 
         typesOfTraining: { hasSome: filter.typesOfTraining },
       },
 
       take: limit,
       include: {
-        clientBody: true,
-        trainerBody: true,
+        client: true,
+        trainer: true,
         orders: true,
         personalOrders: true,
-        userBalance: true,
+        balance: true,
       },
       orderBy: [{ createdAt: 'desc' }],
       skip: page > 0 ? limit * (page - 1) : undefined,

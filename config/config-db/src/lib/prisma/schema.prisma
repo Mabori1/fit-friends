@@ -8,10 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRoleType {
-  trainer
-  client
-}
+
 
 model UserEntity {
   userId            Int                     @id @default(autoincrement()) @map("user_id")
@@ -21,7 +18,7 @@ model UserEntity {
   passwordHash      String                  @default("")
   gender            String                  @default("") @map("user_gender")
   birthDate         String                  @default("") @map("birth_date")
-  role              UserRoleType            @map("user_role")
+  role              String                  @default("") @map("user_role")
   description       String                  @default("")
   location          String                  @default("")
   backgraundPicture String                  @default("") @map("backgraund_picture")
@@ -55,7 +52,7 @@ model Trainer {
   user               UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
   userId             Int        @unique @map("user_id")
   sertificat       String
-  merit              String     @default("")
+  merits              String     @default("")
   isPersonalTraining Boolean    @default(false) @map("personal_training")
 
   @@map("trainers")

@@ -1,5 +1,5 @@
-import { TokenPayload } from './token-payload.interface';
+import { ITokenPayload } from './token-payload.interface';
 
-export interface RefreshTokenPayload extends TokenPayload {
+export interface IRefreshTokenPayload extends ITokenPayload {
   tokenId: string;
 }

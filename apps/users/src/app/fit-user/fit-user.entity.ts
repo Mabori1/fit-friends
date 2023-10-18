@@ -9,11 +9,6 @@ import {
   IUser,
   IUserBalance,
   IUserFriend,
-  UserGender,
-  UserLevel,
-  UserLocation,
-  UserRoleType,
-  UserTypesTraining,
 } from '@fit-friends/shared/app-types';
 
 export class FitUserEntity implements IEntity<FitUserEntity>, IUser {
@@ -21,24 +16,24 @@ export class FitUserEntity implements IEntity<FitUserEntity>, IUser {
   public email: string;
   public avatar: string;
   public passwordHash!: string;
-  public gender: UserGender;
+  public gender: string;
   public birthDate: string;
-  public role: UserRoleType;
+  public role: string;
   public description: string;
-  public location: UserLocation;
+  public location: string;
   public backgraundPicture: string;
   public createdAt: Date;
   public client?: IClient | null;
   public trainer?: ITrainer | null;
-  public level: UserLevel;
-  public typesOfTraining: UserTypesTraining[];
+  public level: string;
+  public typesOfTraining: string[];
   public orders!: IOrderTraining[];
   public personalOrders!: IPersonalOrderTraining[];
   public balance!: IUserBalance[];
   public friends!: IUserFriend[];
 
-  constructor(fitnessUser: IUser) {
-    this.fillEntity(fitnessUser);
+  constructor(fitUser: IUser) {
+    this.fillEntity(fitUser);
   }
 
   public fillEntity(entity: IUser): void {

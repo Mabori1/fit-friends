@@ -2,7 +2,7 @@ import {
   IOrderTraining,
   IPersonalOrderTraining,
   IUserBalance,
-  UserRoleType,
+  UserRole,
 } from '@fit-friends/shared/app-types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
@@ -55,7 +55,7 @@ export class UserRdo {
     example: 'тренер',
   })
   @Expose()
-  public role!: UserRoleType;
+  public role!: UserRole;
 
   @ApiProperty({
     description: 'User description',
