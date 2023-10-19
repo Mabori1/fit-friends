@@ -132,7 +132,7 @@ export class FitUserRepository
                     userEntity.trainer.sertificat != null
                       ? userEntity.trainer.sertificat
                       : undefined,
-                  merit:
+                  merits:
                     userEntity.trainer.merits != null
                       ? userEntity.trainer.merits
                       : undefined,

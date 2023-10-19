@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Headers,
   HttpCode,
   HttpStatus,
   Param,
@@ -22,13 +21,20 @@ import { fillObject } from '@fit-friends/util/util-core';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
-import { IRequestWithUser, UserRole } from '@fit-friends/shared/app-types';
+import {
+  IRequestWithTokenPayload,
+  IRequestWithUser,
+  UserRole,
+} from '@fit-friends/shared/app-types';
 import { UserQuery } from './query/user.query';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { UserRolesGuard } from './guards/user-roles.guard';
+import { Roles } from './decorator/user-roles.decorator';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('auth')
 export class FitUserController {
-  constructor(private readonly fitnessUserService: FitUserService) {}
+  constructor(private readonly fitUserService: FitUserService) {}
 
   @ApiResponse({
     type: UserRdo,
@@ -36,11 +42,8 @@ export class FitUserController {
     description: 'The new user has been successfully created.',
   })
   @Post('/register')
-  public async create(
-    @Headers() headers: Record<string, string>,
-    @Body() dto: CreateUserDto
-  ): Promise<UserRdo> {
-    const newUser = await this.fitnessUserService.createUser(dto);
+  public async create(@Body() dto: CreateUserDto): Promise<UserRdo> {
+    const newUser = await this.fitUserService.createUser(dto);
     return fillObject(UserRdo, newUser);
   }
 
@@ -56,10 +59,8 @@ export class FitUserController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   public async login(@Body() dto: LoginUserDto): Promise<LoggedUserRdo> {
-    const verifiedUser = await this.fitnessUserService.verifyUser(dto);
-    const loggedUser = await this.fitnessUserService.createUserToken(
-      verifiedUser
-    );
+    const verifiedUser = await this.fitUserService.verifyUser(dto);
+    const loggedUser = await this.fitUserService.createUserToken(verifiedUser);
     return fillObject(LoggedUserRdo, Object.assign(verifiedUser, loggedUser));
   }
 
@@ -71,7 +72,7 @@ export class FitUserController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   public async refreshToken(@Req() { user }: IRequestWithUser) {
-    return this.fitnessUserService.createUserToken(user);
+    return this.fitUserService.createUserToken(user);
   }
 
   @ApiResponse({
@@ -85,7 +86,7 @@ export class FitUserController {
   public async feedLine(
     @Query(new ValidationPipe({ transform: true })) query: UserQuery
   ) {
-    const users = await this.fitnessUserService.getUsers(query);
+    const users = await this.fitUserService.getUsers(query);
     return { ...fillObject(UserRdo, users) };
   }
 
@@ -101,7 +102,7 @@ export class FitUserController {
     @Body() dto: UpdateUserDto
   ) {
     const id = payload.sub;
-    const updatedUser = await this.fitnessUserService.updateUser(id, dto);
+    const updatedUser = await this.fitUserService.updateUser(id, dto);
     return fillObject(UserRdo, updatedUser);
   }
 
@@ -113,7 +114,7 @@ export class FitUserController {
   @UseGuards(JwtAuthGuard)
   @Get('user/:id')
   public async show(@Param('id', ParseIntPipe) id: number) {
-    const user = await this.fitnessUserService.getUser(id);
+    const user = await this.fitUserService.getUser(id);
     return fillObject(UserRdo, user);
   }
 
@@ -123,7 +124,7 @@ export class FitUserController {
   })
   @UseGuards(JwtAuthGuard)
   @Get('check')
-  public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
+  public async checkToken(@Req() { user: payload }: IRequestWithTokenPayload) {
     return payload;
   }
 }

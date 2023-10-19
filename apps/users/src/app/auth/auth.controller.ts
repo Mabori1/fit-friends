@@ -1,43 +1,77 @@
 import {
-  Body,
-  Controller,
   Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
-  Patch,
+  Body,
   Post,
-  Query,
-  Req,
+  Patch,
+  Param,
+  HttpStatus,
+  Controller,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
+  Query,
+  Delete,
+  Req,
+  ParseIntPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import {
+  refs,
+  ApiBody,
+  ApiTags,
+  ApiHeader,
+  ApiResponse,
+  ApiConsumes,
+  ApiOkResponse,
+  getSchemaPath,
+  ApiExtraModels,
+} from '@nestjs/swagger';
+import { CreateClientDto } from './dto/client.dto';
+import { CreateTrainerDto } from './dto/trainer.dto';
+import { TrainerRdo } from './rdo/trainer.rdo';
+import { ClientRdo } from './rdo/client.rdo';
 import { AuthService } from './auth.service';
-import { UserRdo } from './rdo/user.rdo';
-import { CreateUserDto } from './dto/create-user.dto';
-import { fillObject } from '@fit-friends/util/util-core';
+import {
+  Image,
+  IRequestWithUser,
+  ITokenPayload,
+  UserRole,
+} from '@fit-friends/types';
+import { fillObject } from '@fit-friends/core';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
-import { UserRole } from '@fit-friends/shared/app-types';
+import { JwtRefreshGuard } from '../fit-user/guards/jwt-refresh.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { UserQuery } from '../fit-user/query/user.query';
+import { UpdateClientDto } from './dto/update-client.dto';
+import { UpdateTrainerDto } from './dto/update-traner.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('auth')
+@ApiTags('users')
+@Controller('users')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('register')
+  @ApiExtraModels(ClientRdo, TrainerRdo, CreateClientDto, CreateTrainerDto)
   @ApiResponse({
-    type: UserRdo,
+    schema: { anyOf: refs(ClientRdo, TrainerRdo) },
     status: HttpStatus.CREATED,
     description: 'The new user has been successfully created.',
   })
-  @Post('/register')
-  @HttpCode(HttpStatus.CREATED)
-  public async create(@Body() dto: CreateUserDto): Promise<UserRdo> {
-    const newUser = await this.authService.createUser(dto);
-    return fillObject(UserRdo, newUser);
+  @ApiBody({ schema: { anyOf: refs(CreateClientDto, CreateTrainerDto) } })
+  public async create(@Body() dto: CreateClientDto | CreateTrainerDto) {
+    const newUser = await this.authService.register(dto);
+
+    return newUser.role === UserRole.Client
+      ? fillObject(ClientRdo, newUser)
+      : fillObject(TrainerRdo, newUser);
   }
 
+  @Post('login')
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
@@ -47,75 +81,309 @@ export class AuthController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Password or Login is wrong.',
   })
-  @Post('login')
-  @HttpCode(HttpStatus.OK)
-  public async login(@Body() dto: LoginUserDto): Promise<LoggedUserRdo> {
-    const verifiedUser = await this.authService.verifyUser(dto);
-    const loggedUser = await this.authService.createUserToken(verifiedUser);
-    return fillObject(LoggedUserRdo, Object.assign(verifiedUser, loggedUser));
+  public async login(@Body() dto: LoginUserDto) {
+    const user = await this.authService.verifyUser(dto);
+    const tokens = await this.authService.loginUser(user);
+
+    return fillObject(LoggedUserRdo, {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      ...tokens,
+    });
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get a new access/refresh tokens',
-  })
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  @HttpCode(HttpStatus.OK)
-  public async refreshToken(@Req() { user }: RequestWithUser) {
-    return this.authService.createUserToken(user);
-  }
-
   @ApiResponse({
-    type: UserRdo,
+    type: LoggedUserRdo,
     status: HttpStatus.OK,
-    description: 'Users list complete.',
+    description: 'Tokens has been successfully updated.',
   })
-  @Roles(UserRole.Client)
-  @UseGuards(UserRolesGuard)
-  @Get('/feed')
-  public async feedLine(
-    @Query(new ValidationPipe({ transform: true })) query: UserQuery
-  ) {
-    const users = await this.authService.getUsers(query);
-    return { ...fillObject(UserRdo, users) };
+  public async refresh(@Req() { user }: IRequestWithUser) {
+    const newTokens = await this.authService.refresh(user);
+
+    return fillObject(LoggedUserRdo, newTokens);
   }
 
+  @Post('/drop')
   @ApiResponse({
-    type: UserRdo,
-    status: HttpStatus.OK,
-    description: 'User updated.',
+    status: HttpStatus.NO_CONTENT,
+    description: 'Refresh token has been successfully dropped.',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
   })
   @UseGuards(JwtAuthGuard)
-  @Patch('/update')
-  public async update(
-    @Req() { user: payload }: RequestWithTokenPayload,
-    @Body() dto: UpdateUserDto
-  ) {
-    const id = payload.sub;
-    const updatedUser = await this.authService.updateUser(id, dto);
-    return fillObject(UserRdo, updatedUser);
+  public async drop(@Req() { user }: IRequestWithUser) {
+    return await this.authService.drop(user.userId);
   }
 
+  @Get('/friends')
+  @ApiExtraModels(ClientRdo, TrainerRdo)
   @ApiResponse({
-    type: UserRdo,
+    schema: {
+      type: 'array',
+      items: {
+        oneOf: [
+          { $ref: getSchemaPath(ClientRdo) },
+          { $ref: getSchemaPath(TrainerRdo) },
+        ],
+      },
+    },
     status: HttpStatus.OK,
-    description: 'User by id received',
+    description: "The user's friends has been successfully found",
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
   })
   @UseGuards(JwtAuthGuard)
+  public async showFriends(@Req() user: ITokenPayload) {
+    const { id, role } = user;
+    const friends = await this.authService.getFriends(id, role);
+
+    return friends.map((friend) =>
+      friend.role === UserRole.Client
+        ? fillObject(ClientRdo, friend)
+        : fillObject(TrainerRdo, friend)
+    );
+  }
+
+  @Post('/friends/req')
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The friendship request sent to user',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async requestFriendship(
+    @Body() dto: LoginUserDto,
+    @Req() user: ITokenPayload
+  ) {
+    const { id, role } = user;
+    await this.authService.reqFriendship(dto, id, role);
+  }
+
+  @Post('/friends/accept')
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The friendship was accepted',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async acceptFriendship(
+    @Body() dto: LoginUserDto,
+    @Req() respondentId: number
+  ) {
+    await this.authService.accFriendship(dto, respondentId);
+  }
+
+  @Post('/friends/reject')
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The friendship was rejected',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async rejectFriendship(
+    @Body() dto: LoginUserDto,
+    @Req() respondentId: number
+  ) {
+    await this.authService.rejFriendship(dto, respondentId);
+  }
+
+  @Delete('/friends/delete')
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'The friend was deleted from friends list',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async deleteFriend(@Body() dto: LoginUserDto, @Req() id: number) {
+    await this.authService.delFriend(dto, id);
+  }
+
+  @Delete('/alerts')
+  @ApiExtraModels(ClientRdo, TrainerRdo)
+  @ApiResponse({
+    schema: { anyOf: refs(ClientRdo, TrainerRdo) },
+    status: HttpStatus.OK,
+    description: 'The alerts was deleted',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async deleteAlerts(@Req() id: number) {
+    const updatedUser = await this.authService.delAlerts(id);
+
+    return updatedUser.role === UserRole.Client
+      ? fillObject(ClientRdo, updatedUser)
+      : fillObject(TrainerRdo, updatedUser);
+  }
+
+  @Post('/personal-training/req')
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Request for personal training sent to user',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async requestPersonalTraining(
+    @Body() dto: LoginUserDto,
+    @Req() user: ITokenPayload
+  ) {
+    const { id, role } = user;
+    await this.authService.reqPersonalTraining(dto, id, role);
+  }
+
+  @Post('/personal-training/accept')
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Request for personal training accepted',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async acceptPersonalTraining(
+    @Body() dto: LoginUserDto,
+    @Req() respondentId: number
+  ) {
+    await this.authService.accPersonalTraining(dto, respondentId);
+  }
+
+  @Post('/personal-training/reject')
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Request for personal training rejected',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async rejectPersonalTraining(
+    @Body() dto: LoginUserDto,
+    @Req() respondentId: number
+  ) {
+    await this.authService.rejPersonalTraining(dto, respondentId);
+  }
+
   @Get('user/:id')
-  public async show(@Param('id', ParseIntPipe) id: number) {
-    const user = await this.authService.getUser(id);
-    return fillObject(UserRdo, user);
-  }
-
+  @ApiExtraModels(ClientRdo, TrainerRdo, CreateClientDto, CreateTrainerDto)
   @ApiResponse({
+    schema: { anyOf: refs(ClientRdo, TrainerRdo) },
     status: HttpStatus.OK,
-    description: 'Checkig token availibility',
+    description: 'The user has been successfully found.',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
   })
   @UseGuards(JwtAuthGuard)
-  @Get('check')
-  public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
-    return payload;
+  public async show(@Param('id', ParseIntPipe) id: number) {
+    const existUser = await this.authService.getUser(id);
+
+    return existUser.role === UserRole.Client
+      ? fillObject(ClientRdo, existUser)
+      : fillObject(TrainerRdo, existUser);
+  }
+
+  @Get('/')
+  @ApiExtraModels(ClientRdo, TrainerRdo)
+  @ApiResponse({
+    schema: {
+      type: 'array',
+      items: {
+        oneOf: [
+          { $ref: getSchemaPath(ClientRdo) },
+          { $ref: getSchemaPath(TrainerRdo) },
+        ],
+      },
+    },
+    status: HttpStatus.OK,
+    description: 'The users has been successfully found',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @UseGuards(JwtAuthGuard)
+  public async index(
+    @Query(new ValidationPipe({ transform: true })) query: UserQuery,
+    @Req() user: ITokenPayload
+  ) {
+    const { role } = user;
+    const users = await this.authService.getUsers(query, role);
+
+    return users.map((user) =>
+      user.role === UserRole.Client
+        ? fillObject(ClientRdo, user)
+        : fillObject(TrainerRdo, user)
+    );
+  }
+
+  @Patch('/')
+  @ApiExtraModels(ClientRdo, TrainerRdo, UpdateClientDto, UpdateTrainerDto)
+  @ApiResponse({
+    schema: { anyOf: refs(ClientRdo, TrainerRdo) },
+    status: HttpStatus.OK,
+    description: 'The user has been successfully updated.',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiBody({ schema: { anyOf: refs(UpdateClientDto, UpdateTrainerDto) } })
+  @UseGuards(JwtAuthGuard)
+  public async update(
+    @Body() dto: UpdateClientDto | UpdateTrainerDto,
+    @Req() { user: { userId } }: IRequestWithUser
+  ) {
+    const updatedUser = await this.authService.updateUser(userId, dto);
+
+    return updatedUser.role === UserRole.Client
+      ? fillObject(ClientRdo, updatedUser)
+      : fillObject(TrainerRdo, updatedUser);
+  }
+
+  @Post('/avatar')
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiOkResponse({
+    description: 'Avatar sussessfully uploaded',
+  })
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('avatar'))
+  public async uploadAvatar(@Req() { user: { userId } }: IRequestWithUser) {
+    const updatedUser = await this.authService.updateUser(userId, {});
+    // TODO: доделать загрузку аватарки
+
+    return updatedUser.role === UserRole.Client
+      ? fillObject(ClientRdo, updatedUser)
+      : fillObject(TrainerRdo, updatedUser);
   }
 }
