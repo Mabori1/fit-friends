@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import { RefreshToken } from '@prisma/client';
-import { PrismaService } from '@fit-friends/config/config-db';
+import { PrismaService } from '@fit-friends/config';
 
 @Injectable()
 export class RefreshTokenRepository {

@@ -1,8 +1,11 @@
 import {
+  IAlert,
   IOrderTraining,
   IPersonalOrderTraining,
   IUserBalance,
+  TrainingDuration,
   UserRole,
+  UserTypesTraining,
 } from '@fit-friends/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
@@ -72,43 +75,11 @@ export class UserRdo {
   public location!: string;
 
   @ApiProperty({
-    description: 'User backgraund picture',
-    example: 'backgraund.jpg',
-  })
-  @Expose()
-  public backgraundPicture!: string;
-
-  @ApiProperty({
     description: 'User creation date',
     example: '01.01.2000',
   })
   @Expose()
   public createdAt!: Date;
-
-  @ApiProperty({
-    description: 'User with role client',
-    example: 'client',
-  })
-  @Expose()
-  public client?: {
-    clientId?: number;
-    timeOfTraining?: string;
-    caloryLosingPlanTotal?: number;
-    caloryLosingPlanDaily?: number;
-    readinessForTraining?: boolean;
-  };
-
-  @ApiProperty({
-    description: 'User with role trainer',
-    example: 'trainer',
-  })
-  @Expose()
-  public trainer?: {
-    trainerId?: number;
-    sertificates?: string[];
-    merit?: string;
-    readinessForPrivate?: boolean;
-  };
 
   @ApiProperty({
     description: 'User level',
@@ -122,7 +93,47 @@ export class UserRdo {
     example: 'йога, бег, аэробика',
   })
   @Expose()
-  public typesOfTraining!: string[];
+  public typesOfTraining!: UserTypesTraining[];
+
+  @ApiProperty({
+    description: 'User alerts',
+    example: [
+      {
+        text: 'Вам пора на тренировку',
+        date: '2023-02-25T14:07:27.554Z',
+      },
+    ],
+    required: true,
+  })
+  @Expose()
+  public alerts!: IAlert[];
+
+  @ApiProperty({
+    description: 'Property of client',
+    example: 'client',
+  })
+  @Expose()
+  public client?: {
+    clientId?: number;
+    userId?: number;
+    timeOfTraining?: TrainingDuration;
+    caloryLosingPlanTotal?: number;
+    caloryLosingPlanDaily?: number;
+    isReady?: boolean;
+  };
+
+  @ApiProperty({
+    description: 'Property of trainer',
+    example: 'trainer',
+  })
+  @Expose()
+  public trainer?: {
+    trainerId?: number;
+    userId?: number;
+    certificate?: string;
+    merits?: string;
+    isPersonalTraining?: boolean;
+  };
 
   @ApiProperty({
     description: 'User orders',
@@ -143,11 +154,4 @@ export class UserRdo {
   })
   @Expose()
   public balance?: IUserBalance[];
-
-  @ApiProperty({
-    description: 'certificate availability',
-    example: 'certificate.pdf',
-  })
-  @Expose()
-  public sertificat?: string;
 }

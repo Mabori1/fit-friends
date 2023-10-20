@@ -1,8 +1,8 @@
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ITokenPayload } from '@fit-friends/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TokenPayload } from '@fit-friends/shared/app-types';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(Strategy) {
@@ -14,7 +14,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public async validate(payload: TokenPayload) {
+  public async validate(payload: ITokenPayload) {
     return payload;
   }
 }

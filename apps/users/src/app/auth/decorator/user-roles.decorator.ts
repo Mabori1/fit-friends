@@ -1,4 +1,4 @@
-import { UserRole } from '@fit-friends/shared/app-types';
+import { UserRole } from '@fit-friends/types';
 import { SetMetadata } from '@nestjs/common';
 
 export const ROLES_KEY = 'roles';

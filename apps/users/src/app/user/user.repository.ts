@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { FitUserEntity } from './fit-user.entity';
-import { IUser, IUserFilter } from '@fit-friends/shared/app-types';
-import { PrismaService } from '@fit-friends/config/config-db';
-import { CRUDRepository } from '@fit-friends/util/util-types';
+import { UserEntity } from './user.entity';
+import { IUser, IUserFilter, ICRUDRepository } from '@fit-friends/types';
+import { PrismaService } from '@fit-friends/config';
 
 @Injectable()
-export class FitUserRepository
-  implements CRUDRepository<FitUserEntity, number, IUser>
+export class UserRepository
+  implements ICRUDRepository<UserEntity, number, IUser>
 {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(item: FitUserEntity): Promise<IUser> {
+  public async create(item: UserEntity): Promise<IUser> {
     const entityData = item.toObject();
     return this.prisma.userEntity.create({
       data: {

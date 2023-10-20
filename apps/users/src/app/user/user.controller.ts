@@ -13,7 +13,7 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { FitUserService } from './fit-user.service';
+import { FitUserService } from './user.service';
 import { ApiResponse } from '@nestjs/swagger';
 import { UserRdo } from './rdo/user.rdo';
 import { CreateUserDto } from './dto/create-user.dto';

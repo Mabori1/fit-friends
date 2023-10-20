@@ -1,7 +1,6 @@
-import { Entity } from '@fit-friends/util/util-types';
-import { IToken } from '@fit-friends/shared/app-types';
+import { IEntity, IToken } from '@fit-friends/types';
 
-export class RefreshTokenEntity implements Entity<RefreshTokenEntity>, IToken {
+export class RefreshTokenEntity implements IEntity<RefreshTokenEntity>, IToken {
   public createdAt: Date;
   public expiresIn: Date;
   public id: string;

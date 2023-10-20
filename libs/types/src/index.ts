@@ -19,7 +19,6 @@ export * from './lib/token.interface';
 export * from './lib/request-with-user.interface';
 export * from './lib/request-with-token-payload.interface';
 export * from './lib/util-types/crud-repository.interface';
-export * from './lib/util-types/entity.interface';
 export * from './lib/constants/user.constants';
 export * from './lib/constants/validation.constants';
 export * from './lib/alert.interface';

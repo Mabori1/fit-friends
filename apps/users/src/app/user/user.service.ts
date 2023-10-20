@@ -12,7 +12,7 @@ import { UpdateUserDto } from './dto/update-user.dto.js';
 import { jwtConfig } from '@fit-friends/config/config-users';
 import { ConfigType } from '@nestjs/config';
 import { IUser, IUserFilter } from '@fit-friends/shared/app-types';
-import { FitUserEntity } from './fit-user.entity.js';
+import { FitUserEntity } from './user.entity.js';
 import { LoginUserDto } from './dto/login-user.dto.js';
 import {
   AUTH_USER_EXISTS,

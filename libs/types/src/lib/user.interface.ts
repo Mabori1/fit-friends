@@ -1,3 +1,4 @@
+import { IAlert } from './alert.interface';
 import { IOrderTraining } from './order-training.interface';
 import { IPersonalOrderTraining } from './personal-order-training.interface';
 import { TrainingDuration } from './training-duration.enum';
@@ -23,9 +24,10 @@ export interface IUser {
   createdAt?: Date;
   level: UserLevel;
   typesOfTraining: UserTypesTraining[];
-  isPersonalTraining?: boolean;
+  client?: IClient;
+  trainer?: ITrainer;
   refreshTokenHash?: string;
-  alerts?: string[];
+  alerts?: IAlert[];
   orders?: IOrderTraining[];
   personalOrders?: IPersonalOrderTraining[];
   balance?: IUserBalance[];
@@ -35,14 +37,16 @@ export interface IUser {
 export interface IClient {
   clientId?: number;
   userId?: number;
-  timeOfTraining: TrainingDuration;
-  caloryLosingPlanTotal: number;
-  caloryLosingPlanDaily: number;
+  timeOfTraining?: TrainingDuration;
+  caloryLosingPlanTotal?: number;
+  caloryLosingPlanDaily?: number;
+  isReady?: boolean;
 }
 
 export interface ITrainer {
   trainerId?: number;
   userId?: number;
-  sertificat: string;
+  certificate?: string;
   merits?: string;
+  isPersonalTraining?: boolean;
 }

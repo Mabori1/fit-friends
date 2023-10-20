@@ -3,9 +3,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import dayjs from 'dayjs';
 import { RefreshTokenEntity } from './refresh-token.entity.js';
-import { jwtConfig } from '@fit-friends/config/config-users';
-import { IRefreshTokenPayload } from '@fit-friends/shared/app-types';
-import { parseTime } from '@fit-friends/util/util-core';
+import jwtConfig from '../../config/jwt.config.js';
+import { parseTime } from '@fit-friends/core';
+import { IRefreshTokenPayload } from '@fit-friends/types';
 
 @Injectable()
 export class RefreshTokenService {
@@ -20,7 +20,7 @@ export class RefreshTokenService {
     const refreshToken = new RefreshTokenEntity({
       tokenId: payload.tokenId,
       createdAt: new Date(),
-      userId: payload.sub.toString(),
+      userId: payload.id.toString(),
       expiresIn: dayjs().add(timeValue.value, timeValue.unit).toDate(),
     });
 

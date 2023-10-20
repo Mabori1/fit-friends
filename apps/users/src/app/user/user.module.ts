@@ -5,9 +5,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtRefreshStrategy } from './strategies/jwt.refresh.strategy';
 import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
 import { RefreshTokenModule } from '../refresh-token/refresh-token.module';
-import { FitUserService } from './fit-user.service';
-import { FitUserRepository } from './fit-user.repository';
-import { FitUserController } from './fit-user.controller';
+import { FitUserService } from './user.service';
+import { FitUserRepository } from './user.repository';
+import { FitUserController } from './user.controller';
 
 @Module({
   imports: [
@@ -26,4 +26,4 @@ import { FitUserController } from './fit-user.controller';
   ],
   exports: [FitUserRepository, FitUserService],
 })
-export class FitUserModule {}
+export class UserModule {}

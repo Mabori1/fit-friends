@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
-import { ConfigUsersModule } from '@fit-friends/config/config-users';
-import { PrismaModule } from '@fit-friends/config/config-db';
-import { FitUserModule } from './fit-user/fit-user.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { PrismaModule } from '@fit-friends/config';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [FitUserModule, ConfigUsersModule, PrismaModule],
+  imports: [
+    UserModule,
+    PrismaModule,
+    AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
   controllers: [],
   providers: [],
 })

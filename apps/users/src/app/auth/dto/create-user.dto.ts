@@ -6,15 +6,11 @@ import {
   IsOptional,
   Length,
   IsEnum,
-  IsNumber,
-  Min,
-  Max,
   IsBoolean,
   IsIn,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  CaloriesOfDay,
   TrainingDuration,
   UserDescriptionLength,
   UserGender,
@@ -27,7 +23,7 @@ import {
   UsersErrorMessage,
 } from '@fit-friends/types';
 
-export class CreateClientDto {
+export class CreateUserDto {
   @ApiProperty({
     description: 'User name',
     example: 'Вася',
@@ -68,7 +64,7 @@ export class CreateClientDto {
   @Length(UserPasswordLength.Min, UserPasswordLength.Max, {
     message: UsersErrorMessage.PasswordNotValid,
   })
-  public passwordHash!: string;
+  public password!: string;
 
   @ApiProperty({
     description: 'User gender',
@@ -107,7 +103,7 @@ export class CreateClientDto {
   @Length(UserDescriptionLength.Min, UserDescriptionLength.Max, {
     message: UsersErrorMessage.DescriptionLengthNotValid,
   })
-  public description!: string;
+  public description?: string;
 
   @ApiProperty({
     description: 'The nearest metro station to the place of training',
@@ -132,16 +128,8 @@ export class CreateClientDto {
     example: 'Кроссфит',
     required: true,
   })
-  @IsIn(['Йога', 'Бег', 'Бокс', '', 'Кроссфит', 'Аэробика', 'Пилатес'])
+  @IsIn(['Йога', 'Бег', 'Бокс', 'Стрейчинг', 'Кроссфит', 'Аэробика', 'Пилатес'])
   public typesOfTraining!: UserTypesTraining[];
-
-  @ApiProperty({
-    description: 'User readiness for personal training',
-    example: true,
-    required: true,
-  })
-  @IsBoolean()
-  public isPersonalTraining!: boolean;
 
   @ApiProperty({
     description: 'Training duration',
@@ -151,28 +139,4 @@ export class CreateClientDto {
   })
   @IsEnum(TrainingDuration)
   public timeOfTraining!: TrainingDuration;
-
-  @ApiProperty({
-    description: 'Calories to lose',
-    example: 2000,
-    minimum: CaloriesOfDay.Min,
-    maximum: CaloriesOfDay.Max,
-    required: true,
-  })
-  @IsNumber()
-  @Min(CaloriesOfDay.Min)
-  @Max(CaloriesOfDay.Max)
-  public caloryLosingPlanTotal!: number;
-
-  @ApiProperty({
-    description: 'Calories to lose per day',
-    example: 2000,
-    minimum: CaloriesOfDay.Min,
-    maximum: CaloriesOfDay.Max,
-    required: true,
-  })
-  @IsNumber()
-  @Min(CaloriesOfDay.Min)
-  @Max(CaloriesOfDay.Max)
-  public caloryLosingPlanDaily!: number;
 }
