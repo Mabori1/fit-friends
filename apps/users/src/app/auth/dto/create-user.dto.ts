@@ -1,14 +1,4 @@
-import {
-  IsEmail,
-  IsISO8601,
-  IsString,
-  IsAlphanumeric,
-  IsOptional,
-  Length,
-  IsEnum,
-  IsBoolean,
-  IsIn,
-} from 'class-validator';
+import { IsEmail, IsISO8601, IsString, IsAlphanumeric, IsOptional, Length, IsEnum, IsIn } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   TrainingDuration,
@@ -81,7 +71,7 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsISO8601()
-  public birthDate?: Date;
+  public birthDate?: string;
 
   @ApiProperty({
     description: 'User role',

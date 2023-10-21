@@ -9,11 +9,6 @@ import {
   IUserBalance,
   IUserFriend,
   SALT_ROUNDS,
-  UserGender,
-  UserLevel,
-  UserLocation,
-  UserRole,
-  UserTypesTraining,
 } from '@fit-friends/types';
 import { genSalt, compare, hash } from 'bcrypt';
 
@@ -23,14 +18,14 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
   public email: string;
   public avatar?: string;
   public passwordHash: string;
-  public gender: UserGender;
-  public birthDate?: Date;
-  public role: UserRole;
+  public gender: string;
+  public birthDate?: string;
+  public role: string;
   public description?: string;
-  public location: UserLocation;
+  public location: string;
   public createdAt?: Date;
-  public level: UserLevel;
-  public typesOfTraining: UserTypesTraining[];
+  public level: string;
+  public typesOfTraining: string[];
   public client?: IClient;
   public trainer?: ITrainer;
   public refreshTokenHash?: string;
@@ -64,7 +59,6 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
     this.typesOfTraining = user.typesOfTraining;
     this.client = user.client;
     this.trainer = user.trainer;
-    this.refreshTokenHash = user.refreshTokenHash;
     this.alerts = user.alerts;
     this.orders = user.orders;
     this.personalOrders = user.personalOrders;

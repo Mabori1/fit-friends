@@ -1,7 +1,4 @@
-import {
-  DEFAULT_USER_COUNT_LIMIT,
-  levelsOfExperience,
-} from '@fit-friends/shared/app-constants';
+import { DEFAULT_USER_COUNT_LIMIT, levelsOfExperience } from '@fit-friends/types';
 import { Transform } from 'class-transformer';
 import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 

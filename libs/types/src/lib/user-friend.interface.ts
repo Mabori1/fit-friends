@@ -1,5 +1,5 @@
 export interface IUserFriend {
-  userFriendId?: number;
+  id?: number;
   userId?: number;
   friendId?: number;
   isConfirmed?: boolean;

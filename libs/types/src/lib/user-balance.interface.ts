@@ -1,5 +1,5 @@
 export interface IUserBalance {
-  userBalanceId?: number;
+  id?: number;
   userId: number;
   trainingId: number;
   trainingQtt: number;

@@ -2,10 +2,10 @@ import { IEntity, IToken } from '@fit-friends/types';
 
 export class RefreshTokenEntity implements IEntity<RefreshTokenEntity>, IToken {
   public createdAt: Date;
-  public expiresIn: Date;
-  public id: string;
-  public tokenId: string;
-  public userId: string;
+  public exp: Date;
+  public id: number;
+  public token: string;
+  public userId: number;
   [key: string]: unknown;
 
   constructor(refreshToken: IToken) {
@@ -16,9 +16,9 @@ export class RefreshTokenEntity implements IEntity<RefreshTokenEntity>, IToken {
   public fillEntity(entity: IToken): void {
     this.userId = entity.userId;
     this.id = entity.id;
-    this.tokenId = entity.tokenId;
+    this.token = entity.token;
     this.createdAt = entity.createdAt;
-    this.expiresIn = entity.expiresIn;
+    this.exp = entity.exp;
   }
 
   public toObject(): RefreshTokenEntity {

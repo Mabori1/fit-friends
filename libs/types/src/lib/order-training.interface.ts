@@ -1,5 +1,5 @@
 export interface IOrderTraining {
-  orderTrainingId?: number;
+  id?: number;
   userId: number;
   typeOfTraining: string;
   trainingId: number;

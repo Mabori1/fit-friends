@@ -1,5 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import * as Joi from 'joi';
+import { object, number, string } from 'joi';
 
 const DEFAULT_POSTGRES_PORT = 5432;
 
@@ -26,13 +26,13 @@ export default registerAs('db', (): DbConfig => {
     pgAdminPassword: process.env['PGADMIN_DEFAULT_PASSWORD'] ?? 'test',
   };
 
-  const validationSchema = Joi.object<DbConfig>({
-    port: Joi.number().port().default(DEFAULT_POSTGRES_PORT),
-    name: Joi.string().required(),
-    user: Joi.string().required(),
-    password: Joi.string().required(),
-    pgAdminEmail: Joi.string().required(),
-    pgAdminPassword: Joi.string().required(),
+  const validationSchema = object<DbConfig>({
+    port: number().port().default(DEFAULT_POSTGRES_PORT),
+    name: string().required(),
+    user: string().required(),
+    password: string().required(),
+    pgAdminEmail: string().required(),
+    pgAdminPassword: string().required(),
   });
 
   const { error } = validationSchema.validate(config, { abortEarly: true });

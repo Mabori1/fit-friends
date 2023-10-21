@@ -1,4 +1,4 @@
-import { ITokenPayload } from '@fit-friends/shared/app-types';
+import { ITokenPayload } from '@fit-friends/types';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';

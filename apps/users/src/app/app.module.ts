@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { PrismaModule } from '@fit-friends/config';
 import { UserModule } from './user/user.module';
+import { PrismaModule } from '../prisma/prisma.module';
+import jwtConfig from '../config/jwt.config';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [jwtConfig],
     }),
   ],
   controllers: [],

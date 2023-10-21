@@ -1,5 +1,5 @@
 export interface IPersonalOrderTraining {
-  personalOrderTrainingId?: number;
+  id?: number;
   userId: number;
   trainerId: number;
   createdAt?: Date;

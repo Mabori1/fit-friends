@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from './user.entity';
 import { IUser, IUserFilter, ICRUDRepository } from '@fit-friends/types';
-import { PrismaService } from '@fit-friends/config';
+import { UserEntity } from './user.entity';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
-export class UserRepository
-  implements ICRUDRepository<UserEntity, number, IUser>
-{
+export class UserRepository implements ICRUDRepository<UserEntity, number, IUser> {
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: UserEntity): Promise<IUser> {
     const entityData = item.toObject();
-    return this.prisma.userEntity.create({
+    return this.prisma.user.create({
       data: {
         ...entityData,
         client:
@@ -20,6 +18,7 @@ export class UserRepository
                 create: item.client,
               }
             : undefined,
+
         trainer:
           item.trainer != null
             ? {
@@ -51,7 +50,7 @@ export class UserRepository
   }
 
   public async destroy(userId: number): Promise<void> {
-    await this.prisma.userEntity.delete({
+    await this.prisma.user.delete({
       where: {
         userId,
       },
@@ -66,35 +65,24 @@ export class UserRepository
   }
 
   public async findById(userId: number): Promise<IUser | null> {
-    return this.prisma.userEntity.findFirst({
+    return this.prisma.user.findFirst({
       where: {
         userId,
-      },
-      include: {
-        client: true,
-        trainer: true,
-        orders: true,
-        personalOrders: true,
-        balance: true,
-        friends: true,
       },
     });
   }
 
   public async findByEmail(email: string): Promise<IUser | null> {
-    return this.prisma.userEntity.findFirst({
+    return this.prisma.user.findFirst({
       where: {
         email,
       },
     });
   }
 
-  public async update(
-    userId: number,
-    userEntity: FitUserEntity
-  ): Promise<IUser> {
+  public async update(userId: number, userEntity: UserEntity): Promise<IUser> {
     const entityData = userEntity.toObject();
-    return this.prisma.userEntity.update({
+    return this.prisma.user.update({
       where: {
         userId,
       },
@@ -105,9 +93,7 @@ export class UserRepository
             ? {
                 update: {
                   timeOfTraining:
-                    userEntity.client.timeOfTraining != null
-                      ? userEntity.client.timeOfTraining
-                      : undefined,
+                    userEntity.client.timeOfTraining != null ? userEntity.client.timeOfTraining : undefined,
                   caloryLosingPlanTotal:
                     userEntity.client.caloryLosingPlanTotal != null
                       ? userEntity.client.caloryLosingPlanTotal
@@ -116,10 +102,7 @@ export class UserRepository
                     userEntity.client.caloryLosingPlanDaily != null
                       ? userEntity.client.caloryLosingPlanDaily
                       : undefined,
-                  isTrainingReadiness:
-                    userEntity.client.isTrainingReadiness != null
-                      ? userEntity.client.isTrainingReadiness
-                      : undefined,
+                  isReady: userEntity.client.isReady != null ? userEntity.client.isReady : undefined,
                 },
               }
             : undefined,
@@ -127,60 +110,44 @@ export class UserRepository
           userEntity.trainer != null
             ? {
                 update: {
-                  sertificat:
-                    userEntity.trainer.sertificat != null
-                      ? userEntity.trainer.sertificat
-                      : undefined,
-                  merits:
-                    userEntity.trainer.merits != null
-                      ? userEntity.trainer.merits
-                      : undefined,
+                  certificate: userEntity.trainer.certificate != null ? userEntity.trainer.certificate : undefined,
+                  merits: userEntity.trainer.merits != null ? userEntity.trainer.merits : undefined,
                   isPersonalTraining:
-                    userEntity.trainer.isPersonalTraining != null
-                      ? userEntity.trainer.isPersonalTraining
-                      : undefined,
+                    userEntity.trainer.isPersonalTraining != null ? userEntity.trainer.isPersonalTraining : undefined,
                 },
               }
             : undefined,
-        orders: {
-          connect: userEntity.orders.map(({ orderTrainingId }) => ({
-            orderTrainingId,
-          })),
-        },
-        personalOrders: {
-          connect: userEntity.personalOrders.map(
-            ({ personalOrderTrainingId }) => ({ personalOrderTrainingId })
-          ),
-        },
-        balance: {
-          connect: userEntity.balance.map(({ userBalanceId }) => ({
-            userBalanceId,
-          })),
-        },
-        friends: {
-          connect: userEntity.friends.map(({ userFriendId }) => ({
-            userFriendId,
-          })),
-        },
+        // orders: {
+        //   connect: userEntity.orders.map(({ orderTrainingId }) => ({
+        //     orderTrainingId,
+        //   })),
+        // },
+        // personalOrders: {
+        //   connect: userEntity.personalOrders.map(({ personalOrderTrainingId }) => ({ personalOrderTrainingId })),
+        // },
+        // balance: {
+        //   connect: userEntity.balance.map(({ userBalanceId }) => ({
+        //     userBalanceId,
+        //   })),
+        // },
+        // friends: {
+        //   connect: userEntity.friends.map(({ userFriendId }) => ({
+        //     userFriendId,
+        //   })),
+        // },
       },
       include: {
         client: true,
         trainer: true,
-        orders: true,
-        personalOrders: true,
         balance: true,
         friends: true,
       },
     });
   }
-  public async find(
-    limit: number,
-    filter: IUserFilter,
-    page: number
-  ): Promise<IUser[]> | null {
-    return this.prisma.userEntity.findMany({
+  public async find(limit: number, filter: IUserFilter, page: number): Promise<IUser[]> | null {
+    return this.prisma.user.findMany({
       where: {
-        location: { in: filter.location },
+        location: { contains: filter.location },
 
         level: { contains: filter.level },
 
@@ -191,8 +158,6 @@ export class UserRepository
       include: {
         client: true,
         trainer: true,
-        orders: true,
-        personalOrders: true,
         balance: true,
       },
       orderBy: [{ createdAt: 'desc' }],

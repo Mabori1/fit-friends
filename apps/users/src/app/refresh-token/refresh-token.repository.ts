@@ -1,43 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { RefreshTokenEntity } from './refresh-token.entity';
-import { RefreshToken } from '@prisma/client';
-import { PrismaService } from '@fit-friends/config';
+import { PrismaService } from '../../prisma/prisma.service';
+import { Token } from '@prisma/client';
 
 @Injectable()
 export class RefreshTokenRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(item: RefreshTokenEntity): Promise<RefreshToken> {
+  public async create(item: RefreshTokenEntity): Promise<Token> {
     const entityData = item.toObject();
-    return this.prisma.refreshToken.create({
+    return this.prisma.token.create({
       data: {
         ...entityData,
       },
     });
   }
 
-  public async deleteByTokenId(refreshTokenId: number) {
-    return this.prisma.refreshToken.delete({
+  public async deleteByTokenId(id: number) {
+    return this.prisma.token.delete({
       where: {
-        refreshTokenId,
+        id,
       },
     });
   }
 
-  public async findByTokenId(
-    refreshTokenId: number
-  ): Promise<RefreshToken | null> {
-    return this.prisma.refreshToken.findFirst({
+  public async findByTokenId(id: number): Promise<Token | null> {
+    return this.prisma.token.findFirst({
       where: {
-        refreshTokenId,
+        id,
       },
     });
   }
 
   public async deleteExpiredTokens() {
-    return this.prisma.refreshToken.deleteMany({
+    return this.prisma.token.deleteMany({
       where: {
-        expiresIn: { lt: new Date() },
+        exp: { lt: new Date() },
       },
     });
   }

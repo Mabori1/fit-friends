@@ -1,14 +1,8 @@
 import { IAlert } from './alert.interface';
 import { IOrderTraining } from './order-training.interface';
 import { IPersonalOrderTraining } from './personal-order-training.interface';
-import { TrainingDuration } from './training-duration.enum';
 import { IUserBalance } from './user-balance.interface';
 import { IUserFriend } from './user-friend.interface';
-import { UserGender } from './user-gender.enum';
-import { UserLevel } from './user-level.enum';
-import { UserLocation } from './user-location.enum';
-import { UserRole } from './user-role.enum';
-import { UserTypesTraining } from './user-types-training.enum';
 
 export interface IUser {
   userId?: number;
@@ -16,17 +10,16 @@ export interface IUser {
   email: string;
   avatar?: string;
   passwordHash: string;
-  gender: UserGender;
-  birthDate?: Date;
-  role: UserRole;
+  gender: string;
+  birthDate?: string;
+  role: string;
   description?: string;
-  location: UserLocation;
+  location: string;
   createdAt?: Date;
-  level: UserLevel;
-  typesOfTraining: UserTypesTraining[];
+  level: string;
+  typesOfTraining: string[];
   client?: IClient;
   trainer?: ITrainer;
-  refreshTokenHash?: string;
   alerts?: IAlert[];
   orders?: IOrderTraining[];
   personalOrders?: IPersonalOrderTraining[];
@@ -37,7 +30,7 @@ export interface IUser {
 export interface IClient {
   clientId?: number;
   userId?: number;
-  timeOfTraining?: TrainingDuration;
+  timeOfTraining?: string;
   caloryLosingPlanTotal?: number;
   caloryLosingPlanDaily?: number;
   isReady?: boolean;

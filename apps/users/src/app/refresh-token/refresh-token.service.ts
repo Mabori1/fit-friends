@@ -12,16 +12,16 @@ export class RefreshTokenService {
   constructor(
     private readonly refreshTokenRepository: RefreshTokenRepository,
     @Inject(jwtConfig.KEY)
-    private readonly jwtOptions: ConfigType<typeof jwtConfig>
+    private readonly jwtOptions: ConfigType<typeof jwtConfig>,
   ) {}
 
   public async createRefreshSession(payload: IRefreshTokenPayload) {
     const timeValue = parseTime(this.jwtOptions.refreshTokenExpiresIn);
     const refreshToken = new RefreshTokenEntity({
-      tokenId: payload.tokenId,
+      token: payload.token,
       createdAt: new Date(),
-      userId: payload.id.toString(),
-      expiresIn: dayjs().add(timeValue.value, timeValue.unit).toDate(),
+      userId: payload.id,
+      exp: dayjs().add(timeValue.value, timeValue.unit).toDate(),
     });
 
     return this.refreshTokenRepository.create(refreshToken);
@@ -32,9 +32,7 @@ export class RefreshTokenService {
   }
 
   public async isExists(tokenId: number): Promise<boolean> {
-    const refreshToken = await this.refreshTokenRepository.findByTokenId(
-      tokenId
-    );
+    const refreshToken = await this.refreshTokenRepository.findByTokenId(tokenId);
     return refreshToken !== null;
   }
 
