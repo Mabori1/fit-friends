@@ -7,7 +7,7 @@ import { PrismaService } from '@fit-friends/config';
 export class UserRepository
   implements ICRUDRepository<UserEntity, number, IUser>
 {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   public async create(item: UserEntity): Promise<IUser> {
     const entityData = item.toObject();
@@ -17,14 +17,14 @@ export class UserRepository
         client:
           item.client != null
             ? {
-                create: item.client,
-              }
+              create: item.client,
+            }
             : undefined,
         trainer:
           item.trainer != null
             ? {
-                create: item.trainer,
-              }
+              create: item.trainer,
+            }
             : undefined,
         orders: {
           connect: [],
@@ -91,7 +91,7 @@ export class UserRepository
 
   public async update(
     userId: number,
-    userEntity: FitUserEntity
+    userEntity: UserEntity
   ): Promise<IUser> {
     const entityData = userEntity.toObject();
     return this.prisma.userEntity.update({
@@ -103,44 +103,44 @@ export class UserRepository
         client:
           userEntity.client != null
             ? {
-                update: {
-                  timeOfTraining:
-                    userEntity.client.timeOfTraining != null
-                      ? userEntity.client.timeOfTraining
-                      : undefined,
-                  caloryLosingPlanTotal:
-                    userEntity.client.caloryLosingPlanTotal != null
-                      ? userEntity.client.caloryLosingPlanTotal
-                      : undefined,
-                  caloryLosingPlanDaily:
-                    userEntity.client.caloryLosingPlanDaily != null
-                      ? userEntity.client.caloryLosingPlanDaily
-                      : undefined,
-                  isTrainingReadiness:
-                    userEntity.client.isTrainingReadiness != null
-                      ? userEntity.client.isTrainingReadiness
-                      : undefined,
-                },
-              }
+              update: {
+                timeOfTraining:
+                  userEntity.client.timeOfTraining != null
+                    ? userEntity.client.timeOfTraining
+                    : undefined,
+                caloryLosingPlanTotal:
+                  userEntity.client.caloryLosingPlanTotal != null
+                    ? userEntity.client.caloryLosingPlanTotal
+                    : undefined,
+                caloryLosingPlanDaily:
+                  userEntity.client.caloryLosingPlanDaily != null
+                    ? userEntity.client.caloryLosingPlanDaily
+                    : undefined,
+                isTrainingReadiness:
+                  userEntity.client.isReady != null
+                    ? userEntity.client.isReady
+                    : undefined,
+              },
+            }
             : undefined,
         trainer:
           userEntity.trainer != null
             ? {
-                update: {
-                  sertificat:
-                    userEntity.trainer.sertificat != null
-                      ? userEntity.trainer.sertificat
-                      : undefined,
-                  merits:
-                    userEntity.trainer.merits != null
-                      ? userEntity.trainer.merits
-                      : undefined,
-                  isPersonalTraining:
-                    userEntity.trainer.isPersonalTraining != null
-                      ? userEntity.trainer.isPersonalTraining
-                      : undefined,
-                },
-              }
+              update: {
+                sertificat:
+                  userEntity.trainer.certificate != null
+                    ? userEntity.trainer.certificate
+                    : undefined,
+                merits:
+                  userEntity.trainer.merits != null
+                    ? userEntity.trainer.merits
+                    : undefined,
+                isPersonalTraining:
+                  userEntity.trainer.isPersonalTraining != null
+                    ? userEntity.trainer.isPersonalTraining
+                    : undefined,
+              },
+            }
             : undefined,
         orders: {
           connect: userEntity.orders.map(({ orderTrainingId }) => ({

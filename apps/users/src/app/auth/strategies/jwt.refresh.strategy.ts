@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigType } from '@nestjs/config';
-import { jwtConfig } from '@fit-friends/config/config-users';
 import { RefreshTokenService } from '../../refresh-token/refresh-token.service';
-import { FitUserService } from '../fit-user.service';
-import { IRefreshTokenPayload } from '@fit-friends/shared/app-types';
 import { TokenNotExistsException } from '../exceptions/token-not-exists.exception';
+import { AuthService } from '../auth.service';
+import { IRefreshTokenPayload } from '@fit-friends/types';
+import jwtConfig from '../../../config/jwt.config';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
@@ -16,7 +16,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   constructor(
     @Inject(jwtConfig.KEY)
     jwtOptions: ConfigType<typeof jwtConfig>,
-    private readonly fitnessUserService: FitUserService,
+    private readonly authService: AuthService,
     private readonly refreshTokenService: RefreshTokenService
   ) {
     super({
@@ -34,6 +34,6 @@ export class JwtRefreshStrategy extends PassportStrategy(
       parseInt(payload.tokenId)
     );
     await this.refreshTokenService.deleteExpiredRefreshTokens();
-    return this.fitnessUserService.getUser(payload.sub);
+    return this.authService.getUser(payload.id);
   }
 }

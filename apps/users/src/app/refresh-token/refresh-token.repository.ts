@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { RefreshTokenEntity } from './refresh-token.entity';
-import { RefreshToken } from '@prisma/client';
 import { PrismaService } from '@fit-friends/config';
+import { RefreshToken } from '@prisma/client';
 
 @Injectable()
 export class RefreshTokenRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   public async create(item: RefreshTokenEntity): Promise<RefreshToken> {
     const entityData = item.toObject();

@@ -128,21 +128,22 @@ model PersonalOrderTraining {
 }
 
 model Token {
-  tokenId        String   @map("token_id")
-  user           UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId         String   @map("user_id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  expiresIn      DateTime @default(now()) @map("expires_in")
+  id        Int        @id @default(autoincrement())
+  user      UserEntity @relation(fields: [id], references: [userId], onDelete: Cascade)
+  userId    String     @map("user_id")
+  createdAt DateTime   @default(now()) @map("created_at")
+  expiresIn DateTime   @default(now()) @map("expires_in")
+
   @@map("tokens")
 }
 
 model RefreshToken {
-  refreshTokenId Int      @id @default(autoincrement()) @map("refresh_token_id")
-  tokenId        String   @map("token_id")
-  user           UserEntity @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId         String   @map("user_id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  expiresIn      DateTime @default(now()) @map("expires_in")
+  id        Int        @id @default(autoincrement()) @map("refresh_token_id")
+  tokenId   String     @map("token_id")
+  user      UserEntity @relation(fields: [id], references: [userId], onDelete: Cascade)
+  userId    String     @map("user_id")
+  createdAt DateTime   @default(now()) @map("created_at")
+  expiresIn DateTime   @default(now()) @map("expires_in")
 
   @@map("refresh_tokens")
 }
