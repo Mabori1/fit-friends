@@ -30,5 +30,6 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     await this.refreshTokenService.deleteRefreshSession(parseInt(payload.token));
     await this.refreshTokenService.deleteExpiredRefreshTokens();
     return this.authService.getUser(payload.id);
+    return this.authService.getUser(payload.id);
   }
 }

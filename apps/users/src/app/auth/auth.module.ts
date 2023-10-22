@@ -13,7 +13,9 @@ import { getJwtOptions } from '@fit-friends/config';
 @Module({
   imports: [
     UserModule,
+    UserModule,
     JwtModule.registerAsync({
+      imports: [],
       imports: [],
       inject: [ConfigService],
       useFactory: getJwtOptions,
