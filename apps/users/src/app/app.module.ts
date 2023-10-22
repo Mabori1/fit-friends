@@ -1,20 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { PrismaModule } from '../prisma/prisma.module';
-import jwtConfig from '../config/jwt.config';
+import { ConfigUsersModule } from './config/config-user.module';
 
 @Module({
-  imports: [
-    UserModule,
-    PrismaModule,
-    AuthModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [jwtConfig],
-    }),
-  ],
+  imports: [PrismaModule, AuthModule, UserModule, ConfigUsersModule],
   controllers: [],
   providers: [],
 })

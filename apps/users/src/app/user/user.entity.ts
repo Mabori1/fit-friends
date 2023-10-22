@@ -26,8 +26,8 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
   public createdAt?: Date;
   public level: string;
   public typesOfTraining: string[];
-  public client?: IClient;
-  public trainer?: ITrainer;
+  public client?: IClient | null;
+  public trainer?: ITrainer | null;
   public refreshTokenHash?: string;
   public alerts?: IAlert[];
   public orders?: IOrderTraining[];

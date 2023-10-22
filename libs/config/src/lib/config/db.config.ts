@@ -17,12 +17,8 @@ export default registerAs('db', (): DbConfig => {
     user: process.env['POSTGRES_USER'] ?? 'admin',
     password: process.env['POSTGRES_PASSWORD'] ?? 'test',
     name: process.env['POSTGRES_DB'] ?? 'fitfriends',
-    port: parseInt(
-      process.env['POSTGRES_PORT '] ?? DEFAULT_POSTGRES_PORT.toString(),
-      10
-    ),
-    pgAdminEmail:
-      process.env['PGADMIN_DEFAULT_EMAIL'] ?? 'keks@htmlacademy.local',
+    port: parseInt(process.env['POSTGRES_PORT '] ?? DEFAULT_POSTGRES_PORT.toString(), 10),
+    pgAdminEmail: process.env['PGADMIN_DEFAULT_EMAIL'] ?? 'keks@htmlacademy.local',
     pgAdminPassword: process.env['PGADMIN_DEFAULT_PASSWORD'] ?? 'test',
   };
 
@@ -40,7 +36,7 @@ export default registerAs('db', (): DbConfig => {
   if (error) {
     throw new Error(
       `[DB Config]: Environments validation failed. Please check .env file.
-      Error message: ${error.message}`
+      Error message: ${error.message}`,
     );
   }
 

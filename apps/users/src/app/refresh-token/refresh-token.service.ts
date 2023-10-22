@@ -1,11 +1,11 @@
-import { RefreshTokenRepository } from './refresh-token.repository.js';
+import { RefreshTokenRepository } from './refresh-token.repository';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import dayjs from 'dayjs';
-import { RefreshTokenEntity } from './refresh-token.entity.js';
-import jwtConfig from '../../config/jwt.config.js';
+import { RefreshTokenEntity } from './refresh-token.entity';
 import { parseTime } from '@fit-friends/core';
 import { IRefreshTokenPayload } from '@fit-friends/types';
+import { jwtConfig } from '@fit-friends/config';
 
 @Injectable()
 export class RefreshTokenService {

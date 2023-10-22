@@ -2,18 +2,18 @@ import { registerAs } from '@nestjs/config';
 import * as Joi from 'joi';
 
 export interface JWTConfig {
-  accessTokenSecret: string;
-  accessTokenExpiresIn: string;
-  refreshTokenSecret: string;
-  refreshTokenExpiresIn: string;
+  accessTokenSecret?: string;
+  accessTokenExpiresIn?: string;
+  refreshTokenSecret?: string;
+  refreshTokenExpiresIn?: string;
 }
 
 export default registerAs('jwt', (): JWTConfig => {
   const config: JWTConfig = {
-    accessTokenSecret: process.env['JWT_AT_SECRET'] || '',
-    accessTokenExpiresIn: process.env['JWT_AT_EXPIRES_IN'] || '',
-    refreshTokenSecret: process.env['JWT_RT_SECRET'] || '',
-    refreshTokenExpiresIn: process.env['JWT_RT_EXPIRES_IN'] || '',
+    accessTokenSecret: process.env['JWT_AT_SECRET'],
+    accessTokenExpiresIn: process.env['JWT_AT_EXPIRES_IN'],
+    refreshTokenSecret: process.env['JWT_RT_SECRET'],
+    refreshTokenExpiresIn: process.env['JWT_RT_EXPIRES_IN'],
   };
 
   const validationSchema = Joi.object<JWTConfig>({
@@ -28,7 +28,7 @@ export default registerAs('jwt', (): JWTConfig => {
   if (error) {
     throw new Error(
       `[JWT Config]: Environments validation failed. Please check .env file.
-      Error message: ${error.message}`
+      Error message: ${error.message}`,
     );
   }
 

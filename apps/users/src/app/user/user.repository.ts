@@ -117,24 +117,24 @@ export class UserRepository implements ICRUDRepository<UserEntity, number, IUser
                 },
               }
             : undefined,
-        // orders: {
-        //   connect: userEntity.orders.map(({ orderTrainingId }) => ({
-        //     orderTrainingId,
-        //   })),
-        // },
-        // personalOrders: {
-        //   connect: userEntity.personalOrders.map(({ personalOrderTrainingId }) => ({ personalOrderTrainingId })),
-        // },
-        // balance: {
-        //   connect: userEntity.balance.map(({ userBalanceId }) => ({
-        //     userBalanceId,
-        //   })),
-        // },
-        // friends: {
-        //   connect: userEntity.friends.map(({ userFriendId }) => ({
-        //     userFriendId,
-        //   })),
-        // },
+        orders: {
+          connect: userEntity.orders.map(({ id }) => ({
+            id,
+          })),
+        },
+        personalOrders: {
+          connect: userEntity.personalOrders.map(({ id }) => ({ id })),
+        },
+        balance: {
+          connect: userEntity.balance.map(({ id }) => ({
+            id,
+          })),
+        },
+        friends: {
+          connect: userEntity.friends.map(({ id }) => ({
+            id,
+          })),
+        },
       },
       include: {
         client: true,

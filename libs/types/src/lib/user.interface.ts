@@ -18,8 +18,8 @@ export interface IUser {
   createdAt?: Date;
   level: string;
   typesOfTraining: string[];
-  client?: IClient;
-  trainer?: ITrainer;
+  client?: IClient | null;
+  trainer?: ITrainer | null;
   alerts?: IAlert[];
   orders?: IOrderTraining[];
   personalOrders?: IPersonalOrderTraining[];
@@ -39,7 +39,7 @@ export interface IClient {
 export interface ITrainer {
   trainerId?: number;
   userId?: number;
-  certificate?: string;
+  certificate: string;
   merits?: string;
   isPersonalTraining?: boolean;
 }

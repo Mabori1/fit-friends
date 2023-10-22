@@ -114,7 +114,7 @@ export class UserRdo {
   })
   @Expose()
   public client?: {
-    clientId?: number;
+    id?: number;
     userId?: number;
     timeOfTraining?: TrainingDuration;
     caloryLosingPlanTotal?: number;
@@ -128,7 +128,7 @@ export class UserRdo {
   })
   @Expose()
   public trainer?: {
-    trainerId?: number;
+    id?: number;
     userId?: number;
     certificate?: string;
     merits?: string;

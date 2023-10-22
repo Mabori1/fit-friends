@@ -78,7 +78,7 @@ class TrainerDto {
   })
   @IsOptional()
   @IsString()
-  public certificate?: string;
+  public certificate!: string;
 
   @ApiProperty({
     description: 'Trainer merits',
