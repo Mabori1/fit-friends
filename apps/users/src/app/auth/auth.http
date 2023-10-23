@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "name": "Алексей",
-  "email": "mabori4@gmail.com",
+  "email": "mabori@gmail.com",
   "avatar": "avatar.jpg",
   "password": "12345a",
   "gender": "мужской",
@@ -22,20 +22,46 @@ Content-Type: application/json
 }
 ###
 
-# Update user
-PATCH http://localhost:4000/api/auth/update HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYxLCJlbWFpbCI6ImNsaWVuYmJiZGRkdEBnbWFpbC5jd20iLCJ1c2VyUm9sZSI6InRyYWluZXIiLCJuYW1lIjoi0JLQsNGB0LjQu9C40LkiLCJpYXQiOjE2OTIxMTIwNDYsImV4cCI6MTY5MjExMjk0Nn0.f3TpcadhHt-WsQ53SIkI4X9Y6HXg57nIiOaBa_LURyM
+POST http://localhost:4000/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "trainery": {"merit": "Это совсем другой марафон!"}
+  "name": "Алексей",
+  "email": "mabori1@gmail.com",
+  "avatar": "avatar.jpg",
+  "password": "12345a",
+  "gender": "мужской",
+  "birthDate": "1974-01-25T00:00:00.000Z",
+  "role": "пользователь",
+  "description": "Сброшу ка я жирок!",
+  "location": "Пионерская",
+  "client": {
+  "timeOfTraining": "30-50 мин",
+  "caloryLosingPlanTotal": 2000,
+  "caloryLosingPlanDaily": 1000,
+  "isReady": true
+  },
+  "level": "профессионал",
+  "typesOfTraining": ["кроссфит", "бег", "бокс"]
+}
+
+###
+
+
+# Update user
+PATCH http://localhost:4000/api/auth/update HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWFib3JpQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTgwNzY1MTcsImV4cCI6MTY5ODA3NzQxN30.mEpc0jrrvxxJ9L0CommCI3C3IPX6S5x_DGofC-3sC44
+Content-Type: application/json
+
+{
+  "trainer": {"merits": "Пять лет здесь помогаю железо таскать!"}
 }
 
 ###
 
 # Get user by ID
-GET http://localhost:4000/api/auth/user/51 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYxLCJlbWFpbCI6ImNsaWVuYmJiZGRkdEBnbWFpbC5jd20iLCJ1c2VyUm9sZSI6InRyYWluZXIiLCJuYW1lIjoi0JLQsNGB0LjQu9C40LkiLCJpYXQiOjE2OTIxMTIwNDYsImV4cCI6MTY5MjExMjk0Nn0.f3TpcadhHt-WsQ53SIkI4X9Y6HXg57nIiOaBa_LURyM
+GET http://localhost:4000/api/auth/5 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJtYWJvcmkzQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTgwNzI0MjksImV4cCI6MTY5ODA3MzMyOX0.hEtgnNuUkJnLYslo1dy6v-08ufzhVqwTcNrpriOXLG8
 ###
 
 # Login user by email and password
@@ -43,24 +69,27 @@ POST http://localhost:4000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "mabori3@gmail.com",
+  "email": "mabori1@gmail.com",
   "password": "12345a"
 }
 ###
 # Get user  feed
-GET http://localhost:4000/api/auth/feed?limit=4&page=1&userRole=trainer&locations=Пионерская,Петроградская&typesOfTraining=йога,кроссфит HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY5MDk5NTQ5NCwiZXhwIjoxNjkwOTk2Mzk0fQ.iY9A0_SuParyBJfRt3EFe9YMCp8HLdqvaE-iqheleLA
+GET http://localhost:4000/api/auth/feed?limit=4&page=1&role=пользователь&location=Пионерская&typesOfTraining=йога,кроссфит HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpMUBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MTAxMjU2LCJleHAiOjE2OTgxMDIxNTZ9.yuYNcoefKk-MTllpPYKd-cSOA2ktnaKZtY6RohAsyYk
 ###
+
 # Get new JWT pair
+
 POST http://localhost:4000/api/auth/refresh HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsInRva2VuSWQiOiJlYjk4Yzg1Ni05YzQxLTQxNWMtODNiYy01ZDIyOTZjYWIyNzEiLCJpYXQiOjE2OTA5OTU0OTQsImV4cCI6MTY5MzU4NzQ5NH0.6RFI5wGNDmjGm7QwaimEskqhvDqRGnpnUpaOqSTIReI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWFib3JpQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJ0b2tlbklkIjoiMjBkMjllOWMtZTUyNi00ZDNjLWExNDktZDJlY2ViOGIyNzgxIiwiaWF0IjoxNjk4MDkxMjUzLCJleHAiOjE2OTg2OTYwNTN9.ymBKdfjjB4tXiJQ3I37CebVaNp8KiGmnjmUQ4DXvraw
 
 
 ###
 
 # Check user token
-GET http://localhost:4000/api/auth/check HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUxLCJlbWFpbCI6ImNsaWVudEBnbWFpbC5jd20iLCJ1c2VyUm9sZSI6ImNsaWVudCIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY5MTY4NDYxOSwiZXhwIjoxNjkxNjg1NTE5fQ.ZBPW8iiWPFWOg45OhBFo69GKVMJBQszSnl5O0MCaaZk
+POST http://localhost:4000/api/auth/check HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWFib3JpQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTgwOTY2MTAsImV4cCI6MTY5ODA5NzUxMH0.8Pd4VFwOTXp3JIY-WLrL2Wb2lBK49dMwErZQAkR7SP8
+
 
 
 ###

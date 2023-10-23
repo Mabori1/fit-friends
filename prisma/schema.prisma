@@ -59,7 +59,7 @@ model Trainer {
 
 model Token {
   id        Int      @id @default(autoincrement())
-  token     String   @unique
+  tokenId   String   @unique
   userId    Int      @map("user_id")
   exp       DateTime @map("expires_in")
   user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)

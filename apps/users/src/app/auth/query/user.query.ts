@@ -1,6 +1,12 @@
-import { DEFAULT_USER_COUNT_LIMIT, levelsOfExperience } from '@fit-friends/types';
+import {
+  DEFAULT_USER_COUNT_LIMIT,
+  UserLocation,
+  UserRole,
+  UserTypesTraining,
+  levelsOfExperience,
+} from '@fit-friends/types';
 import { Transform } from 'class-transformer';
-import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UserQuery {
   @Transform(({ value }) => +value || DEFAULT_USER_COUNT_LIMIT)
@@ -14,10 +20,14 @@ export class UserQuery {
   public page: number;
 
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  @Transform(({ value }) => value.toString().split(','))
-  location: string;
+  @IsString()
+  @IsEnum(UserLocation, { each: true })
+  public location: string;
+
+  @IsOptional()
+  @IsString()
+  @IsEnum(UserRole, { each: true })
+  public role: string;
 
   @IsOptional()
   @IsIn(levelsOfExperience)
@@ -25,7 +35,7 @@ export class UserQuery {
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
+  @IsEnum(UserTypesTraining, { each: true })
   @Transform(({ value }) => value.toString().split(','))
   public typesOfTraining: string[];
 }

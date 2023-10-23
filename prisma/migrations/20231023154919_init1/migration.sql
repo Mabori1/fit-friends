@@ -5,7 +5,7 @@ CREATE TABLE "users" (
     "user_mail" TEXT NOT NULL DEFAULT '',
     "user_avatar" TEXT DEFAULT '',
     "user_gender" TEXT NOT NULL DEFAULT '',
-    "birth_date" TEXT DEFAULT '',
+    "birth_date" TIMESTAMP(3),
     "user_role" TEXT NOT NULL DEFAULT '',
     "description" TEXT DEFAULT '',
     "location" TEXT NOT NULL DEFAULT '',
@@ -44,9 +44,10 @@ CREATE TABLE "trainers" (
 -- CreateTable
 CREATE TABLE "tokens" (
     "id" SERIAL NOT NULL,
-    "token" TEXT NOT NULL,
+    "tokenId" TEXT NOT NULL,
     "user_id" INTEGER NOT NULL,
     "expires_in" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "tokens_pkey" PRIMARY KEY ("id")
 );
@@ -172,7 +173,7 @@ CREATE UNIQUE INDEX "clients_user_id_key" ON "clients"("user_id");
 CREATE UNIQUE INDEX "trainers_user_id_key" ON "trainers"("user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "tokens_token_key" ON "tokens"("token");
+CREATE UNIQUE INDEX "tokens_tokenId_key" ON "tokens"("tokenId");
 
 -- AddForeignKey
 ALTER TABLE "clients" ADD CONSTRAINT "clients_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;

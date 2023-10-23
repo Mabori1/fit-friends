@@ -67,11 +67,15 @@ export class AuthService {
     return this.userRepository.findById(id);
   }
 
+  public async logout(id: number) {
+    await this.refreshTokenService.deleteByUserId(id);
+  }
+
   public async createUserToken(user: IUser) {
     const accessTokenPayload = createJWTPayload(user);
     const refreshTokenPayload = {
       ...accessTokenPayload,
-      token: crypto.randomUUID(),
+      tokenId: crypto.randomUUID(),
     };
 
     await this.refreshTokenService.createRefreshSession(refreshTokenPayload);

@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Token } from '@prisma/client';
+import { IToken } from '@fit-friends/types';
 
 @Injectable()
 export class RefreshTokenRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(item: RefreshTokenEntity): Promise<Token> {
+  public async create(item: RefreshTokenEntity): Promise<IToken> {
     const entityData = item.toObject();
-    console.log(entityData);
 
     return this.prisma.token.create({
       data: {
@@ -18,18 +17,26 @@ export class RefreshTokenRepository {
     });
   }
 
-  public async deleteByTokenId(id: number) {
-    return this.prisma.token.delete({
+  public async deleteByUserId(userId: number) {
+    this.prisma.token.deleteMany({
       where: {
-        id,
+        userId,
       },
     });
   }
 
-  public async findByTokenId(id: number): Promise<Token | null> {
+  public async deleteByTokenId(tokenId: string): Promise<IToken> {
+    return this.prisma.token.delete({
+      where: {
+        tokenId,
+      },
+    });
+  }
+
+  public async findByTokenId(tokenId: string): Promise<IToken | null> {
     return this.prisma.token.findFirst({
       where: {
-        id,
+        tokenId,
       },
     });
   }

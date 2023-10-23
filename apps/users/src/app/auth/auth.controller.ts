@@ -5,7 +5,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -19,10 +18,8 @@ import { fillObject } from '@fit-friends/core';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRdo } from './rdo/user.rdo';
-import { LoginUserDto } from './dto/login-user.dto';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { IRequestWithTokenPayload, IRequestWithUser, UserRole } from '@fit-friends/types';
-import { UserRolesGuard } from './guards/user-roles.guard';
 import { UserQuery } from './query/user.query';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -60,6 +57,55 @@ export class AuthController {
     return this.authService.createUserToken(user);
   }
 
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: 'Users list complete.',
+  })
+  @Roles(UserRole.Client)
+  //@UseGuards(UserRolesGuard, JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @Get('/feed')
+  public async feedLine(@Query(new ValidationPipe({ transform: true })) query: UserQuery) {
+    const users = await this.authService.getUsers(query);
+    return { ...fillObject(UserRdo, users) };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: 'User updated.',
+  })
+  @Patch('/update')
+  public async update(@Req() { user: payload }: IRequestWithTokenPayload, @Body() dto: UpdateUserDto) {
+    const updatedUser = await this.authService.updateUser(payload.sub, dto);
+    return fillObject(UserRdo, updatedUser);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: 'User by id received',
+  })
+  @Get(':id')
+  public async show(@Param('id') id: number) {
+    const user = await this.authService.getUser(id);
+    return fillObject(UserRdo, user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'User has been successfully logged out.',
+  })
+  async logout(@Req() user: IRequestWithUser) {
+    return this.authService.logout(user.user.userId);
+  }
+
   @UseGuards(JwtRefreshGuard)
   @ApiResponse({
     status: HttpStatus.OK,
@@ -71,50 +117,12 @@ export class AuthController {
     return this.authService.createUserToken(user);
   }
 
-  @ApiResponse({
-    type: UserRdo,
-    status: HttpStatus.OK,
-    description: 'Users list complete.',
-  })
-  @Roles(UserRole.Client)
-  @UseGuards(UserRolesGuard)
-  @Get('/feed')
-  public async feedLine(@Query(new ValidationPipe({ transform: true })) query: UserQuery) {
-    const users = await this.authService.getUsers(query);
-    return { ...fillObject(UserRdo, users) };
-  }
-
-  @ApiResponse({
-    type: UserRdo,
-    status: HttpStatus.OK,
-    description: 'User updated.',
-  })
   @UseGuards(JwtAuthGuard)
-  @Patch('/update')
-  public async update(@Req() { user: payload }: IRequestWithTokenPayload, @Body() dto: UpdateUserDto) {
-    const id = payload.id;
-    const updatedUser = await this.authService.updateUser(id, dto);
-    return fillObject(UserRdo, updatedUser);
-  }
-
-  @ApiResponse({
-    type: UserRdo,
-    status: HttpStatus.OK,
-    description: 'User by id received',
-  })
-  @UseGuards(JwtAuthGuard)
-  @Get('user/:id')
-  public async show(@Param('id', ParseIntPipe) id: number) {
-    const user = await this.authService.getUser(id);
-    return fillObject(UserRdo, user);
-  }
-
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Checkig token availibility',
   })
-  @UseGuards(JwtAuthGuard)
-  @Get('check')
+  @Post('check')
   public async checkToken(@Req() { user: payload }: IRequestWithTokenPayload) {
     return payload;
   }

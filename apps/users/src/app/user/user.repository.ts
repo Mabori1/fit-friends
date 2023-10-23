@@ -69,6 +69,10 @@ export class UserRepository implements ICRUDRepository<UserEntity, number, IUser
       where: {
         userId,
       },
+      include: {
+        client: true,
+        trainer: true,
+      },
     });
   }
 
@@ -147,6 +151,8 @@ export class UserRepository implements ICRUDRepository<UserEntity, number, IUser
   public async find(limit: number, filter: IUserFilter, page: number): Promise<IUser[]> | null {
     return this.prisma.user.findMany({
       where: {
+        role: { contains: filter.role },
+
         location: { contains: filter.location },
 
         level: { contains: filter.level },

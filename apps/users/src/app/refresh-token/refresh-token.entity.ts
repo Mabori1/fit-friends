@@ -3,8 +3,8 @@ import { IEntity, IToken } from '@fit-friends/types';
 export class RefreshTokenEntity implements IEntity<RefreshTokenEntity>, IToken {
   public createdAt: Date;
   public exp: Date;
-  public id: number;
-  public token: string;
+  public id?: number;
+  public tokenId: string;
   public userId: number;
   [key: string]: unknown;
 
@@ -16,7 +16,7 @@ export class RefreshTokenEntity implements IEntity<RefreshTokenEntity>, IToken {
   public fillEntity(entity: IToken): void {
     this.userId = entity.userId;
     this.id = entity.id;
-    this.token = entity.token;
+    this.tokenId = entity.tokenId;
     this.createdAt = entity.createdAt;
     this.exp = entity.exp;
   }

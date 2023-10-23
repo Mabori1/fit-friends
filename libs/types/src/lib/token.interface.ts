@@ -1,6 +1,6 @@
 export interface IToken {
   id?: number;
-  token: string;
+  tokenId: string;
   createdAt: Date;
   userId: number;
   exp: Date;
