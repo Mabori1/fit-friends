@@ -1,5 +1,7 @@
 import { registerAs } from '@nestjs/config';
-import { object, string, number } from 'joi';
+import { validateSync } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+import { RabbitEnvironment } from './rabbit-environment';
 
 const DEFAULT_RABBIT_PORT = 5672;
 
@@ -22,22 +24,14 @@ export default registerAs('rabbit', (): RabbitConfig => {
     exchange: process.env['RABBIT_EXCHANGE'],
   };
 
-  const validationSchema = object<RabbitConfig>({
-    host: string().valid().hostname().required(),
-    password: string().required(),
-    port: number().port().default(DEFAULT_RABBIT_PORT),
-    user: string().required(),
-    queue: string().required(),
-    exchange: string().required(),
+  const rabbitEnvironment = plainToInstance(RabbitEnvironment, config, { enableImplicitConversion: true });
+
+  const errors = validateSync(rabbitEnvironment, {
+    skipMissingProperties: false,
   });
 
-  const { error } = validationSchema.validate(config, { abortEarly: true });
-
-  if (error) {
-    throw new Error(
-      `[Notify Config]: Environments validation failed. Please check .env file.
-       Error message: ${error.message}`,
-    );
+  if (errors.length > 0) {
+    throw new Error(errors.toString());
   }
 
   return config;

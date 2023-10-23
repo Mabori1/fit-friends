@@ -1,5 +1,7 @@
 import { registerAs } from '@nestjs/config';
-import * as Joi from 'joi';
+import { validateSync } from 'class-validator';
+import { DatabaseEnvironment } from './db-environment';
+import { plainToInstance } from 'class-transformer';
 
 const DEFAULT_POSTGRES_PORT = 5432;
 
@@ -22,22 +24,14 @@ export default registerAs('db', (): DbConfig => {
     pgAdminPassword: process.env['PGADMIN_DEFAULT_PASSWORD'] ?? 'test',
   };
 
-  const validationSchema = Joi.object<DbConfig>({
-    port: Joi.number().port().default(DEFAULT_POSTGRES_PORT),
-    name: Joi.string().required(),
-    user: Joi.string().required(),
-    password: Joi.string().required(),
-    pgAdminEmail: Joi.string().required(),
-    pgAdminPassword: Joi.string().required(),
+  const databaseEnvironment = plainToInstance(DatabaseEnvironment, config, { enableImplicitConversion: true });
+
+  const errors = validateSync(databaseEnvironment, {
+    skipMissingProperties: false,
   });
 
-  const { error } = validationSchema.validate(config, { abortEarly: true });
-
-  if (error) {
-    throw new Error(
-      `[DB Config]: Environments validation failed. Please check .env file.
-      Error message: ${error.message}`,
-    );
+  if (errors.length > 0) {
+    throw new Error(errors.toString());
   }
 
   return config;

@@ -1,5 +1,7 @@
 import { registerAs } from '@nestjs/config';
-import * as Joi from 'joi';
+import { validateSync } from 'class-validator';
+import { AppEnvironment } from './app-environment';
+import { plainToInstance } from 'class-transformer';
 
 const DEFAULT_PORT = 3000;
 
@@ -13,19 +15,14 @@ export default registerAs('application', (): ApplicationConfig => {
     environment: process.env['NODE_ENV'] || 'development',
     port: parseInt(process.env['PORT'] || DEFAULT_PORT.toString(), 10),
   };
+  const appEnvironment = plainToInstance(AppEnvironment, config, { enableImplicitConversion: true });
 
-  const validationSchema = Joi.object<ApplicationConfig>({
-    environment: Joi.string().valid('development', 'production', 'stage').required(),
-    port: Joi.number().port().default(DEFAULT_PORT),
+  const errors = validateSync(appEnvironment, {
+    skipMissingProperties: false,
   });
 
-  const { error } = validationSchema.validate(config, { abortEarly: true });
-
-  if (error) {
-    throw new Error(
-      `[Application Config]: Environments validation failed. Please check .env file.
-      Error message: Mongo.${error.message}`,
-    );
+  if (errors.length > 0) {
+    throw new Error(errors.toString());
   }
 
   return config;

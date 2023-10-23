@@ -14,7 +14,7 @@ model User {
   email           String                  @unique @default("") @map("user_mail")
   avatar          String?                 @default("") @map("user_avatar")
   gender          String                  @default("") @map("user_gender")
-  birthDate       String?                 @default("") @map("birth_date")
+  birthDate       DateTime?               @map("birth_date")
   role            String                  @default("") @map("user_role")
   description     String?                 @default("")
   location        String                  @default("")
@@ -58,11 +58,12 @@ model Trainer {
 }
 
 model Token {
-  id     Int      @id @default(autoincrement())
-  token  String   @unique
-  userId Int      @map("user_id")
-  exp    DateTime @map("expires_in")
-  user   User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int      @map("user_id")
+  exp       DateTime @map("expires_in")
+  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("tokens")
 }

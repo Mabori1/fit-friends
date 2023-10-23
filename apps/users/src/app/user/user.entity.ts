@@ -13,13 +13,13 @@ import {
 import { genSalt, compare, hash } from 'bcrypt';
 
 export class UserEntity implements IEntity<UserEntity>, IUser {
-  public userId: number;
+  public userId?: number;
   public name: string;
   public email: string;
   public avatar?: string;
   public passwordHash: string;
   public gender: string;
-  public birthDate?: string;
+  public birthDate?: Date;
   public role: string;
   public description?: string;
   public location: string;

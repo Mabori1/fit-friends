@@ -15,7 +15,7 @@ export class UserRdo {
     description: 'The uniq user ID',
     example: '13',
   })
-  @Expose({ name: '_id' })
+  @Expose()
   public userId!: number;
 
   @ApiProperty({
@@ -109,8 +109,17 @@ export class UserRdo {
   public alerts!: IAlert[];
 
   @ApiProperty({
-    description: 'Property of client',
-    example: 'client',
+    description: 'User of Client',
+    example: [
+      {
+        id: 1,
+        userId: 1,
+        timeOfTraining: '10-30 мин',
+        caloryLosingPlanTotal: 1500,
+        caloryLosingPlanDaily: 1000,
+        isReady: true,
+      },
+    ],
   })
   @Expose()
   public client?: {
@@ -123,8 +132,16 @@ export class UserRdo {
   };
 
   @ApiProperty({
-    description: 'Property of trainer',
-    example: 'trainer',
+    description: 'User of Trainer',
+    example: [
+      {
+        id: 1,
+        userId: 1,
+        certificate: 'certificate.pdf',
+        merits: 'Вырастил двоих олимпиадников',
+        isPersonalTraining: true,
+      },
+    ],
   })
   @Expose()
   public trainer?: {

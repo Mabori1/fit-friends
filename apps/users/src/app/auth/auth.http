@@ -1,66 +1,65 @@
 # Create a new user
-POST http://localhost:3333/api/auth/register HTTP/1.1
+POST http://localhost:4000/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "userName": "Василий",
-  "userMail": "clienbbbdddt@gmail.cwm",
-  "userAvatar": "",
-  "password": "adsfaasdfadf",
-  "userGender": "мужской",
-  "birthDate": "1955-11-06",
-  "userRole": "trainer",
-  "description": "trainertrainertrainertrainertrainer",
+  "name": "Алексей",
+  "email": "mabori4@gmail.com",
+  "avatar": "avatar.jpg",
+  "password": "12345a",
+  "gender": "мужской",
+  "birthDate": "1974-01-25T00:00:00.000Z",
+  "role": "тренер",
+  "description": "Сброшу ка я Вам жирок!",
   "location": "Пионерская",
-  "backgraundPicture": "asdf.jpg",
-  "trainerBody": {
-    "sertificates": ["sert.pdf"],
-    "merit": "чтото напишем",
-    "readinessForPrivate": true
+  "trainer": {
+    "certificate": "sertificate.pdf",
+    "merits": "У меня вся грудь в орденах!",
+    "isPersonalTraining": true
   },
-  "levelOfExperience": "профессионал",
-  "typesOfTraining": ["стрейчинг", "кроссфит"]
+  "level": "профессионал",
+  "typesOfTraining": ["кроссфит", "бег", "бокс"]
 }
 ###
 
 # Update user
-PATCH http://localhost:3333/api/auth/update HTTP/1.1
+PATCH http://localhost:4000/api/auth/update HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYxLCJlbWFpbCI6ImNsaWVuYmJiZGRkdEBnbWFpbC5jd20iLCJ1c2VyUm9sZSI6InRyYWluZXIiLCJuYW1lIjoi0JLQsNGB0LjQu9C40LkiLCJpYXQiOjE2OTIxMTIwNDYsImV4cCI6MTY5MjExMjk0Nn0.f3TpcadhHt-WsQ53SIkI4X9Y6HXg57nIiOaBa_LURyM
 Content-Type: application/json
 
 {
-  "trainerBody": {"merit": "что-то напишем про Машу"}
+  "trainery": {"merit": "Это совсем другой марафон!"}
 }
 
 ###
 
 # Get user by ID
-GET http://localhost:3333/api/auth/user/51 HTTP/1.1
+GET http://localhost:4000/api/auth/user/51 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYxLCJlbWFpbCI6ImNsaWVuYmJiZGRkdEBnbWFpbC5jd20iLCJ1c2VyUm9sZSI6InRyYWluZXIiLCJuYW1lIjoi0JLQsNGB0LjQu9C40LkiLCJpYXQiOjE2OTIxMTIwNDYsImV4cCI6MTY5MjExMjk0Nn0.f3TpcadhHt-WsQ53SIkI4X9Y6HXg57nIiOaBa_LURyM
 ###
 
 # Login user by email and password
-POST http://localhost:3333/api/auth/login HTTP/1.1
+POST http://localhost:4000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "ivanTreiner@gmail.com",
-  "password": "qwertyuiop"
+  "email": "mabori3@gmail.com",
+  "password": "12345a"
 }
 ###
 # Get user  feed
-GET http://localhost:3333/api/auth/feed?limit=4&page=1&userRole=trainer&locations=Пионерская,Петроградская&typesOfTraining=йога,кроссфит HTTP/1.1
+GET http://localhost:4000/api/auth/feed?limit=4&page=1&userRole=trainer&locations=Пионерская,Петроградская&typesOfTraining=йога,кроссфит HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY5MDk5NTQ5NCwiZXhwIjoxNjkwOTk2Mzk0fQ.iY9A0_SuParyBJfRt3EFe9YMCp8HLdqvaE-iqheleLA
 ###
 # Get new JWT pair
-POST http://localhost:3333/api/auth/refresh HTTP/1.1
+POST http://localhost:4000/api/auth/refresh HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsInRva2VuSWQiOiJlYjk4Yzg1Ni05YzQxLTQxNWMtODNiYy01ZDIyOTZjYWIyNzEiLCJpYXQiOjE2OTA5OTU0OTQsImV4cCI6MTY5MzU4NzQ5NH0.6RFI5wGNDmjGm7QwaimEskqhvDqRGnpnUpaOqSTIReI
 
 
 ###
 
 # Check user token
-GET http://localhost:3333/api/auth/check HTTP/1.1
+GET http://localhost:4000/api/auth/check HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUxLCJlbWFpbCI6ImNsaWVudEBnbWFpbC5jd20iLCJ1c2VyUm9sZSI6ImNsaWVudCIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY5MTY4NDYxOSwiZXhwIjoxNjkxNjg1NTE5fQ.ZBPW8iiWPFWOg45OhBFo69GKVMJBQszSnl5O0MCaaZk
 
 

@@ -21,16 +21,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserRdo } from './rdo/user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
-import {
-  IRequestWithTokenPayload,
-  IRequestWithUser,
-  UserRole,
-} from '@fit-friends/types';
+import { IRequestWithTokenPayload, IRequestWithUser, UserRole } from '@fit-friends/types';
 import { UserRolesGuard } from './guards/user-roles.guard';
 import { UserQuery } from './query/user.query';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from './decorator/user-roles.decorator';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -47,6 +44,7 @@ export class AuthController {
     return fillObject(UserRdo, newUser);
   }
 
+  @UseGuards(LocalAuthGuard)
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
@@ -58,17 +56,15 @@ export class AuthController {
   })
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Body() dto: LoginUserDto): Promise<LoggedUserRdo> {
-    const verifiedUser = await this.authService.verifyUser(dto);
-    const loggedUser = await this.authService.createUserToken(verifiedUser);
-    return fillObject(LoggedUserRdo, Object.assign(verifiedUser, loggedUser));
+  public async login(@Req() { user }: IRequestWithUser) {
+    return this.authService.createUserToken(user);
   }
 
+  @UseGuards(JwtRefreshGuard)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get a new access/refresh tokens',
   })
-  @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   public async refreshToken(@Req() { user }: IRequestWithUser) {
@@ -83,9 +79,7 @@ export class AuthController {
   @Roles(UserRole.Client)
   @UseGuards(UserRolesGuard)
   @Get('/feed')
-  public async feedLine(
-    @Query(new ValidationPipe({ transform: true })) query: UserQuery
-  ) {
+  public async feedLine(@Query(new ValidationPipe({ transform: true })) query: UserQuery) {
     const users = await this.authService.getUsers(query);
     return { ...fillObject(UserRdo, users) };
   }
@@ -97,10 +91,7 @@ export class AuthController {
   })
   @UseGuards(JwtAuthGuard)
   @Patch('/update')
-  public async update(
-    @Req() { user: payload }: IRequestWithTokenPayload,
-    @Body() dto: UpdateUserDto
-  ) {
+  public async update(@Req() { user: payload }: IRequestWithTokenPayload, @Body() dto: UpdateUserDto) {
     const id = payload.id;
     const updatedUser = await this.authService.updateUser(id, dto);
     return fillObject(UserRdo, updatedUser);

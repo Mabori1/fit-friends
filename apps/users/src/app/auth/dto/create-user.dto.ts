@@ -1,7 +1,20 @@
-import { IsEmail, IsISO8601, IsString, IsAlphanumeric, IsOptional, Length, IsEnum, IsIn } from 'class-validator';
+import {
+  IsEmail,
+  IsISO8601,
+  IsString,
+  IsAlphanumeric,
+  IsOptional,
+  Length,
+  IsEnum,
+  IsArray,
+  ArrayMaxSize,
+  Matches,
+  ArrayNotEmpty,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  TrainingDuration,
+  IClient,
+  ITrainer,
   UserDescriptionLength,
   UserGender,
   UserLevel,
@@ -16,7 +29,7 @@ import {
 export class CreateUserDto {
   @ApiProperty({
     description: 'User name',
-    example: 'Вася',
+    example: 'Алексей',
     required: true,
     minLength: UserNameLength.Min,
     maxLength: UserNameLength.Max,
@@ -25,11 +38,12 @@ export class CreateUserDto {
   @Length(UserNameLength.Min, UserNameLength.Max, {
     message: UsersErrorMessage.NameLengthNotValid,
   })
+  @Matches(/[a-zа-яё\s]+/i)
   public name!: string;
 
   @ApiProperty({
     description: 'User unique email',
-    example: 'user@user.ru',
+    example: 'mabori@mail.ru',
     required: true,
   })
   @IsEmail({}, { message: UsersErrorMessage.EmailNotValid })
@@ -45,7 +59,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'User password',
-    example: 'qwerty12345',
+    example: '12345a',
     required: true,
     minLength: UserPasswordLength.Min,
     maxLength: UserPasswordLength.Max,
@@ -58,7 +72,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'User gender',
-    example: 'Мужской',
+    example: 'мужской',
     enum: UserGender,
     required: true,
   })
@@ -67,15 +81,15 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'User birth date',
-    example: '2000-01-01T00:00:00.000Z',
+    example: '1993-01-11',
   })
   @IsOptional()
   @IsISO8601()
-  public birthDate?: string;
+  public birthDate?: Date;
 
   @ApiProperty({
     description: 'User role',
-    example: 'пользователь',
+    example: 'тренер',
     enum: UserRole,
     required: true,
   })
@@ -118,15 +132,34 @@ export class CreateUserDto {
     example: 'Кроссфит',
     required: true,
   })
-  @IsIn(['Йога', 'Бег', 'Бокс', 'Стрейчинг', 'Кроссфит', 'Аэробика', 'Пилатес'])
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayMaxSize(3)
+  @IsEnum(UserTypesTraining, { each: true })
   public typesOfTraining!: UserTypesTraining[];
 
   @ApiProperty({
-    description: 'Training duration',
-    example: '10-30 мин',
-    enum: TrainingDuration,
-    required: true,
+    description: 'User of Trainer',
+    example: [
+      {
+        certificate: 'certificate.pdf',
+        merits: 'Вырастил двоих олимпиадников',
+        isPersonalTraining: true,
+      },
+    ],
   })
-  @IsEnum(TrainingDuration)
-  public timeOfTraining!: TrainingDuration;
+  public trainer?: ITrainer;
+
+  @ApiProperty({
+    description: 'User of Client',
+    example: [
+      {
+        timeOfTraining: '10-30 мин',
+        caloryLosingPlanTotal: 1500,
+        caloryLosingPlanDaily: 1000,
+        isReady: true,
+      },
+    ],
+  })
+  public client?: IClient;
 }

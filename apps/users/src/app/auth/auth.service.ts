@@ -1,7 +1,7 @@
-import { ConflictException, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import * as crypto from 'node:crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserQuery } from './query/user.query';
@@ -16,7 +16,6 @@ import { UserRepository } from '../user/user.repository';
 import { UserEntity } from '../user/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { createJWTPayload } from '@fit-friends/core';
-//import { jwtConfig } from '@fit-friends/config';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 
 @Injectable()
@@ -25,8 +24,6 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
     private readonly refreshTokenService: RefreshTokenService,
-    // @Inject(jwtConfig.KEY)
-    // private readonly jwtOptions: ConfigType<typeof jwtConfig>,
     private readonly configService: ConfigService,
   ) {}
 
@@ -46,6 +43,7 @@ export class AuthService {
     }
 
     const userEntity = await new UserEntity(newUser).setPassword(dto.password);
+
     return await this.userRepository.create(userEntity);
   }
 
@@ -75,14 +73,14 @@ export class AuthService {
       ...accessTokenPayload,
       token: crypto.randomUUID(),
     };
+
     await this.refreshTokenService.createRefreshSession(refreshTokenPayload);
+
     return {
       accessToken: await this.jwtService.signAsync(accessTokenPayload),
       refreshToken: await this.jwtService.signAsync(refreshTokenPayload, {
-        secret: this.configService.get<string>('JWT_RT_SECRET'),
-        expiresIn: this.configService.get<string>('JWT_RT_EXPIRES_IN'),
-        // secret: this.jwtOptions.refreshTokenSecret,
-        // expiresIn: this.jwtOptions.refreshTokenExpiresIn,
+        secret: this.configService.get<string>('jwt.refreshTokenSecret'),
+        expiresIn: this.configService.get<string>('jwt.refreshTokenExpiresIn'),
       }),
     };
   }

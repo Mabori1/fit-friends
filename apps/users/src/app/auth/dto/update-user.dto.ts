@@ -141,7 +141,7 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsISO8601()
-  public birthDate?: string;
+  public birthDate?: Date;
 
   @ApiProperty({
     description: 'User avatar',

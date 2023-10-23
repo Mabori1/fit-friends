@@ -9,6 +9,8 @@ export class RefreshTokenRepository {
 
   public async create(item: RefreshTokenEntity): Promise<Token> {
     const entityData = item.toObject();
+    console.log(entityData);
+
     return this.prisma.token.create({
       data: {
         ...entityData,
