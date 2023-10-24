@@ -23,3 +23,4 @@ export * from './lib/constants/user.constants';
 export * from './lib/constants/validation.constants';
 export * from './lib/alert.interface';
 export * from './lib/training-duration.enum';
+export * from './lib/file.interface';

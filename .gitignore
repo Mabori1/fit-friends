@@ -40,3 +40,7 @@ Thumbs.db
 
 # Environments
 .env
+
+# filedirectory
+/uploads
+/static

@@ -8,6 +8,12 @@ export const AUTH_NOT_FOR_AUTH_USER = 'Only for new user';
 export const AUTH_USER_ONLY_CLIENT_PERMIT = 'Only users permisions';
 export const AUTH_USER_ONLY_TRAINERS_PERMIT = 'Only treiners permisions';
 export const DEFAULT_USER_COUNT_LIMIT = 50;
+export const MAX_AVATAR_FILE_SIZE = 1000000;
+export const TOO_BIG_FILE = 'Too big file';
+export const WRONG_FILE_TYPE = 'Wrong file type';
+
+export const ImageTypes: string[] = ['jpg', 'jpeg', 'png'];
+export const VideoTypes: string[] = ['.mov', '.avi', '.mp4'];
 
 export enum DefaultUsersQuery {
   maxLimit = 50,
