@@ -27,14 +27,14 @@ Content-Type: application/json
 
 {
   "name": "Алексей",
-  "email": "mabori1@gmail.com",
+  "email": "mabori2@gmail.com",
   "avatar": "avatar.jpg",
   "password": "12345a",
   "gender": "мужской",
   "birthDate": "1974-01-25T00:00:00.000Z",
   "role": "пользователь",
   "description": "Сброшу ка я жирок!",
-  "location": "Пионерская",
+  "location": "Удельная",
   "client": {
   "timeOfTraining": "30-50 мин",
   "caloryLosingPlanTotal": 2000,
@@ -74,8 +74,8 @@ Content-Type: application/json
 }
 ###
 # Get user  feed
-GET http://localhost:4000/api/auth/feed?limit=4&page=1&role=пользователь&location=Пионерская&typesOfTraining=йога,кроссфит HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpMUBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MTAxMjU2LCJleHAiOjE2OTgxMDIxNTZ9.yuYNcoefKk-MTllpPYKd-cSOA2ktnaKZtY6RohAsyYk
+GET http://localhost:4000/api/auth/feed?limit=4&page=1&role=пользователь&location=Пионерская,Удельная&typesOfTraining=йога,кроссфит HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpMUBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MTQyMjkxLCJleHAiOjE2OTgxNDMxOTF9.wQJ9_8-rg-nTe63olxegN7oHLq1RcxENly6Gn7A5njg
 ###
 
 # Get new JWT pair

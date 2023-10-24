@@ -1,13 +1,7 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { ROLES_KEY } from '../decorator/user-roles.decorator';
+import { ROLES_KEY } from '../../user/decorator/user-roles.decorator';
 import { UserRole } from '@fit-friends/types';
 
 @Injectable()
@@ -16,10 +10,10 @@ export class UserRolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     try {
-      const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(
-        ROLES_KEY,
-        [context.getHandler(), context.getClass()]
-      );
+      const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(ROLES_KEY, [
+        context.getHandler(),
+        context.getClass(),
+      ]);
       if (!requiredRoles) {
         return true;
       }
@@ -33,7 +27,7 @@ export class UserRolesGuard implements CanActivate {
             status: HttpStatus.FORBIDDEN,
             error: 'Пользователь не авторизован',
           },
-          HttpStatus.FORBIDDEN
+          HttpStatus.FORBIDDEN,
         );
       }
       const user = this.iwtService.verify(token);
@@ -46,7 +40,7 @@ export class UserRolesGuard implements CanActivate {
             status: HttpStatus.FORBIDDEN,
             error: 'Пользователь не авторизован',
           },
-          HttpStatus.FORBIDDEN
+          HttpStatus.FORBIDDEN,
         );
       }
     }

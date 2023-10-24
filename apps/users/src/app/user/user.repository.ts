@@ -153,7 +153,7 @@ export class UserRepository implements ICRUDRepository<UserEntity, number, IUser
       where: {
         role: { contains: filter.role },
 
-        location: { contains: filter.location },
+        location: { in: filter.locations },
 
         level: { contains: filter.level },
 

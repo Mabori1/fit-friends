@@ -3,15 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as crypto from 'node:crypto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserQuery } from './query/user.query';
-import {
-  AUTH_USER_EXISTS,
-  AUTH_USER_NOT_FOUND,
-  AUTH_USER_PASSWORD_WRONG,
-  IUser,
-  IUserFilter,
-} from '@fit-friends/types';
+import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG, IUser } from '@fit-friends/types';
 import { UserRepository } from '../user/user.repository';
 import { UserEntity } from '../user/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -63,10 +55,6 @@ export class AuthService {
     return existUser;
   }
 
-  public async getUser(id: number) {
-    return this.userRepository.findById(id);
-  }
-
   public async logout(id: number) {
     await this.refreshTokenService.deleteByUserId(id);
   }
@@ -87,24 +75,5 @@ export class AuthService {
         expiresIn: this.configService.get<string>('jwt.refreshTokenExpiresIn'),
       }),
     };
-  }
-
-  public async getUsers(query: UserQuery): Promise<IUser[] | null> {
-    const { limit, page } = query;
-    const userFilter: IUserFilter = { ...query };
-    const users = await this.userRepository.find(limit, userFilter, page);
-    return users;
-  }
-
-  public async updateUser(id: number, dto: UpdateUserDto) {
-    const oldUser = await this.userRepository.findById(id);
-    if (oldUser) {
-      const userEntity = new UserEntity({
-        ...oldUser,
-        ...dto,
-      });
-      userEntity.createdAt = oldUser.createdAt;
-      return await this.userRepository.update(id, userEntity);
-    }
   }
 }

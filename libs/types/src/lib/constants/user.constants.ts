@@ -9,6 +9,15 @@ export const AUTH_USER_ONLY_CLIENT_PERMIT = 'Only users permisions';
 export const AUTH_USER_ONLY_TRAINERS_PERMIT = 'Only treiners permisions';
 export const DEFAULT_USER_COUNT_LIMIT = 50;
 
+export enum DefaultUsersQuery {
+  maxLimit = 50,
+  minLimit = 1,
+  sortDesc = -1,
+  sortAsc = 1,
+  Limit = 50,
+  Desc = -1,
+}
+
 export const UsersErrorMessage = {
   EmailNotValid: 'The email format is not valid',
   PasswordNotValid: 'Password min length is 6, max is 12 symbols',

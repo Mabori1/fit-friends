@@ -1,6 +1,6 @@
 export interface IUserFilter {
   role: string;
-  location: string;
+  locations: string[];
   level: string;
   typesOfTraining: string[];
 }
