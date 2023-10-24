@@ -1,5 +1,4 @@
 import {
-  IAlert,
   IClient,
   IEntity,
   IOrderTraining,
@@ -13,7 +12,6 @@ import {
 import { genSalt, compare, hash } from 'bcrypt';
 
 export class UserEntity implements IEntity<UserEntity>, IUser {
-  public userId?: number;
   public name: string;
   public email: string;
   public avatar?: string;
@@ -29,7 +27,6 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
   public client?: IClient | null;
   public trainer?: ITrainer | null;
   public refreshTokenHash?: string;
-  public alerts?: IAlert[];
   public orders?: IOrderTraining[];
   public personalOrders?: IPersonalOrderTraining[];
   public balance?: IUserBalance[];
@@ -44,7 +41,6 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
   }
 
   public fillEntity(user: IUser) {
-    this.userId = user.userId;
     this.name = user.name;
     this.email = user.email;
     this.avatar = user.avatar || '';
@@ -59,11 +55,10 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
     this.typesOfTraining = user.typesOfTraining;
     this.client = user.client;
     this.trainer = user.trainer;
-    this.alerts = user.alerts;
-    this.orders = user.orders;
-    this.personalOrders = user.personalOrders;
-    this.balance = user.balance;
-    this.friends = user.friends;
+    this.orders = user.orders || [];
+    this.personalOrders = user.personalOrders || [];
+    this.balance = user.balance || [];
+    this.friends = user.friends || [];
   }
 
   public async setPassword(password: string): Promise<UserEntity> {

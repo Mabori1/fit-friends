@@ -2,7 +2,6 @@ import {
   IAlert,
   IOrderTraining,
   IPersonalOrderTraining,
-  IUserBalance,
   TrainingDuration,
   UserRole,
   UserTypesTraining,
@@ -165,10 +164,4 @@ export class UserRdo {
   })
   @Expose()
   public personalOrders?: IPersonalOrderTraining[];
-
-  @ApiProperty({
-    description: 'User balance',
-  })
-  @Expose()
-  public balance?: IUserBalance[];
 }

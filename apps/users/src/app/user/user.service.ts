@@ -1,5 +1,5 @@
 import { IUser, IUserFilter } from '@fit-friends/types';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UpdateUserDto } from '../auth/dto/update-user.dto';
 import { UserQuery } from './query/user.query';
 import { UserEntity } from './user.entity';
@@ -7,27 +7,49 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(private readonly userRepository: UserRepository) {}
 
   public async getUser(id: number) {
-    return this.userRepository.findById(id);
+    const user = await this.userRepository.findById(id).catch((err) => {
+      this.logger.error(err);
+      throw new NotFoundException('User not found');
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   public async getUsers(query: UserQuery): Promise<IUser[] | null> {
     const { limit, page } = query;
     const userFilter: IUserFilter = { ...query };
-    const users = await this.userRepository.find(limit, userFilter, page);
+    const users = await this.userRepository.find(limit, userFilter, page).catch((err) => {
+      this.logger.error(err);
+      throw new NotFoundException('Users not found');
+    });
+
+    if (!users) {
+      throw new NotFoundException('Users not found');
+    }
     return users;
   }
 
   public async updateUser(id: number, dto: UpdateUserDto) {
-    const oldUser = await this.userRepository.findById(id);
+    const oldUser = await this.userRepository.findById(id).catch((err) => {
+      this.logger.error(err);
+      throw new NotFoundException('User not found');
+    });
+
     if (oldUser) {
       const userEntity = new UserEntity({
         ...oldUser,
         ...dto,
       });
       userEntity.createdAt = oldUser.createdAt;
+
       return await this.userRepository.update(id, userEntity);
     }
   }
