@@ -79,7 +79,7 @@ model Training {
   caloriesQtt       Int        @default(0) @map("calories_qtt")
   description       String     @default("")
   createdAt         DateTime   @default(now()) @map("created_at")
-  trainingGender    String     @default("") @map("training_gender")
+  gender            String     @default("") @map("gender")
   video             String     @default("")
   rating            Float      @default(0)
   trainerId         Int        @default(0)
@@ -87,16 +87,6 @@ model Training {
   feedbacks         Feedback[]
 
   @@map("trainings")
-}
-
-model UserBalance {
-  id          Int  @id @default(autoincrement())
-  userId      Int  @map("user_id")
-  trainingId  Int  @map("training_id")
-  trainingQtt Int  @map("training_qtt")
-  user        User @relation(fields: [userId], references: [userId], onDelete: Cascade)
-
-  @@map("user_balances")
 }
 
 model Feedback {
@@ -109,6 +99,16 @@ model Feedback {
   createdAt  DateTime @default(now()) @map("created_at")
 
   @@map("feed_backs")
+}
+
+model UserBalance {
+  id          Int  @id @default(autoincrement())
+  userId      Int  @map("user_id")
+  trainingId  Int  @map("training_id")
+  trainingQtt Int  @map("training_qtt")
+  user        User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@map("user_balances")
 }
 
 model OrderTraining {

@@ -15,8 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@fit-friends/config": ["libs/config/src/index.ts"],
-      "@fit-friends/config/user": ["libs/config/user/src/index.ts"],
       "@fit-friends/core": ["libs/core/src/index.ts"],
       "@fit-friends/types": ["libs/types/src/index.ts"]
     }

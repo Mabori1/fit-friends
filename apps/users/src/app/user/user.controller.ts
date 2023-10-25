@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpStatus, Param, Patch, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { UserRdo } from '../auth/rdo/user.rdo';
 import { IRequestWithTokenPayload, UserRole } from '@fit-friends/types';
@@ -11,7 +21,6 @@ import { Roles } from './decorator/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles-guard';
 
 @Controller('users')
-@UseGuards(RolesGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -21,7 +30,7 @@ export class UserController {
     description: 'Users list complete.',
   })
   @Roles(UserRole.Client)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('/feed')
   public async feedLine(@Query() query: UserQuery) {
     const users = await this.userService.getUsers(query);
@@ -47,7 +56,10 @@ export class UserController {
     description: 'User updated.',
   })
   @Patch('/update')
-  public async update(@Req() { user: payload }: IRequestWithTokenPayload, @Body() dto: UpdateUserDto) {
+  public async update(
+    @Req() { user: payload }: IRequestWithTokenPayload,
+    @Body() dto: UpdateUserDto,
+  ) {
     const updatedUser = await this.userService.updateUser(payload.sub, dto);
     return fillObject(UserRdo, updatedUser);
   }

@@ -1,3 +1,15 @@
+export enum Rating {
+  Min = 0,
+  Max = 5,
+}
+
+export enum FeedbackTextLength {
+  Min = 100,
+  Max = 1024,
+}
+
+export const MAX_PRICE = 5000;
+
 export enum TrainingTitleLength {
   Min = 1,
   Max = 15,
