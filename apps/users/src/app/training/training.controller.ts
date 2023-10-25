@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import CreateTrainingDto from './dto/create-training.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TrainingQuery } from './query/training.query';
 import { TrainingService } from './training.service';
 import { TrainingRdo } from './rdo/training.tdo';
@@ -23,7 +23,8 @@ import { fillObject } from '@fit-friends/core';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-@Controller('training')
+@ApiTags('trainings')
+@Controller('trainings')
 export class TrainingController {
   constructor(private readonly trainingService: TrainingService) {}
 
@@ -77,7 +78,10 @@ export class TrainingController {
     @Query() query: TrainingQuery,
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {
-    const trainings = await this.trainingService.getTrainings(query, payload.sub);
+    const trainings = await this.trainingService.getTrainings(
+      query,
+      payload.sub,
+    );
     return { ...fillObject(TrainingRdo, trainings) };
   }
 

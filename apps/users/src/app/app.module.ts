@@ -5,9 +5,18 @@ import { UserModule } from './user/user.module';
 import { ConfigUsersModule } from './config/config-user.module';
 import { FileModule } from './file/file.module';
 import { TrainingModule } from './training/training.module';
+import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, ConfigUsersModule, FileModule, TrainingModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    UserModule,
+    ConfigUsersModule,
+    FileModule,
+    TrainingModule,
+    FeedbackModule,
+  ],
   controllers: [],
   providers: [],
 })

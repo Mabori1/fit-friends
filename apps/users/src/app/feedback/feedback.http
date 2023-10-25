@@ -1,0 +1,15 @@
+# Create a new feedback training
+
+POST http://localhost:4000/api/feedbacks/create HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjcwMDMxLCJleHAiOjE2OTgyNzA5MzF9.o9r_NuniHg7s9kGIMjMAdv38u-oVhPTPlSaJYb_hsZU
+
+{
+  "trainingId": 1,
+  "rating": 3,
+  "text": "Минимум тут должно быть 100 символов. Максимум 1024. Да я встать не могу после такой тренировки. Да я встать не могу после такой тренировки. Да я встать не могу после такой тренировки."
+}
+
+### Find all feedbacks of Training
+GET http://localhost:4000/api/feedbacks/1?limit=22&page=1&sortDirection=desc HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjcwMDMxLCJleHAiOjE2OTgyNzA5MzF9.o9r_NuniHg7s9kGIMjMAdv38u-oVhPTPlSaJYb_hsZU

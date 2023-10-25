@@ -1,15 +1,23 @@
 import {
   CaloriesOfDay,
-  Rating,
+  GenderOfTraining,
   TrainingDescriptionLength,
   TrainingDuration,
   TrainingTitleLength,
-  UserGender,
   UserLevel,
   UserTypesTraining,
 } from '@fit-friends/types';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsPositive, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
+import {
+  IsEnum,
+  IsNumber,
+  IsPositive,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export default class CreateTrainingDto {
   @ApiProperty({
@@ -55,15 +63,6 @@ export default class CreateTrainingDto {
   public price: number;
 
   @ApiProperty({
-    description: 'Rating of traning',
-    example: '5',
-  })
-  @IsNumber()
-  @Min(Rating.Min)
-  @Max(Rating.Max)
-  public rating: number;
-
-  @ApiProperty({
     description: 'Calories of traning',
     example: '1000',
   })
@@ -86,8 +85,8 @@ export default class CreateTrainingDto {
     example: 'для мужчин',
   })
   @IsString()
-  @IsEnum(UserGender)
-  public gender: UserGender;
+  @IsEnum(GenderOfTraining)
+  public gender: GenderOfTraining;
 
   @ApiProperty({
     description: 'FileName of video file',

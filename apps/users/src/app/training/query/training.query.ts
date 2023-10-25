@@ -20,6 +20,8 @@ import {
 
 export class TrainingQuery {
   @IsNumber()
+  @IsPositive()
+  @Max(DefaultTraining.Limit)
   @Transform(({ value }) => +value || DefaultTraining.Limit)
   @IsOptional()
   public limit: number = DefaultTraining.Limit;

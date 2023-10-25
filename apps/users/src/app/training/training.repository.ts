@@ -20,6 +20,14 @@ export class TrainingRepository implements ICRUDRepository<TrainingEntity, numbe
     });
   }
 
+  public async findByTitle(title: string): Promise<ITraining | null> {
+    return this.prisma.training.findFirst({
+      where: {
+        title,
+      },
+    });
+  }
+
   public async destroy(id: number): Promise<void> {
     await this.prisma.training.delete({
       where: {

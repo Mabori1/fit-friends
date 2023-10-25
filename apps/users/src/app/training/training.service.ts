@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { TrainingRepository } from './training.repository';
 import { TrainingEntity } from './training.entity';
@@ -12,6 +12,10 @@ export class TrainingService {
   constructor(private readonly trainingRepository: TrainingRepository) {}
 
   async create(dto: CreateTrainingDto) {
+    const existsTraining = await this.trainingRepository.findByTitle(dto.title);
+    if (existsTraining) {
+      throw new ConflictException('Training with this title already exists');
+    }
     const training = { ...dto, feedbacks: [] };
     const trainingEntity = new TrainingEntity(training);
 

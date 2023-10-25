@@ -1,47 +1,47 @@
 # Create a new training
 POST http://localhost:4000/api/training/register HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNsaWVudEBnbWFpbC5jd20iLCJ1c2VyUm9sZSI6ImNsaWVudCIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTc4NzQ1MSwiZXhwIjoxNjg5Nzg4MzUxfQ.OybmMb_p8vo4MaPEkjblCu0m8JQmRijR4uK0_pr4QvE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpM0BnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjU5MTQxLCJleHAiOjE2OTgyNjAwNDF9.flKmrJ8UyFy6YgdG9INsl6JamT9GPXUbqd3iPQKho-A
 Content-Type: application/json
 
 {
-  "title": "Бfкс с Кличко",
-  "backgroundPicture":"" ,
-  "levelOfUser": "новичок",
+  "title": "Побегаем2!",
+  "backgroundPicture":"bg-image1.jpg" ,
+  "levelOfUser": "любитель",
   "typeOfTraining": "бег",
-  "duration": "10-30 мин",
+  "duration": "30-50 мин",
   "price": 5,
   "caloriesQtt": 1000,
-  "description": "description must be longer than or equal to 10 characters",
-  "trainingGender": "для мужчин",
-  "video": "",
-  "rating": 3,
-  "trainerId": 5,
-  "isPromo": false
+  "description": "Пробежимся по всем достопримечательностям городского парка",
+  "gender": "для мужчин",
+  "video": "video.mov",
+  "trainerId": 2,
+  "isPromo": true
 }
+
 ###
 
 # Update training information by ID
 
 PATCH  http://localhost:4000/api/training/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJlbWFpbCI6InNlcDNvb2NsaWVudGFsdHJhaW5lcmllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTA1NzI1OCwiZXhwIjoxNjg5MDU4MTU4fQ.YT9d1vd8nNdGsz7-Ch7GjipgJgIixfSHimC4lmE13yI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpM0BnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjUyMzc4LCJleHAiOjE2OTgyNTMyNzh9.cVZDES1rG0KYhgBFG_SSoAG3WxIy9EqHarpR72U-Btg
 Content-Type: application/json
 
 {
-  "title": "Бiксi с Кличко",
-  "rating": 7
+  "title": "Измененный титл",
+  "rating": 5
 }
 ###
 
 #Get training information by ID
 
-GET http://localhost:4000/api/training/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJlbWFpbCI6InNlcDNvb2NsaWVudGFsdHJhaW5lcmllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTA1NzI1OCwiZXhwIjoxNjg5MDU4MTU4fQ.YT9d1vd8nNdGsz7-Ch7GjipgJgIixfSHimC4lmE13yI
+GET http://localhost:4000/api/training/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpM0BnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjUyMzc4LCJleHAiOjE2OTgyNTMyNzh9.cVZDES1rG0KYhgBFG_SSoAG3WxIy9EqHarpR72U-Btg
 ###
 
 # Get training feed
 
 GET  http://localhost:4000/api/training/feed?durations=10-30%20мин&priceMin=1&priceMax=1200&caloriesQttMin=1000&caloriesQttMax=2000 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1LCJlbWFpbCI6Iml2YW5UcmVpbmVyQGdtYWlsLmNvbSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiJWYW55YSBUcmVpbmVyIiwiaWF0IjoxNjkzMzE5MzA5LCJleHAiOjE2OTMzMjAyMDl9.AaZa3ZntRZd9SShr5L70mHNzBvnKh-9ahtE2S07wDMY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpM0BnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjU5MTQxLCJleHAiOjE2OTgyNjAwNDF9.flKmrJ8UyFy6YgdG9INsl6JamT9GPXUbqd3iPQKho-A
 
 
 ####

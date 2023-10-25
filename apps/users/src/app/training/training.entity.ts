@@ -33,7 +33,7 @@ export class TrainingEntity implements IEntity<TrainingEntity>, ITraining {
     this.description = entity.description;
     this.gender = entity.gender;
     this.video = entity.video;
-    this.rating = entity.rating;
+    this.rating = entity.rating ? entity.rating : 0;
     this.trainerId = entity.trainerId;
     this.isPromo = entity.isPromo;
     this.feedbacks = [];
