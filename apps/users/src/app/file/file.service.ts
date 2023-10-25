@@ -23,11 +23,12 @@ export class FileService {
   public async writeFile(file: Express.Multer.File): Promise<WritedFile> {
     const [year, month] = dayjs().format('YYYY MM').split(' ');
 
-    const { uploadDirectory } = this.configService.get('application.uploadDirectory');
+    const uploadDirectory = this.configService.get('application.uploadDirectory');
 
     const subDirectory = `${year}/${month}`;
 
     const uuid = crypto.randomUUID();
+
     const fileExtension = extension(file.mimetype) || '';
     const hashName = `${uuid}.${fileExtension}`;
 

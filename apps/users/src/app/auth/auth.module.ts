@@ -8,7 +8,7 @@ import { JwtRefreshStrategy } from './strategies/jwt.refresh.strategy';
 import { RefreshTokenModule } from '../refresh-token/refresh-token.module';
 import { UserModule } from '../user/user.module';
 import { LocalStrategy } from './strategies/local-strategy';
-import { getJwtOptions } from '@fit-friends/config';
+import { getJwtOptions } from '../config/get-jwt-options';
 
 @Module({
   imports: [
