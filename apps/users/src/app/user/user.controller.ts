@@ -9,7 +9,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserRdo } from '../auth/rdo/user.rdo';
 import { IRequestWithTokenPayload, UserRole } from '@fit-friends/types';
 import { UserService } from './user.service';
@@ -20,6 +20,7 @@ import { UpdateUserDto } from '../auth/dto/update-user.dto';
 import { Roles } from './decorator/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles-guard';
 
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

@@ -18,7 +18,6 @@ export class FeedbackService {
       createdAt: new Date(),
     };
     const feedbackEntity = new FeedbackEntity(feedback);
-    //TODO: add rating training
 
     return await this.feedbackRepository.create(feedbackEntity);
   }

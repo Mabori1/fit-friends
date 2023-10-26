@@ -12,11 +12,10 @@ import { ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { FeedbackRdo } from './rdo/feedback.rdo';
 import { FeedbackService } from './feedback.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { Roles } from '../user/decorator/roles.decorator';
-import { IRequestWithTokenPayload, UserRole } from '@fit-friends/types';
-import { RolesGuard } from '../auth/guards/roles-guard';
+import { IRequestWithTokenPayload } from '@fit-friends/types';
 import { CreateReviewDto } from './dto/create-feedback.dto';
 import { fillObject } from '@fit-friends/core';
+import { RoleClientGuard } from '../auth/guards/role-client.guard';
 
 @ApiTags('feedbacks')
 @Controller('feedbacks')
@@ -29,8 +28,7 @@ export class FeedbackController {
     status: HttpStatus.CREATED,
     description: 'The new review has been successfully created.',
   })
-  @Roles(UserRole.Client)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
   public async create(
     @Req() { user: payload }: IRequestWithTokenPayload,
     @Body() dto: CreateReviewDto,
