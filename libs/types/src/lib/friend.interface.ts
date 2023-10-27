@@ -1,4 +1,4 @@
-export interface IUserFriend {
+export interface IFriend {
   id?: number;
   userId?: number;
   friendId?: number;

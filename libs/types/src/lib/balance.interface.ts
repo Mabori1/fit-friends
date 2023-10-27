@@ -1,4 +1,4 @@
-export interface IUserBalance {
+export interface IBalance {
   id?: number;
   userId: number;
   trainingId: number;

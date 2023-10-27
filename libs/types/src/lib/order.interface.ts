@@ -1,10 +1,11 @@
-export interface IOrderTraining {
+export interface IOrder {
   id?: number;
   userId: number;
-  typeOfTraining: string;
+  type: string;
   trainingId: number;
   price: number;
   quantity: number;
+  sumPrice: number;
   typeOfPayment: string;
   createdAt?: Date;
 }

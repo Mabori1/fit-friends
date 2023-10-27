@@ -14,7 +14,31 @@ export class FeedbackRepository
 
   public async create(feedbackEntity: FeedbackEntity): Promise<IFeedback> {
     const entity = feedbackEntity.toObject();
-    return await this.prisma.feedback.create({ data: { ...entity } });
+    const newFeedback = await this.prisma.feedback.create({
+      data: {
+        ...entity,
+      },
+    });
+
+    const newRating = await this.prisma.feedback.aggregate({
+      where: {
+        trainingId: entity.trainingId,
+      },
+      _avg: {
+        rating: true,
+      },
+    });
+
+    await this.prisma.training.update({
+      where: {
+        id: entity.trainingId,
+      },
+      data: {
+        rating: +newRating._avg.rating.toFixed(1) ?? 0,
+      },
+    });
+
+    return newFeedback;
   }
 
   public async destroy(id: number): Promise<void> {

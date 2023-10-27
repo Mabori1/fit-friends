@@ -6,6 +6,10 @@ import { ConfigUsersModule } from './config/config-user.module';
 import { FileModule } from './file/file.module';
 import { TrainingModule } from './training/training.module';
 import { FeedbackModule } from './feedback/feedback.module';
+import { OrderModule } from './order/order.module';
+import { FriendModule } from './friend/friend.module';
+import { BalanceModule } from './balance/balance.module';
+import { PersonalOrderModule } from './personal-order/personal-order.module';
 
 @Module({
   imports: [
@@ -15,7 +19,11 @@ import { FeedbackModule } from './feedback/feedback.module';
     ConfigUsersModule,
     FileModule,
     TrainingModule,
+    FriendModule,
+    BalanceModule,
+    PersonalOrderModule,
     FeedbackModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],

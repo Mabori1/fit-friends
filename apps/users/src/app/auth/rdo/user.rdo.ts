@@ -1,7 +1,7 @@
 import {
   IAlert,
-  IOrderTraining,
-  IPersonalOrderTraining,
+  IOrder,
+  IPersonalOrder,
   TrainingDuration,
   UserRole,
   UserTypesTraining,
@@ -156,12 +156,12 @@ export class UserRdo {
     example: 'order',
   })
   @Expose()
-  public orders?: IOrderTraining[];
+  public orders?: IOrder[];
 
   @ApiProperty({
     description: 'User personal orders',
     example: 'order',
   })
   @Expose()
-  public personalOrders?: IPersonalOrderTraining[];
+  public personalOrders?: IPersonalOrder[];
 }

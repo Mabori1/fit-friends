@@ -11,14 +11,13 @@ import {
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserRdo } from '../auth/rdo/user.rdo';
-import { IRequestWithTokenPayload, UserRole } from '@fit-friends/types';
+import { IRequestWithTokenPayload } from '@fit-friends/types';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserQuery } from './query/user.query';
 import { fillObject } from '@fit-friends/core';
 import { UpdateUserDto } from '../auth/dto/update-user.dto';
-import { Roles } from './decorator/roles.decorator';
-import { RolesGuard } from '../auth/guards/roles-guard';
+import { RoleClientGuard } from '../auth/guards/role-client.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -30,8 +29,7 @@ export class UserController {
     status: HttpStatus.OK,
     description: 'Users list complete.',
   })
-  @Roles(UserRole.Client)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
   @Get('/feed')
   public async feedLine(@Query() query: UserQuery) {
     const users = await this.userService.getUsers(query);

@@ -1,12 +1,12 @@
 import {
+  IBalance,
   IClient,
   IEntity,
-  IOrderTraining,
-  IPersonalOrderTraining,
+  IFriend,
+  IOrder,
+  IPersonalOrder,
   ITrainer,
   IUser,
-  IUserBalance,
-  IUserFriend,
   SALT_ROUNDS,
 } from '@fit-friends/types';
 import { genSalt, compare, hash } from 'bcrypt';
@@ -27,10 +27,10 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
   public client?: IClient | null;
   public trainer?: ITrainer | null;
   public refreshTokenHash?: string;
-  public orders?: IOrderTraining[];
-  public personalOrders?: IPersonalOrderTraining[];
-  public balance?: IUserBalance[];
-  public friends?: IUserFriend[];
+  public orders?: IOrder[];
+  public personalOrders?: IPersonalOrder[];
+  public balance?: IBalance[];
+  public friends?: IFriend[];
 
   constructor(user: IUser) {
     this.fillEntity(user);

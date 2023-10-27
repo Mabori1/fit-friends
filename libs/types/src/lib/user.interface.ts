@@ -1,8 +1,8 @@
 import { IAlert } from './alert.interface';
-import { IOrderTraining } from './order-training.interface';
-import { IPersonalOrderTraining } from './personal-order-training.interface';
-import { IUserBalance } from './user-balance.interface';
-import { IUserFriend } from './user-friend.interface';
+import { IBalance } from './balance.interface';
+import { IFriend } from './friend.interface';
+import { IOrder } from './order.interface';
+import { IPersonalOrder } from './personal-order.interface';
 
 export interface IUser {
   userId?: number;
@@ -21,10 +21,10 @@ export interface IUser {
   client?: IClient | null;
   trainer?: ITrainer | null;
   alerts?: IAlert[];
-  orders?: IOrderTraining[];
-  personalOrders?: IPersonalOrderTraining[];
-  balance?: IUserBalance[];
-  friends?: IUserFriend[];
+  orders?: IOrder[];
+  personalOrders?: IPersonalOrder[];
+  balance?: IBalance[];
+  friends?: IFriend[];
 }
 
 export interface IClient {

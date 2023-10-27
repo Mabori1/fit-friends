@@ -1,6 +1,6 @@
 # Create a new training
-POST http://localhost:4000/api/training/register HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpM0BnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjU5MTQxLCJleHAiOjE2OTgyNjAwNDF9.flKmrJ8UyFy6YgdG9INsl6JamT9GPXUbqd3iPQKho-A
+POST http://localhost:4000/api/trainings/register HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MzM5NzM5LCJleHAiOjE2OTgzNDA2Mzl9.qV2E_RbnWw5SMNYyyzpRxJVgQaMl5sIDx6abR93GLMc
 Content-Type: application/json
 
 {
@@ -22,8 +22,8 @@ Content-Type: application/json
 
 # Update training information by ID
 
-PATCH  http://localhost:4000/api/training/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpM0BnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjUyMzc4LCJleHAiOjE2OTgyNTMyNzh9.cVZDES1rG0KYhgBFG_SSoAG3WxIy9EqHarpR72U-Btg
+PATCH  http://localhost:4000/api/trainings/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MzM5NzM5LCJleHAiOjE2OTgzNDA2Mzl9.qV2E_RbnWw5SMNYyyzpRxJVgQaMl5sIDx6abR93GLMc
 Content-Type: application/json
 
 {
@@ -34,13 +34,13 @@ Content-Type: application/json
 
 #Get training information by ID
 
-GET http://localhost:4000/api/training/2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpM0BnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjUyMzc4LCJleHAiOjE2OTgyNTMyNzh9.cVZDES1rG0KYhgBFG_SSoAG3WxIy9EqHarpR72U-Btg
+GET http://localhost:4000/api/trainings/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MzM5NzM5LCJleHAiOjE2OTgzNDA2Mzl9.qV2E_RbnWw5SMNYyyzpRxJVgQaMl5sIDx6abR93GLMc
 ###
 
 # Get training feed
 
-GET  http://localhost:4000/api/training/feed?durations=10-30%20мин&priceMin=1&priceMax=1200&caloriesQttMin=1000&caloriesQttMax=2000 HTTP/1.1
+GET  http://localhost:4000/api/trainings/feed?durations=10-30%20мин&priceMin=1&priceMax=1200&caloriesQttMin=1000&caloriesQttMax=2000 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpM0BnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjU5MTQxLCJleHAiOjE2OTgyNjAwNDF9.flKmrJ8UyFy6YgdG9INsl6JamT9GPXUbqd3iPQKho-A
 
 
@@ -48,5 +48,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsI
 
 # Get training feed for catalog
 
-GET  http://localhost:4000/api/training/catalog?typesOfTraining=йога&priceMin=1&priceMax=12&ratingMin=0&ratingMax=5&caloriesQttMin=1000&caloriesQttMax=2000&page=1&limit=50&priceSortType=none HTTP/1.1
+GET  http://localhost:4000/api/trainings/catalog?typesOfTraining=йога&priceMin=1&priceMax=12&ratingMin=0&ratingMax=5&caloriesQttMin=1000&caloriesQttMax=2000&page=1&limit=50&priceSortType=none HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1LCJlbWFpbCI6Iml2YW5UcmVpbmVyQGdtYWlsLmNvbSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiJWYW55YSBUcmVpbmVyIiwiaWF0IjoxNjkzMzIzNTM2LCJleHAiOjE2OTMzMjQ0MzZ9.GTI9eIkrCqmNNM6iDY7QAvwceOFVvK_AkaDPx85yMwo

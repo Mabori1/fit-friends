@@ -25,11 +25,11 @@ model User {
   passwordHash    String                  @default("") @map("password_hash")
   client          Client?
   trainer         Trainer?
-  orders          OrderTraining[]
-  personalOrders  PersonalOrderTraining[]
+  orders          Order[]
+  personalOrders  PersonalOrder[]
   token           Token[]
-  balance         UserBalance[]
-  friends         UserFriend[]
+  balance         Balance[]
+  friends         Friend[]
 
   @@map("users")
 }
@@ -101,7 +101,7 @@ model Feedback {
   @@map("feed_backs")
 }
 
-model UserBalance {
+model Balance {
   id          Int  @id @default(autoincrement())
   userId      Int  @map("user_id")
   trainingId  Int  @map("training_id")
@@ -111,21 +111,22 @@ model UserBalance {
   @@map("user_balances")
 }
 
-model OrderTraining {
+model Order {
   id             Int      @id @default(autoincrement())
   userId         Int      @map("user_id")
-  typeOfTraining String   @default("")
+  type           String   @default("")
   trainingId     Int      @map("training_id")
   price          Int      @default(0)
   quantity       Int      @default(0)
+  totalPrice     Int      @default(0) @map("total_price")
   typeOfPayment  String   @default("")
   createdAt      DateTime @default(now()) @map("created_at")
   user           User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
-  @@map("order_trainings")
+  @@map("orders")
 }
 
-model PersonalOrderTraining {
+model PersonalOrder {
   id          Int      @id @default(autoincrement())
   userId      Int      @map("user_id")
   trainerId   Int      @map("trainer_id")
@@ -134,17 +135,17 @@ model PersonalOrderTraining {
   orderStatus String   @default("") @map("order_status")
   user        User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
-  @@map("personal_order_trainings")
+  @@map("personal_order")
 }
 
-model UserFriend {
+model Friend {
   id          Int     @id @default(autoincrement())
   userId      Int     @map("user_id")
   friendId    Int     @map("friend_id")
   isConfirmed Boolean @default(false) @map("is_confirmed")
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
-  @@map("user_friends")
+  @@map("friends")
 }
 
 model File {

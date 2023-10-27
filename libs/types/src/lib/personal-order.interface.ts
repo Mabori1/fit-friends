@@ -1,4 +1,4 @@
-export interface IPersonalOrderTraining {
+export interface IPersonalOrder {
   id?: number;
   userId: number;
   trainerId: number;

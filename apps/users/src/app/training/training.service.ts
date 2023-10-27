@@ -76,24 +76,4 @@ export class TrainingService {
   public async getTrainingsByTrainerId(trainerId: number) {
     return await this.trainingRepository.findFromTrainer(trainerId);
   }
-
-  async updateRating(id: number, rating: number) {
-    const oldTraining = await this.trainingRepository
-      .findById(id)
-      .catch((err) => {
-        this.logger.error(err);
-        throw new NotFoundException('Training not found');
-      });
-
-    if (oldTraining) {
-      const trainingEntity = new TrainingEntity({
-        ...oldTraining,
-        rating,
-      });
-
-      return await this.trainingRepository.update(id, trainingEntity);
-    } else {
-      throw new NotFoundException('Training not found');
-    }
-  }
 }
