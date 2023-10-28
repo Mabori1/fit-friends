@@ -78,7 +78,7 @@ export class ClientRoomController {
     description: 'Users training successfully received.',
   })
   @UseGuards(JwtAuthGuard)
-  @Get('traning/:id')
+  @Get('training/:id')
   public async checkTraining(
     @Param('id') id: number,
     @Req() { user: payload }: IRequestWithTokenPayload,
@@ -95,12 +95,12 @@ export class ClientRoomController {
     description: 'Users training successfully used.',
   })
   @UseGuards(JwtAuthGuard, RoleClientGuard)
-  @Delete('traning/:id')
-  public async buyTraning(
+  @Delete('training/:id')
+  public async buyTraining(
     @Param('id') id: number,
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {
-    return await this.clientRoomService.spendTraning(payload.sub, id);
+    return await this.clientRoomService.spendTraining(payload.sub, id);
   }
 
   @ApiResponse({

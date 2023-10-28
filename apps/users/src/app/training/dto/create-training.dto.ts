@@ -38,7 +38,7 @@ export default class CreateTrainingDto {
   public levelOfUser: UserLevel;
 
   @ApiProperty({
-    description: 'User types of traning',
+    description: 'User types of training',
     example: 'йога',
   })
   @IsString()
@@ -46,7 +46,7 @@ export default class CreateTrainingDto {
   public typeOfTraining: UserTypesTraining;
 
   @ApiProperty({
-    description: 'Duration of traning',
+    description: 'Duration of training',
     example: '30-50 мин',
   })
   @IsString()
@@ -54,7 +54,7 @@ export default class CreateTrainingDto {
   public duration: TrainingDuration;
 
   @ApiProperty({
-    description: 'Price of traning',
+    description: 'Price of training',
     example: '100',
   })
   @IsPositive()
@@ -63,7 +63,7 @@ export default class CreateTrainingDto {
   public price: number;
 
   @ApiProperty({
-    description: 'Calories of traning',
+    description: 'Calories of training',
     example: '1000',
   })
   @IsNumber()
@@ -72,8 +72,9 @@ export default class CreateTrainingDto {
   public caloriesQtt: number;
 
   @ApiProperty({
-    description: 'Description of traning',
-    example: 'Расслабляющая, растягивающая и динамичная тренировка. Для души и тела',
+    description: 'Description of training',
+    example:
+      'Расслабляющая, растягивающая и динамичная тренировка. Для души и тела',
   })
   @IsString()
   @MinLength(TrainingDescriptionLength.Min)

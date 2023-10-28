@@ -10,6 +10,8 @@ import { OrderModule } from './order/order.module';
 import { FriendModule } from './friend/friend.module';
 import { BalanceModule } from './balance/balance.module';
 import { PersonalOrderModule } from './personal-order/personal-order.module';
+import { ClientRoomModule } from './client-room/client-room.module';
+import { TrainerRoomModule } from './trainer-room/trainer-room.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { PersonalOrderModule } from './personal-order/personal-order.module';
     PersonalOrderModule,
     FeedbackModule,
     OrderModule,
+    ClientRoomModule,
+    TrainerRoomModule,
   ],
   controllers: [],
   providers: [],

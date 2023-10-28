@@ -117,7 +117,7 @@ export class ClientRoomService {
     );
   }
 
-  public async spendTraning(userId: number, trainingId: number) {
+  public async spendTraining(userId: number, trainingId: number) {
     const userBalance = await this.balanceRepository
       .findByUserIdAndTrainingId(userId, trainingId)
       .catch((err) => {

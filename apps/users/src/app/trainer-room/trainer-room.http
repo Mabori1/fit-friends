@@ -15,13 +15,13 @@ GET http://localhost:4000/api/user/friend/ HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJlbWFpbCI6InNlcDNvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5MjQxNzI4LCJleHAiOjE2ODkyNDI2Mjh9.sDX2LFqqYNg2cNF2lwm_jDtg6weNxcJ8AAYn-kO4ZWU.
 ###
 # Check training
-GET http://localhost:4000/api/user/traning/7 HTTP/1.1
+GET http://localhost:4000/api/user/training/7 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6InRyYWluZXJAZ21haWwuY3dtIiwidXNlclJvbGUiOiJ0cmFpbmVyIiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5OTIzNzU3LCJleHAiOjE2ODk5MjQ2NTd9.bzpEsxjr_aec4lOcDuAL2tCEPuw3t1Mits9pk5RN7ZI
 ###
 
-# Use traning
+# Use training
 
-DELETE  http://localhost:4000/api/user/traning/7 HTTP/1.1
+DELETE  http://localhost:4000/api/user/training/7 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJlbWFpbCI6InNlcDNvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5MzUxNDQ5LCJleHAiOjE2ODkzNTIzNDl9.BPGR4L4ju3T5YwZO3ZGvCylGSS20BLno4IkKFakZdZo
 ###
 
