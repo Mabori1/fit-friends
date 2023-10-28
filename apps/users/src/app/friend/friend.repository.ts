@@ -9,8 +9,8 @@ export class FriendRepository
 {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(userFriendEntity: FriendEntity): Promise<IFriend> {
-    const entity = userFriendEntity.toObject();
+  public async create(friendEntity: FriendEntity): Promise<IFriend> {
+    const entity = friendEntity.toObject();
     return await this.prisma.friend.create({
       data: { ...entity },
     });

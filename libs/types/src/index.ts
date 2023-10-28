@@ -30,3 +30,4 @@ export * from './lib/constants/training.constant';
 export * from './lib/training-filter.interface';
 export * from './lib/type-of-order.enum';
 export * from './lib/constants/order.constant';
+export * from './lib/total-order.interface';

@@ -50,15 +50,4 @@ export class FeedbackRepository
   ): Promise<IFeedback[] | null> {
     return await this.prisma.feedback.findMany({ where: { trainingId } });
   }
-
-  public async getNewRating(trainingId: number) {
-    return await this.prisma.feedback.aggregate({
-      _avg: {
-        rating: true,
-      },
-      where: {
-        trainingId,
-      },
-    });
-  }
 }

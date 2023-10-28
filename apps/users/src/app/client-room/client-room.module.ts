@@ -7,8 +7,8 @@ import { Module } from '@nestjs/common';
 import { OrderModule } from '../order/order.module';
 import { FriendModule } from '../friend/friend.module';
 import { PersonalOrderModule } from '../personal-order/personal-order.module';
-import { TrainerRoomController } from './trainer-room.controller';
-import { TrainerRoomService } from './trainer-room.service';
+import { ClientRoomController } from './client-room.controller';
+import { ClientRoomService } from './client-room.service';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { TrainerRoomService } from './trainer-room.service';
     OrderModule,
     PersonalOrderModule,
   ],
-  controllers: [TrainerRoomController],
-  providers: [TrainerRoomService],
+  controllers: [ClientRoomController],
+  providers: [ClientRoomService],
 })
-export class TrainerRoomModule {}
+export class ClientRoomModule {}

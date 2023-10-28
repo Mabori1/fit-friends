@@ -36,9 +36,9 @@ export class BalanceRepository
 
   public async update(
     id: number,
-    userBalanceEntity: BalanceEntity,
+    balanceEntity: BalanceEntity,
   ): Promise<IBalance> {
-    const entity = userBalanceEntity.toObject();
+    const entity = balanceEntity.toObject();
     return await this.prisma.balance.update({
       where: { id },
       data: { ...entity },

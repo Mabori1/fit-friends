@@ -118,7 +118,7 @@ model Order {
   trainingId     Int      @map("training_id")
   price          Int      @default(0)
   quantity       Int      @default(0)
-  totalPrice     Int      @default(0) @map("total_price")
+  sumPrice       Int      @default(0) @map("sum_price")
   typeOfPayment  String   @default("")
   createdAt      DateTime @default(now()) @map("created_at")
   user           User     @relation(fields: [userId], references: [userId], onDelete: Cascade)

@@ -2,7 +2,7 @@ import { IsIn, IsNumber, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { OrderQueryDefault } from '@fit-friends/types';
 
-export class OrdersQuery {
+export class OrderQuery {
   @IsNumber()
   @Transform(({ value }) => +value || OrderQueryDefault.Limit)
   @IsOptional()
@@ -10,11 +10,11 @@ export class OrdersQuery {
 
   @IsIn(['asc', 'desc'])
   @IsOptional()
-  public sortDirection?: 'desc' | 'asc' = OrderQueryDefault.SortDirection;
+  public sortQtt?: 'desc' | 'asc' = OrderQueryDefault.SortDirection;
 
-  @IsIn(['sum', 'sumTraining'])
+  @IsIn(['asc', 'desc'])
   @IsOptional()
-  public sortField?: 'sum' | 'sumTraining';
+  public sortPrice?: 'desc' | 'asc' = OrderQueryDefault.SortDirection;
 
   @IsOptional()
   @Transform(({ value }) => +value)
