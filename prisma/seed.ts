@@ -1,201 +1,250 @@
 import { PrismaClient } from '@prisma/client';
+import { faker } from '@faker-js/faker';
+import { UserLevel } from '../libs/types/src/lib/user-level.enum';
+import { UserTypesTraining } from '../libs/types/src/lib/user-types-training.enum';
+import { UserGender } from '../libs/types/src/lib/user-gender.enum';
+import { TrainingDuration } from '../libs/types/src/lib/training-duration.enum';
+import { trainingGender } from '../libs/types/src/lib/constants/validation.constants';
+import { TypeOfPayment } from '../libs/types/src/lib/type-of-payment.enum';
+import { UserRole } from '../libs/types/src/lib/user-role.enum';
+import { TypeOfOrder } from '../libs/types/src/lib/type-of-order.enum';
+
+const ITEM_COUNT = 100;
 
 const prisma = new PrismaClient();
 
-async function fillDb() {
-  await prisma.user.upsert({
-    where: { userId: 1 },
-    update: {},
-    create: {
-      userId: 1,
-      name: 'Макеев',
-      email: 'makeev@gmail.com',
-      avatar: 'avatar.jpg',
-      passwordHash: 'ldldlkkkksss',
-      gender: 'мужской',
-      birthDate: '25.01.1974',
-      role: 'пользователь',
-      description: 'Только собираюсь начать заниматься',
-      location: 'Пионерская',
-      client: {
-        create: {
-          timeOfTraining: '10-30 мин',
-          caloryLosingPlanTotal: 1000,
-          caloryLosingPlanDaily: 1500,
-          isReady: true,
+function createRandomItems() {
+  const gender = faker.helpers.enumValue(UserGender);
+  const name = faker.person.firstName();
+  const email = faker.internet.email();
+
+  const clientBody = {
+    timeOfTraining: faker.helpers.enumValue(TrainingDuration),
+    caloryLosingPlanTotal: faker.number.int({ min: 1000, max: 5000 }),
+    caloryLosingPlanDaily: faker.number.int({ min: 1000, max: 5000 }),
+    isReady: faker.helpers.arrayElement([true, false]),
+  };
+
+  const trainerBody = {
+    certificate: faker.helpers.arrayElement([
+      'sertificate1.pdf',
+      'sertificate2.pdf',
+      'sertificate3.pdf',
+    ]),
+    merits: faker.lorem.paragraph(1),
+    isPersonalTraining: faker.helpers.arrayElement([true, false]),
+  };
+
+  const userRole = faker.helpers.enumValue(UserRole);
+
+  const trainingBody = {
+    title: faker.lorem.words(2),
+    backgroundPicture: faker.image.avatar(),
+    levelOfUser: faker.helpers.enumValue(UserLevel),
+    typeOfTraining: faker.helpers.enumValue(UserTypesTraining),
+    duration: faker.helpers.enumValue(TrainingDuration),
+    price: faker.number.int({ min: 0, max: 3000 }),
+    caloriesQtt: faker.number.int({ min: 1, max: 10 }),
+    description: faker.lorem.paragraph(2),
+    createdAt: faker.date.past({ years: 1 }),
+    gender: faker.helpers.arrayElement(trainingGender),
+    video: faker.helpers.arrayElement([
+      'running.mov',
+      'boxing.mov',
+      'yoga.mov',
+      'swimming.mov',
+      'jogging.mov',
+    ]),
+    rating: faker.number.float({ min: 1, max: 5, precision: 0.1 }),
+    trainerId: faker.number.int({ min: 1, max: 10000 }),
+    isPromo: faker.helpers.arrayElement([true, false]),
+  };
+
+  const feedbackBody = {
+    userId: faker.number.int({ min: 1, max: 10000 }),
+    trainingId: faker.number.int({ min: 1, max: 10000 }),
+    rating: faker.number.int({ min: 1, max: 5 }),
+    text: faker.lorem.paragraph(2),
+    createdAt: faker.date.past({ years: 1 }),
+  };
+
+  const orderBody = {
+    userId: faker.number.int({ min: 1, max: 10000 }),
+    type: faker.helpers.enumValue(UserTypesTraining),
+    trainingId: faker.number.int({ min: 1, max: 10000 }),
+    price: faker.number.int({ min: 0, max: 2000 }),
+    quantity: faker.number.int({ min: 1, max: 10 }),
+    sumPrice: faker.number.int({ min: 0, max: 100000 }),
+    typeOfPayment: faker.helpers.enumValue(TypeOfPayment),
+    createdAt: faker.date.past({ years: 1 }),
+  };
+
+  const personalOrderBody = {
+    userId: faker.number.int({ min: 1, max: 10000 }),
+    trainerId: faker.number.int({ min: 1, max: 10000 }),
+    createdAt: faker.date.past({ years: 1 }),
+    updateAt: faker.date.past({ years: 1 }),
+    orderStatus: faker.helpers.arrayElement([
+      'принят',
+      'отклонён',
+      'на рассмотрении',
+    ]),
+  };
+  const user = {
+    userId: faker.number.int({ min: 1, max: 10000 }),
+    avatar: faker.image.avatar(),
+    birthDate: faker.date.birthdate(),
+    email,
+    name,
+    gender,
+    role: userRole,
+    location: faker.helpers.arrayElement([
+      'Пионерская',
+      'Спортивная',
+      'Удельная',
+      'Советская',
+      'Комсомольская',
+    ]),
+    level: faker.helpers.enumValue(UserLevel),
+    description: faker.lorem.paragraph(4),
+    typesOfTraining: faker.helpers.arrayElements(
+      ['бокс', 'аэробика', 'стрейчинг', 'фитнес', 'йога', 'бег'],
+      { min: 1, max: 3 },
+    ),
+    passwordHash: faker.internet.password(),
+    createdAt: faker.date.past({ years: 1 }),
+  };
+
+  return {
+    personalOrderBody,
+    orderBody,
+    feedbackBody,
+    trainingBody,
+    trainerBody,
+    clientBody,
+    user,
+    userRole,
+  };
+}
+
+async function fiilDb() {
+  // clean db
+  await prisma.$transaction([
+    prisma.user.deleteMany(),
+    prisma.feedback.deleteMany(),
+    prisma.order.deleteMany(),
+    prisma.personalOrder.deleteMany(),
+    prisma.training.deleteMany(),
+  ]);
+
+  // create items
+  for (let i = 0; i < ITEM_COUNT; i++) {
+    const items = createRandomItems();
+    const qtt = faker.number.int({ min: 1, max: 10 });
+    const priceTemp = faker.number.int({ min: 0, max: 1000 });
+
+    await prisma.user.create({
+      data: {
+        name: items.user.name,
+        email: items.user.email,
+        avatar: items.user.avatar,
+        passwordHash: items.user.passwordHash,
+        gender: items.user.gender,
+        birthDate: items.user.birthDate,
+        role: items.userRole,
+        description: items.user.description,
+        location: items.user.location,
+        client: {
+          create:
+            items.userRole === UserRole.Client ? items.clientBody : undefined,
+        },
+        trainer: {
+          create:
+            items.userRole === UserRole.Trainer ? items.trainerBody : undefined,
+        },
+        level: items.user.level,
+        typesOfTraining: items.user.typesOfTraining,
+        orders: {
+          create: [
+            {
+              type: faker.helpers.enumValue(TypeOfOrder),
+              trainingId: ++i,
+              price: priceTemp,
+              quantity: qtt,
+              sumPrice: priceTemp * qtt,
+              typeOfPayment: faker.helpers.enumValue(TypeOfPayment),
+              createdAt: faker.date.past({ years: 1 }),
+            },
+            {
+              type: faker.helpers.enumValue(TypeOfOrder),
+              trainingId: ++i + 1,
+              price: priceTemp + 100,
+              quantity: qtt + 1,
+              sumPrice: priceTemp * qtt,
+              typeOfPayment: faker.helpers.enumValue(TypeOfPayment),
+              createdAt: faker.date.past({ years: 1 }),
+            },
+          ],
+        },
+        personalOrders: {
+          create: [
+            {
+              trainerId: faker.number.int({ min: 1, max: 10000 }),
+              createdAt: faker.date.past({ years: 1 }),
+              updateAt: faker.date.past({ years: 1 }),
+              orderStatus: faker.helpers.arrayElement([
+                'принят',
+                'отклонен',
+                'на рассмотрении',
+              ]),
+            },
+            {
+              trainerId: faker.number.int({ min: 1, max: 10000 }),
+              createdAt: faker.date.past({ years: 1 }),
+              updateAt: faker.date.past({ years: 1 }),
+              orderStatus: faker.helpers.arrayElement([
+                'принят',
+                'отклонен',
+                'на рассмотрении',
+              ]),
+            },
+          ],
         },
       },
-      level: 'новичок',
-      typesOfTraining: ['йога', 'бег'],
-      orders: {
-        create: [
-          {
-            typeOfOrder: 'абонемент',
-            trainingId: 7,
-            price: 1900,
-            quantity: 1000,
-            typeOfPayment: 'visa',
-          },
-        ],
-      },
-    },
-  });
-  await prisma.user.upsert({
-    where: { userId: 2 },
-    update: {},
-    create: {
-      userId: 2,
-      name: 'Петров',
-      email: 'petrov@gmail.com',
-      avatar: 'avatar1.jpg',
-      passwordHash: 'kk33j3j332',
-      gender: 'мужской',
-      role: 'тренер',
-      description: 'Очень люблю свою работу!',
-      location: 'Удельная',
-      trainer: {
-        create: {
-          certificate: 'sertificat.pdf',
-          merits: 'Лучший тренер года.',
-          isPersonalTraining: true,
+    });
+
+    await prisma.training.create({
+      data: {
+        title: items.trainingBody.title,
+        backgroundPicture: items.trainingBody.backgroundPicture,
+        levelOfUser: items.trainingBody.levelOfUser,
+        typeOfTraining: items.trainingBody.typeOfTraining,
+        duration: items.trainingBody.duration,
+        price: items.trainingBody.price,
+        caloriesQtt: items.trainingBody.caloriesQtt,
+        description: items.trainingBody.description,
+        gender: items.trainingBody.gender,
+        video: items.trainingBody.video,
+        rating: items.trainingBody.rating,
+        trainerId: ++i,
+        isPromo: items.trainingBody.isPromo,
+        feedbacks: {
+          create: [
+            {
+              userId: ++i,
+              rating: items.feedbackBody.rating,
+              text: items.feedbackBody.text,
+              createdAt: items.feedbackBody.createdAt,
+            },
+          ],
         },
       },
-      level: 'профессионал',
-      typesOfTraining: ['кроссфит'],
-    },
-  });
-  await prisma.user.upsert({
-    where: { userId: 3 },
-    update: {},
-    create: {
-      userId: 3,
-      name: 'Stepanova',
-      email: 'Stepanova@gmail.com',
-      avatar: 'avatar11.jpg',
-      passwordHash: 'asdfa1sdfasdf',
-      gender: 'женский',
-      role: 'тренер',
-      description: 'На моих тренировках получите массу ощущений!',
-      location: 'Петроградская',
-      trainer: {
-        create: {
-          certificate: 'sertificate2.pdf',
-          merits: 'descriptionsome',
-          isPersonalTraining: false,
-        },
-      },
-      level: 'профессионал',
-      typesOfTraining: ['стрейчинг', 'бокс'],
-    },
-  });
-  await prisma.user.upsert({
-    where: { userId: 4 },
-    update: {},
-    create: {
-      userId: 4,
-      name: 'Бурков',
-      email: 'burkov@gmail.com',
-      avatar: 'avatar5.jpg',
-      passwordHash: '333ll28',
-      gender: 'мужской',
-      role: 'пользователь',
-      description: 'Что то я сильно расслабился! Надо бы поднажать',
-      location: 'Пионерская',
-      client: {
-        create: {
-          timeOfTraining: '80-100 мин',
-          caloryLosingPlanTotal: 1000,
-          caloryLosingPlanDaily: 1500,
-          isReady: true,
-        },
-      },
-      level: 'профессионал',
-      typesOfTraining: ['бокс'],
-    },
-  });
-  await prisma.user.upsert({
-    where: { userId: 5 },
-    update: {},
-    create: {
-      userId: 5,
-      name: 'Марков',
-      email: 'markov@gmail.com',
-      avatar: 'avatar45.jpg',
-      passwordHash: '338891938d',
-      gender: 'мужской',
-      role: 'пользователь',
-      description: 'С нового года обязательно начну!',
-      location: 'Спортивная',
-      client: {
-        create: {
-          timeOfTraining: '80-100 мин',
-          caloryLosingPlanTotal: 1000,
-          caloryLosingPlanDaily: 1500,
-          isReady: true,
-        },
-      },
-      level: 'любитель',
-      typesOfTraining: ['стрейчинг', 'аэробика'],
-    },
-  });
-  await prisma.training.upsert({
-    where: { id: 10 },
-    update: {},
-    create: {
-      id: 10,
-      title: 'Пробежка вечерком',
-      backgroundPicture: 'bground12.jpg',
-      levelOfUser: 'профессионал',
-      typeOfTraining: 'бег',
-      duration: '80-100 мин',
-      price: 1000,
-      caloriesQtt: 1000,
-      description: 'Ежедневно, групой в парке отдыха',
-      trainingGender: 'для всех',
-      video: 'running.mov',
-      rating: 2,
-      trainerId: 3,
-      isPromo: true,
-      feedbacks: {
-        create: [
-          {
-            userId: 1,
-            rating: 3,
-            text: 'Часто тут бываю',
-          },
-          {
-            userId: 3,
-            rating: 4,
-            text: 'Сегодня было особено хорошо',
-          },
-        ],
-      },
-    },
-  });
-  await prisma.training.upsert({
-    where: { id: 7 },
-    update: {},
-    create: {
-      id: 7,
-      title: 'йога, кому за 30',
-      backgroundPicture: 'bground99.jpg',
-      levelOfUser: 'профессионал',
-      typeOfTraining: 'йога',
-      duration: '80-100 мин',
-      price: 1000,
-      caloriesQtt: 1000,
-      description: 'Сегодня расстянем шею и спину',
-      trainingGender: 'для всех',
-      video: 'yoga.mov',
-      rating: 3,
-      trainerId: 3,
-      isPromo: true,
-    },
-  });
+    });
+  }
   console.info('🤘️ Database was filled');
 }
 
-fillDb()
+fiilDb()
   .then(async () => {
     await prisma.$disconnect();
   })

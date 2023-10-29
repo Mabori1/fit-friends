@@ -1,9 +1,19 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as crypto from 'node:crypto';
-import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG, IUser } from '@fit-friends/types';
+import {
+  AUTH_USER_EXISTS,
+  AUTH_USER_NOT_FOUND,
+  AUTH_USER_PASSWORD_WRONG,
+  IUser,
+} from '@fit-friends/types';
 import { UserRepository } from '../user/user.repository';
 import { UserEntity } from '../user/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -25,7 +35,8 @@ export class AuthService {
       passwordHash: '',
       orders: [],
       personalOrders: [],
-      userBalance: [],
+      balance: [],
+      friends: [],
     };
 
     const existUser = await this.userRepository.findByEmail(dto.email);
