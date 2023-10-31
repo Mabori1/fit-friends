@@ -24,11 +24,31 @@ import { TrainerRoomService } from './trainer-room.service';
 import { OrderQuery } from './query/order.query';
 import { FriendRdo } from './rdo/friend.rdo';
 import { PersonalOrderRdo } from '../client-room/rdo/personal-order.rdo';
+import { PersonalOrderStatusQuery } from './query/personal-order-status.query';
 
 @ApiTags('trainer-room')
 @Controller('trainer')
 export class TrainerRoomController {
   constructor(private readonly trainerRoomService: TrainerRoomService) {}
+
+  @ApiResponse({
+    type: PersonalOrderRdo,
+    status: HttpStatus.OK,
+    description: 'The personal training order successfully changed',
+  })
+  @UseGuards(JwtAuthGuard, RoleTrainerGuard)
+  @Patch('personal-order')
+  public async aprovePersonalOrder(
+    @Query()
+    query: PersonalOrderStatusQuery,
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    const personalOrder = await this.trainerRoomService.changeStatus(
+      payload,
+      query,
+    );
+    return fillObject(PersonalOrderRdo, personalOrder);
+  }
 
   @ApiResponse({
     type: TrainingRdo,

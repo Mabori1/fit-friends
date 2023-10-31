@@ -1,13 +1,6 @@
 import { TypeOfOrder, TypeOfPayment } from '@fit-friends/types';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsPositive, Min } from 'class-validator';
 
 export class CreateOrderDto {
   @ApiProperty({
@@ -25,7 +18,7 @@ export class CreateOrderDto {
     required: true,
   })
   @IsOptional()
-  @IsString()
+  @IsNumber()
   public trainingId!: number;
 
   @ApiProperty({

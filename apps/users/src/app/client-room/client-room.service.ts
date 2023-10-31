@@ -1,9 +1,19 @@
-import { Logger, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { TrainingRepository } from '../training/training.repository';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import { IFriend, ITokenPayload, IUser, OrderStatus } from '@fit-friends/types';
-import { UserService } from '../user/user.service';
+import {
+  IFriend,
+  ITokenPayload,
+  IUser,
+  OrderStatus,
+  UserRole,
+} from '@fit-friends/types';
 import { FriendEntity } from '../friend/friend.entity';
 import { BalanceRepository } from '../balance/balance.repository';
 import { BalanceEntity } from '../balance/balance.entity';
@@ -11,15 +21,17 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderEntity } from '../order/order.entity';
 import { PersonalOrderEntity } from '../personal-order/personal-order.entity';
 import { PersonalOrderRepository } from '../personal-order/personal-order.repository';
+import { UserRepository } from '../user/user.repository';
 
+@Injectable()
 export class ClientRoomService {
   private readonly logger = new Logger(ClientRoomService.name);
 
   constructor(
+    private readonly userRepository: UserRepository,
     private readonly trainingRepository: TrainingRepository,
     private readonly orderRepository: OrderRepository,
     private readonly friendRepository: FriendRepository,
-    private readonly userService: UserService,
     private readonly balanceRepository: BalanceRepository,
     private readonly personalOrderRepository: PersonalOrderRepository,
   ) {}
@@ -29,7 +41,9 @@ export class ClientRoomService {
     friendId: number,
   ): Promise<IFriend | null> {
     const userId = payload.sub;
-    const friend = await this.userService.getUser(friendId).catch((err) => {
+    console.log(userId, friendId);
+
+    const friend = await this.userRepository.findById(friendId).catch((err) => {
       this.logger.error(err);
       throw new NotFoundException('User not found');
     });
@@ -38,14 +52,24 @@ export class ClientRoomService {
       throw new NotFoundException('User not found');
     }
 
+    const existsFriend = await this.friendRepository.findByUserIdAndFriendId(
+      userId,
+      friendId,
+    );
+
+    if (friend.userId === userId || userId === friendId || existsFriend) {
+      throw new ConflictException("You're doing something unacceptable");
+    }
+
     const isConfirmed = friend.role === payload.role ? true : false;
-    const userFrientEntity = new FriendEntity({
+    const userFriendEntity = new FriendEntity({
       userId,
       friendId,
       isConfirmed,
     });
+    console.log(userFriendEntity);
 
-    return await this.friendRepository.create(userFrientEntity);
+    return await this.friendRepository.create(userFriendEntity);
   }
 
   public async deleteFriend(userId: number, friendId: number): Promise<void> {
@@ -90,12 +114,12 @@ export class ClientRoomService {
       throw new NotFoundException('Friends not found');
     }
 
-    let friends: IUser[] = [];
-    friends = await Promise.all(
-      userFriends.map(async (userFriend) => {
-        return await this.userService.getUser(userFriend.friendId);
+    const friends = await Promise.all(
+      userFriends.map(async (friend) => {
+        return await this.userRepository.findById(friend.friendId);
       }),
     );
+
     return friends;
   }
 
@@ -111,10 +135,16 @@ export class ClientRoomService {
       throw new NotFoundException('Training not found');
     }
 
-    return await this.balanceRepository.findByUserIdAndTrainingId(
+    const balance = await this.balanceRepository.findByUserIdAndTrainingId(
       userId,
       trainerId,
     );
+
+    if (!balance) {
+      throw new NotFoundException('Balance not found');
+    }
+
+    return balance;
   }
 
   public async spendTraining(userId: number, trainingId: number) {
@@ -147,14 +177,14 @@ export class ClientRoomService {
         throw new NotFoundException('Training not found');
       });
 
+    if (!training) {
+      throw new NotFoundException('Training not found');
+    }
+
     const userBalance = await this.balanceRepository.findByUserIdAndTrainingId(
       userId,
       dto.trainingId,
     );
-
-    if (!training) {
-      throw new NotFoundException('Training not found');
-    }
 
     if (userBalance) {
       userBalance.trainingQtt += dto.quantity;
@@ -174,13 +204,15 @@ export class ClientRoomService {
   }
 
   public async buyPersonalTraining(userId: number, trainerId: number) {
-    const trainer = await this.userService.getUser(trainerId).catch((err) => {
-      this.logger.error(err);
-      throw new NotFoundException('User not found');
-    });
+    const trainer = await this.userRepository
+      .findById(trainerId)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new NotFoundException('User not found');
+      });
 
-    if (!trainer) {
-      throw new NotFoundException('User not found');
+    if (!trainer || trainer.role === UserRole.Client) {
+      throw new NotFoundException('Trainer not found');
     }
 
     if (userId !== trainerId) {
@@ -197,36 +229,21 @@ export class ClientRoomService {
     return await this.personalOrderRepository.findById(orderId);
   }
 
-  public async changeStatus({ orderId: orderId, newStatus: newStatus }) {
-    const order = await this.personalOrderRepository
-      .findById(orderId)
-      .catch((err) => {
-        this.logger.error(err);
-        throw new NotFoundException('Order not found');
-      });
+  public async getPersonalOrders(userId: number) {
+    return await this.personalOrderRepository.findByUserId(userId);
+  }
 
-    if (!order) {
-      throw new NotFoundException('Order not found');
-    }
-
-    if (order.orderStatus !== newStatus) {
-      const entity = new PersonalOrderEntity({
-        ...order,
-        orderStatus: newStatus,
-      });
-      entity.createdAt = order.createdAt;
-      await this.personalOrderRepository.update(orderId, entity);
-      return await this.personalOrderRepository.findByTrainerId(
-        order.trainerId,
-      );
-    }
+  public async getPersonalOrdersByTrainer(trainerId: number) {
+    return await this.personalOrderRepository.findByTrainerId(trainerId);
   }
 
   public async createRecomandationList(payload: ITokenPayload) {
-    const client = await this.userService.getUser(payload.sub).catch((err) => {
-      this.logger.error(err);
-      throw new NotFoundException('User not found');
-    });
+    const client = await this.userRepository
+      .findById(payload.sub)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new NotFoundException('User not found');
+      });
 
     if (!client) {
       throw new NotFoundException('User not found');

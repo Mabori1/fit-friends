@@ -25,6 +25,7 @@ services:
   fitfriends.pgadmin:
     image: dpage/pgadmin4:7.7
     container_name: fitfriends.pgadmin
+    restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: 'keks@htmlacademy.local'
       PGADMIN_DEFAULT_PASSWORD: 'test'
@@ -37,6 +38,7 @@ services:
   fitfriends.fakesmtp:
     image: gessnerfl/fake-smtp-server:2.0.0
     container_name: fitfriends.fakesmtp
+    restart: always
     hostname: fakesmtp
     ports:
       - 8025:8025

@@ -9,6 +9,8 @@ import { FriendModule } from '../friend/friend.module';
 import { PersonalOrderModule } from '../personal-order/personal-order.module';
 import { ClientRoomController } from './client-room.controller';
 import { ClientRoomService } from './client-room.service';
+import { BalanceModule } from '../balance/balance.module';
+import { FeedbackModule } from '../feedback/feedback.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { ClientRoomService } from './client-room.service';
     FriendModule,
     OrderModule,
     PersonalOrderModule,
+    BalanceModule,
+    FeedbackModule,
   ],
   controllers: [ClientRoomController],
   providers: [ClientRoomService],

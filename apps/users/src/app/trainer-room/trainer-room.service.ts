@@ -1,4 +1,10 @@
-import { ConflictException, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { TrainingRepository } from '../training/training.repository';
 import CreateTrainingDto from './dto/create-training.dto';
 import { TrainingEntity } from '../training/training.entity';
@@ -7,9 +13,11 @@ import { TrainingQuery } from './query/training.query';
 import { OrderQuery } from './query/order.query';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import { ITotalOrder } from '@fit-friends/types';
+import { ITokenPayload, ITotalOrder } from '@fit-friends/types';
 import { PersonalOrderRepository } from '../personal-order/personal-order.repository';
+import { PersonalOrderEntity } from '../personal-order/personal-order.entity';
 
+@Injectable()
 export class TrainerRoomService {
   private readonly logger = new Logger(TrainerRoomService.name);
 
@@ -117,5 +125,34 @@ export class TrainerRoomService {
 
   public async getPersonalOrder(trainerId: number) {
     return await this.personalOrderRepository.findByTrainerId(trainerId);
+  }
+
+  public async changeStatus(
+    payload: ITokenPayload,
+    { orderId: orderId, newStatus: newStatus },
+  ) {
+    const order = await this.personalOrderRepository
+      .findById(orderId)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new NotFoundException('Order not found');
+      });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    if (order.trainerId !== payload.sub) {
+      throw new ForbiddenException('You are not the trainer');
+    }
+
+    if (order.orderStatus !== newStatus) {
+      const entity = new PersonalOrderEntity({
+        ...order,
+        orderStatus: newStatus,
+      });
+      entity.createdAt = order.createdAt;
+      await this.personalOrderRepository.update(orderId, entity);
+      return await this.personalOrderRepository.findById(orderId);
+    }
   }
 }

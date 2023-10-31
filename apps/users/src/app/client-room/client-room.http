@@ -1,0 +1,96 @@
+# Add friend to user
+POST http://localhost:4000/api/client/friend/53 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NDk0MDQsImV4cCI6MTY5ODc1MDMwNH0.noL_PexjLgKrH31M5VqZo-5YNAnfBbautqVSUxc3dpw
+###
+
+# Delete friend from user
+DELETE http://localhost:4000/api/client/friend/54 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NDk0MDQsImV4cCI6MTY5ODc1MDMwNH0.noL_PexjLgKrH31M5VqZo-5YNAnfBbautqVSUxc3dpw
+
+###
+
+# Get friends
+
+GET http://localhost:4000/api/client/friends/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTE2NzAsImV4cCI6MTY5ODc1MjU3MH0.LH4L5tIDmafLVET1xkuDfTLNkuiLnI69Cz_nFaCrVcI
+###
+
+# Get friends
+
+GET http://localhost:4000/api/client/friends-list/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTE2NzAsImV4cCI6MTY5ODc1MjU3MH0.LH4L5tIDmafLVET1xkuDfTLNkuiLnI69Cz_nFaCrVcI
+###
+
+
+# Check balance training
+GET http://localhost:4000/api/client/balance-training/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTMxNDksImV4cCI6MTY5ODc1NDA0OX0.2wwJItwIVPmszdiTY2LJqM-mUfp7C42IyB-Rj3kdHl4
+###
+
+# Use training
+
+DELETE  http://localhost:4000/api/client/training/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTMxNDksImV4cCI6MTY5ODc1NDA0OX0.2wwJItwIVPmszdiTY2LJqM-mUfp7C42IyB-Rj3kdHl4
+###
+
+
+# Post feedback
+
+POST http://localhost:4000/api/feedbacks/create HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTMxNDksImV4cCI6MTY5ODc1NDA0OX0.2wwJItwIVPmszdiTY2LJqM-mUfp7C42IyB-Rj3kdHl4
+Content-Type: application/json
+
+{
+  "trainingId": 2,
+  "rating": 4,
+  "text": "Вроде нормальная тренировка, но изюминки нету... Минимум 100 символов это сильно! Может учат нас печатать?"
+}
+###
+
+# add Order training
+
+POST http://localhost:4000/api/client/order HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTI4MzUsImV4cCI6MTY5ODc1MzczNX0.Vocyo_saC7IPakT6yS1buutXfHAmIdXQFQFYWTxdrqg
+Content-Type: application/json
+
+{
+  "type": "абонемент",
+  "trainingId": 2,
+  "price": 12,
+  "quantity": 100,
+  "typeOfPayment": "visa"
+}
+###
+
+# add personal order by trainer id
+
+POST http://localhost:4000/api/client/personal-order/104 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMiwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTY2MzYsImV4cCI6MTY5ODc1NzUzNn0.KBMCVRCkpok3B_H8QgDJvHyHio6qrwD-28ayEKGfFkY
+###
+
+# Get personal order id
+GET http://localhost:4000/api/client/personal-order/205 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTQxMDIsImV4cCI6MTY5ODc1NTAwMn0.oEMZ-YOdbr_NM66NMaycC_XkVIwyOKSHBL4uiEr2XhI
+###
+
+# Get all personal orders
+GET http://localhost:4000/api/client/personal-orders HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTQxMDIsImV4cCI6MTY5ODc1NTAwMn0.oEMZ-YOdbr_NM66NMaycC_XkVIwyOKSHBL4uiEr2XhI
+###
+
+# Get all personal orders by trainer id
+#
+GET http://localhost:4000/api/client/personal-orders/104 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTQxMDIsImV4cCI6MTY5ODc1NTAwMn0.oEMZ-YOdbr_NM66NMaycC_XkVIwyOKSHBL4uiEr2XhI
+###
+
+# # Reciving recomendations userroom list of trainining
+# GET http://localhost:4000/api/user/recomendations HTTP/1.1
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTk0MzUwNywiZXhwIjoxNjg5OTQ0NDA3fQ.fYFoqatP9ZtErbZSdIeNna5FtK_S6eHOlmLS2BGTYfg
+# {
+#   "typesOfTraining": [],
+#   "timeOfTraining": 1,
+#   "levelOfExperience": "",
+#   "caloryLosingPlanTotal": 1000
+# }
+# ###

@@ -5,9 +5,7 @@ import {
   Get,
   HttpStatus,
   Param,
-  Patch,
   Post,
-  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -24,7 +22,6 @@ import { OrderRdo } from '../order/rdo/order.rdo';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { PersonalOrderRdo } from './rdo/personal-order.rdo';
 import { TrainingRdo } from '../training/rdo/training.tdo';
-import { PersonalOrderStatusQuery } from './query/personal-order-status.query';
 
 @ApiTags('client-room')
 @Controller('client')
@@ -63,10 +60,10 @@ export class ClientRoomController {
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
-    description: 'The friends list obj  has been successfully created.',
+    description: 'The friends list obj has been successfully created.',
   })
   @UseGuards(JwtAuthGuard, RoleClientGuard)
-  @Get('friend')
+  @Get('friends')
   public async getfriends(@Req() { user: payload }: IRequestWithTokenPayload) {
     const users = await this.clientRoomService.showFriends(payload.sub);
     return fillObject(FriendRdo, users);
@@ -75,10 +72,24 @@ export class ClientRoomController {
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
+    description: 'The friends list users has been successfully created.',
+  })
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @Get('friends-list')
+  public async getListfriends(
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    const users = await this.clientRoomService.showMyFriendsList(payload.sub);
+    return fillObject(UserRdo, users);
+  }
+
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
     description: 'Users training successfully received.',
   })
-  @UseGuards(JwtAuthGuard)
-  @Get('training/:id')
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @Get('balance-training/:id')
   public async checkTraining(
     @Param('id') id: number,
     @Req() { user: payload }: IRequestWithTokenPayload,
@@ -156,15 +167,29 @@ export class ClientRoomController {
   @ApiResponse({
     type: PersonalOrderRdo,
     status: HttpStatus.OK,
-    description: 'The personal training order successfully changed',
+    description: 'The personal training order successfully showed',
+  })
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @Get('personal-orders')
+  public async getPersonalOrders(
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    const personalOrder = await this.clientRoomService.getPersonalOrders(
+      payload.sub,
+    );
+    return fillObject(PersonalOrderRdo, personalOrder);
+  }
+
+  @ApiResponse({
+    type: PersonalOrderRdo,
+    status: HttpStatus.OK,
+    description: 'The personal training order by trainer successfully showed',
   })
   @UseGuards(JwtAuthGuard)
-  @Patch('personal-order')
-  public async aproovePersonalOrder(
-    @Query()
-    query: PersonalOrderStatusQuery,
-  ) {
-    const personalOrder = await this.clientRoomService.changeStatus(query);
+  @Get('personal-orders/:id')
+  public async getPersonalOrderByTrainer(@Param('id') trainerId: number) {
+    const personalOrder =
+      await this.clientRoomService.getPersonalOrdersByTrainer(trainerId);
     return fillObject(PersonalOrderRdo, personalOrder);
   }
 

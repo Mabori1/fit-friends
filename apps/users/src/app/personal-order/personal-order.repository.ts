@@ -32,6 +32,12 @@ export class PersonalOrderRepository
     });
   }
 
+  public async findByUserId(userId: number): Promise<IPersonalOrder[]> {
+    return await this.prisma.personalOrder.findMany({
+      where: { userId },
+    });
+  }
+
   public async findByTrainerId(trainerId: number): Promise<IPersonalOrder[]> {
     return await this.prisma.personalOrder.findMany({
       where: { trainerId },

@@ -12,6 +12,14 @@ export class OrderRdo {
   public id!: number;
 
   @ApiProperty({
+    description: 'Training ID',
+    example: 123,
+    required: true,
+  })
+  @Expose()
+  public trainingId!: number;
+
+  @ApiProperty({
     description: 'Training or season pass to gym',
     example: 'Абонемент',
     enum: TypeOfOrder,
@@ -59,5 +67,5 @@ export class OrderRdo {
     required: true,
   })
   @Expose()
-  public createdAt!: string;
+  public createdAt!: Date;
 }
