@@ -4,10 +4,14 @@ import { ICRUDRepository, ITraining } from '@fit-friends/types';
 import { TrainingEntity } from './training.entity';
 
 @Injectable()
-export class TrainingRepository implements ICRUDRepository<TrainingEntity, number, ITraining> {
+export class TrainingRepository
+  implements ICRUDRepository<TrainingEntity, number, ITraining>
+{
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(fitnessTrainingEntity: TrainingEntity): Promise<ITraining> {
+  public async create(
+    fitnessTrainingEntity: TrainingEntity,
+  ): Promise<ITraining> {
     const entityData = fitnessTrainingEntity.toObject();
     return await this.prisma.training.create({
       data: {
@@ -46,7 +50,18 @@ export class TrainingRepository implements ICRUDRepository<TrainingEntity, numbe
     });
   }
 
-  public async update(id: number, trainingEntity: TrainingEntity): Promise<ITraining> {
+  public async findByIdNotFeedback(id: number): Promise<ITraining | null> {
+    return this.prisma.training.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
+  public async update(
+    id: number,
+    trainingEntity: TrainingEntity,
+  ): Promise<ITraining> {
     const entityData = trainingEntity.toObject();
     return await this.prisma.training.update({
       where: {
@@ -67,14 +82,12 @@ export class TrainingRepository implements ICRUDRepository<TrainingEntity, numbe
     {
       limit,
       page,
-      types,
       priceMin,
       priceMax,
       caloriesMin,
       caloriesMax,
       ratingMin,
       ratingMax,
-      priceSort,
       durations,
     },
     trainerId: number,
@@ -86,12 +99,10 @@ export class TrainingRepository implements ICRUDRepository<TrainingEntity, numbe
           { price: { gte: priceMin, lte: priceMax } },
           { caloriesQtt: { gte: caloriesMin, lte: caloriesMax } },
           { rating: { gte: ratingMin, lte: ratingMax } },
-          { typeOfTraining: { in: types } },
           { duration: { in: durations } },
         ],
       },
 
-      orderBy: priceSort === 'asc' ? { price: 'asc' } : { price: 'desc' },
       include: { feedbacks: true },
       skip: page > 0 ? limit * (page - 1) : undefined,
     });

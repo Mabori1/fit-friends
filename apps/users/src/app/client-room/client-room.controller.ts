@@ -16,11 +16,10 @@ import { RoleClientGuard } from '../auth/guards/role-client.guard';
 import { ClientRoomService } from './client-room.service';
 import { IRequestWithTokenPayload } from '@fit-friends/types';
 import { fillObject } from '@fit-friends/core';
-import { FriendRdo } from './rdo/Frend.rdo';
+import { FriendRdo } from './rdo/Friend.rdo';
 import { BalanceRdo } from './rdo/balance.rdo';
 import { OrderRdo } from '../order/rdo/order.rdo';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { PersonalOrderRdo } from './rdo/personal-order.rdo';
 import { TrainingRdo } from '../training/rdo/training.tdo';
 
 @ApiTags('client-room')
@@ -119,7 +118,7 @@ export class ClientRoomController {
     status: HttpStatus.OK,
     description: 'The training successfully ordered.',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
   @Post('order')
   public async makeOrder(
     @Req() { user: payload }: IRequestWithTokenPayload,
@@ -130,67 +129,6 @@ export class ClientRoomController {
       dto,
     );
     return fillObject(OrderRdo, newOrder);
-  }
-
-  @ApiResponse({
-    type: PersonalOrderRdo,
-    status: HttpStatus.OK,
-    description: 'The personal training order successfully created.',
-  })
-  @UseGuards(JwtAuthGuard, RoleClientGuard)
-  @Post('personal-order/:id')
-  public async addPersonalOrder(
-    @Param('id') trainerId: number,
-    @Req() { user: payload }: IRequestWithTokenPayload,
-  ) {
-    const newPersonalOrder = await this.clientRoomService.buyPersonalTraining(
-      payload.sub,
-      trainerId,
-    );
-    return fillObject(PersonalOrderRdo, newPersonalOrder);
-  }
-
-  @ApiResponse({
-    type: PersonalOrderRdo,
-    status: HttpStatus.OK,
-    description: 'The personal training order successfully showed',
-  })
-  @UseGuards(JwtAuthGuard)
-  @Get('personal-order/:id')
-  public async checkPersonalOrder(@Param('id') orderId: number) {
-    const personalOrder = await this.clientRoomService.getPersonalOrder(
-      orderId,
-    );
-    return fillObject(PersonalOrderRdo, personalOrder);
-  }
-
-  @ApiResponse({
-    type: PersonalOrderRdo,
-    status: HttpStatus.OK,
-    description: 'The personal training order successfully showed',
-  })
-  @UseGuards(JwtAuthGuard, RoleClientGuard)
-  @Get('personal-orders')
-  public async getPersonalOrders(
-    @Req() { user: payload }: IRequestWithTokenPayload,
-  ) {
-    const personalOrder = await this.clientRoomService.getPersonalOrders(
-      payload.sub,
-    );
-    return fillObject(PersonalOrderRdo, personalOrder);
-  }
-
-  @ApiResponse({
-    type: PersonalOrderRdo,
-    status: HttpStatus.OK,
-    description: 'The personal training order by trainer successfully showed',
-  })
-  @UseGuards(JwtAuthGuard)
-  @Get('personal-orders/:id')
-  public async getPersonalOrderByTrainer(@Param('id') trainerId: number) {
-    const personalOrder =
-      await this.clientRoomService.getPersonalOrdersByTrainer(trainerId);
-    return fillObject(PersonalOrderRdo, personalOrder);
   }
 
   @ApiResponse({

@@ -28,6 +28,10 @@ export class FriendRepository
     return await this.prisma.friend.findMany({ where: { userId } });
   }
 
+  public async findByFriendId(friendId: number): Promise<IFriend[] | null> {
+    return await this.prisma.friend.findMany({ where: { friendId } });
+  }
+
   public async findByUserIdAndFriendId(
     userId: number,
     friendId: number,

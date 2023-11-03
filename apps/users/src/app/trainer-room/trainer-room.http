@@ -1,91 +1,60 @@
 
+# Create a new training
 
-# Reciving trainerroom list of training
-GET http://localhost:4000/api/user/traininglist?trainingQttSortingType=asc&totalMoneySortingType=asc HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTk0MzUwNywiZXhwIjoxNjg5OTQ0NDA3fQ.fYFoqatP9ZtErbZSdIeNna5FtK_S6eHOlmLS2BGTYfg
+POST http://localhost:4000/api/trainer/create HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNiwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMTc2OTAsImV4cCI6MTY5OTAyNDU5MH0.RtuTsvsKuFarfw2_OgS3o9_z5Gy2CbEWom7KcsPt4IQ
+Content-Type: application/json
+
+{
+  "title": "Побегаем4!",
+  "backgroundPicture": "bg-image1.jpg" ,
+  "levelOfUser": "любитель",
+  "typeOfTraining": "бег",
+  "duration": "10-30 мин",
+  "price": 5,
+  "caloriesQtt": 1200,
+  "description": "Пробежимся по всем достопримечательностям городского парка",
+  "gender": "для мужчин",
+  "video": "video.mov",
+  "isPromo": true
+}
+
 ###
 
-# Delete friend from user
-DELETE http://localhost:4000/api/client/friend/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI0OCwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg2NTE2MzYsImV4cCI6MTY5ODY1MjUzNn0.Jo97Tihj4SDP0E1EwnbNdqNnBfWL_34Of3gluWXYJaE
+# Update training by ID
+
+PATCH  http://localhost:4000/api/trainer/update/101 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwNSwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMDgxODQsImV4cCI6MTY5OTAxNTA4NH0.93UlEKcISgU-MTiFNgB-r3OWX4OFezoI6r_XnIeY6Qw
+Content-Type: application/json
+
+{
+  "title": "Измененный титл",
+  "price": 100
+}
 ###
+
+#Get training by ID
+
+GET http://localhost:4000/api/trainer/training/102 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwNSwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMTAzMjgsImV4cCI6MTY5OTAxNzIyOH0.1LPk86C4oKK4zc-qd8yxVz4ESgOSQvp1jD9VAxWBOxQ
+###
+
+# Get trainings feed
+
+GET  http://localhost:4000/api/trainer/feed?durations=10-30%20мин,30-50%20мин&priceMin=1&priceMax=1200&caloriesMin=1000&caloriesMax=2000&ratingMin=0&ratingMax=4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwNSwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMTE2MTAsImV4cCI6MTY5OTAxODUxMH0.NKcoqR44FYYB-ZqLBfcS_mFkP3eygFqFNDe5xJUi73U
+####
+
+
+# get orders
+GET http://localhost:4000/api/trainer/orders?sorQtt=asc&sortPrice=asc HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNiwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMTc2OTAsImV4cCI6MTY5OTAyNDU5MH0.RtuTsvsKuFarfw2_OgS3o9_z5Gy2CbEWom7KcsPt4IQ
+###
+
 
 # Get friends
 
-GET http://localhost:4000/api/user/friend/ HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJlbWFpbCI6InNlcDNvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5MjQxNzI4LCJleHAiOjE2ODkyNDI2Mjh9.sDX2LFqqYNg2cNF2lwm_jDtg6weNxcJ8AAYn-kO4ZWU.
-###
-# Check training
-GET http://localhost:4000/api/user/training/7 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6InRyYWluZXJAZ21haWwuY3dtIiwidXNlclJvbGUiOiJ0cmFpbmVyIiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5OTIzNzU3LCJleHAiOjE2ODk5MjQ2NTd9.bzpEsxjr_aec4lOcDuAL2tCEPuw3t1Mits9pk5RN7ZI
+GET http://localhost:4000/api/trainer/friends/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwOCwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMjA3MzYsImV4cCI6MTY5OTAyNzYzNn0.QRatCgdJQEseBQvz533RsiPXvh9voOLlBX9W-2kcdIM
 ###
 
-# Use training
-
-DELETE  http://localhost:4000/api/user/training/7 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJlbWFpbCI6InNlcDNvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5MzUxNDQ5LCJleHAiOjE2ODkzNTIzNDl9.BPGR4L4ju3T5YwZO3ZGvCylGSS20BLno4IkKFakZdZo
-###
-
-
-# Post feedback
-
-POST http://localhost:4000/api/user/feedback HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJlbWFpbCI6InNlcDNvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5MzM4NjA2LCJleHAiOjE2ODkzMzk1MDZ9.HgqisKyPPia2U5qIAq_0vvC8EVs9yWFpsZjFklZAI4c
-Content-Type: application/json
-
-{
-  "trainingId": 7,
-  "rating": 1,
-  "text": "это было блестящще, блестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящщеблестящще"
-}
-
-###
-# Order training
-POST http://localhost:4000/api/user/order HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6InRyYWluZXJAZ21haWwuY3dtIiwidXNlclJvbGUiOiJ0cmFpbmVyIiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5OTIwOTU1LCJleHAiOjE2ODk5MjE4NTV9.IiwjXbxJwMpXFBLFXQpsV1CtyJJRTMChWYymGijOB6I
-Content-Type: application/json
-
-{
-  "typeOfOrder": "абонемент",
-  "trainingId": 7,
-  "price": 10,
-  "qtt": 100,
-  "typeOfPayment": "visa"
-}
-###
-# Order personal training
-POST http://localhost:4000/api/user/personalorder/66 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY3LCJlbWFpbCI6ImNsaWVudG1hc2hhQGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6Ik1hc2ggQ2xpZW50IiwiaWF0IjoxNjkyNzIwOTQxLCJleHAiOjE2OTI3MjE4NDF9.qo62eJMXXDI6RBUQs2QbmGAVP3OHxXIbR9kJrHMylVc
-
-###
-
-# Get personal order
-GET http://localhost:4000/api/user/personalorder/2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5NDA1MTc5LCJleHAiOjE2ODk0MDYwNzl9.blbzGDBPExepNx2oQUMMF2YdQMrR9qKK79TKYQd5EjI
-###
-
-# confirm personal training
-PATCH http://localhost:4000/api/client/personal-order?orderId=208&newStatus=принят HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwNCwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTY2ODgsImV4cCI6MTY5ODc1NzU4OH0.TEeZ5iybu3JPcQxpBVgdXnXP4gF1wxi2lbbkchmT0qY
-###
-
-# Reject the personal training
-PATCH http://localhost:4000/api/client/personal-order?orderId=205&newStatus=отклонён HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTQ4NjksImV4cCI6MTY5ODc1NTc2OX0.UM2wO_VjrDdwGEc42Tup0oaK5yr4WnwPW5HUd8g_93Q
-###
-
-# Reciving trainerroom list of training
-GET http://localhost:4000/api/user/traininglist?trainingQttSortingType=asc&totalMoneySortingType=asc HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTk0MzUwNywiZXhwIjoxNjg5OTQ0NDA3fQ.fYFoqatP9ZtErbZSdIeNna5FtK_S6eHOlmLS2BGTYfg
-###
-
-# # Reciving recomendations userroom list of trainining
-# GET http://localhost:4000/api/user/recomendations HTTP/1.1
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTk0MzUwNywiZXhwIjoxNjg5OTQ0NDA3fQ.fYFoqatP9ZtErbZSdIeNna5FtK_S6eHOlmLS2BGTYfg
-# {
-#   "typesOfTraining": [],
-#   "timeOfTraining": 1,
-#   "levelOfExperience": "",
-#   "caloryLosingPlanTotal": 1000
-# }
-# ###

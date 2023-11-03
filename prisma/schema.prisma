@@ -9,20 +9,20 @@ datasource db {
 }
 
 model User {
-  userId          Int                     @id @default(autoincrement()) @map("user_id")
-  name            String                  @default("") @map("user_name")
-  email           String                  @unique @default("") @map("user_mail")
-  avatar          String?                 @default("") @map("user_avatar")
-  gender          String                  @default("") @map("user_gender")
-  birthDate       DateTime?               @map("birth_date")
-  role            String                  @default("") @map("user_role")
-  description     String?                 @default("")
-  location        String                  @default("")
-  createdAt       DateTime                @default(now()) @map("created_at")
-  updatedAt       DateTime                @updatedAt @map("updated_at")
-  level           String                  @default("") @map("user_level")
-  typesOfTraining String[]                @map("types_of_traning")
-  passwordHash    String                  @default("") @map("password_hash")
+  userId          Int             @id @default(autoincrement()) @map("user_id")
+  name            String          @default("") @map("user_name")
+  email           String          @unique @default("") @map("user_mail")
+  avatar          String?         @default("") @map("user_avatar")
+  gender          String          @default("") @map("user_gender")
+  birthDate       DateTime?       @map("birth_date")
+  role            String          @default("") @map("user_role")
+  description     String?         @default("")
+  location        String          @default("")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  level           String          @default("") @map("user_level")
+  typesOfTraining String[]        @map("types_of_traning")
+  passwordHash    String          @default("") @map("password_hash")
   client          Client?
   trainer         Trainer?
   orders          Order[]
@@ -82,7 +82,7 @@ model Training {
   gender            String     @default("") @map("gender")
   video             String     @default("")
   rating            Float      @default(0)
-  trainerId         Int        @default(0)
+  trainerId         Int        @map("trainer_id")
   isPromo           Boolean    @default(false) @map("is_promo")
   feedbacks         Feedback[]
 
@@ -112,16 +112,16 @@ model Balance {
 }
 
 model Order {
-  id             Int      @id @default(autoincrement())
-  userId         Int      @map("user_id")
-  type           String   @default("")
-  trainingId     Int      @map("training_id")
-  price          Int      @default(0)
-  quantity       Int      @default(0)
-  sumPrice       Int      @default(0) @map("sum_price")
-  typeOfPayment  String   @default("")
-  createdAt      DateTime @default(now()) @map("created_at")
-  user           User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  type          String   @default("")
+  trainingId    Int      @map("training_id")
+  price         Int      @default(0)
+  quantity      Int      @default(0)
+  sumPrice      Int      @default(0) @map("sum_price")
+  typeOfPayment String   @default("")
+  createdAt     DateTime @default(now()) @map("created_at")
+  user          User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@map("orders")
 }

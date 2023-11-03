@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TrainingRdo } from './rdo/training.tdo';
+import { TrainingRdo } from './rdo/training.rdo';
 import { RoleTrainerGuard } from '../auth/guards/role-trainer.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import CreateTrainingDto from './dto/create-training.dto';
@@ -19,12 +19,10 @@ import { fillObject } from '@fit-friends/core';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { TrainingQuery } from './query/training.query';
 import { IRequestWithTokenPayload } from '@fit-friends/types';
-import { OrderRdo } from './rdo/order.rdo';
+import { OrdersRdo } from './rdo/orders.rdo';
 import { TrainerRoomService } from './trainer-room.service';
 import { OrderQuery } from './query/order.query';
-import { FriendRdo } from './rdo/friend.rdo';
-import { PersonalOrderRdo } from '../client-room/rdo/personal-order.rdo';
-import { PersonalOrderStatusQuery } from './query/personal-order-status.query';
+import { UserRdo } from '../auth/rdo/user.rdo';
 
 @ApiTags('trainer-room')
 @Controller('trainer')
@@ -32,33 +30,20 @@ export class TrainerRoomController {
   constructor(private readonly trainerRoomService: TrainerRoomService) {}
 
   @ApiResponse({
-    type: PersonalOrderRdo,
-    status: HttpStatus.OK,
-    description: 'The personal training order successfully changed',
-  })
-  @UseGuards(JwtAuthGuard, RoleTrainerGuard)
-  @Patch('personal-order')
-  public async aprovePersonalOrder(
-    @Query()
-    query: PersonalOrderStatusQuery,
-    @Req() { user: payload }: IRequestWithTokenPayload,
-  ) {
-    const personalOrder = await this.trainerRoomService.changeStatus(
-      payload,
-      query,
-    );
-    return fillObject(PersonalOrderRdo, personalOrder);
-  }
-
-  @ApiResponse({
     type: TrainingRdo,
     status: HttpStatus.CREATED,
     description: 'The new training has been successfully created.',
   })
-  @UseGuards(RoleTrainerGuard, JwtAuthGuard)
-  @Post('/create-training')
-  public async create(@Body() dto: CreateTrainingDto) {
-    const newTraining = await this.trainerRoomService.create(dto);
+  @UseGuards(JwtAuthGuard, RoleTrainerGuard)
+  @Post('/create')
+  public async createTraining(
+    @Body() dto: CreateTrainingDto,
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    const newTraining = await this.trainerRoomService.createTraning(
+      payload.sub,
+      dto,
+    );
     return fillObject(TrainingRdo, newTraining);
   }
 
@@ -67,15 +52,23 @@ export class TrainerRoomController {
     status: HttpStatus.OK,
     description: 'The training has been successfully updates.',
   })
-  @UseGuards(RoleTrainerGuard, JwtAuthGuard)
-  @Patch('training/:id')
-  public async update(@Param('id') id: number, @Body() dto: UpdateTrainingDto) {
-    const updatedTraiding = await this.trainerRoomService.update(id, dto);
+  @UseGuards(JwtAuthGuard, RoleTrainerGuard)
+  @Patch('/update/:id')
+  public async updatedTraiding(
+    @Req() { user: payload }: IRequestWithTokenPayload,
+    @Param('id') id: number,
+    @Body() dto: UpdateTrainingDto,
+  ) {
+    const updatedTraiding = await this.trainerRoomService.update(
+      id,
+      payload.sub,
+      dto,
+    );
     return fillObject(TrainingRdo, updatedTraiding);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('training/:id')
+  @Get('/training/:id')
   public async show(@Param('id') id: number) {
     const updatedTraiding = await this.trainerRoomService.getTraining(id);
     return fillObject(TrainingRdo, updatedTraiding);
@@ -86,8 +79,8 @@ export class TrainerRoomController {
     status: HttpStatus.OK,
     description: 'The training list has been successfully created.',
   })
-  @UseGuards(RoleTrainerGuard, JwtAuthGuard)
-  @Get('feed')
+  @UseGuards(JwtAuthGuard, RoleTrainerGuard)
+  @Get('/feed')
   public async feedLine(
     @Query() query: TrainingQuery,
     @Req() { user: payload }: IRequestWithTokenPayload,
@@ -96,56 +89,38 @@ export class TrainerRoomController {
       query,
       payload.sub,
     );
-    return { ...fillObject(TrainingRdo, trainings) };
+    return fillObject(TrainingRdo, trainings);
   }
 
   @ApiResponse({
-    type: OrderRdo,
+    type: OrdersRdo,
     status: HttpStatus.OK,
     description: 'Get trainer orders',
   })
   @UseGuards(JwtAuthGuard, RoleTrainerGuard)
   @Get('orders')
   async findTrainerOrders(
-    @Req() req: IRequestWithTokenPayload,
+    @Req() { user: payload }: IRequestWithTokenPayload,
     @Query() query: OrderQuery,
   ) {
-    const trainerId = req?.user.sub;
     const trainerOrders = await this.trainerRoomService.getOrders(
       query,
-      trainerId,
+      payload.sub,
     );
 
-    return fillObject(OrderRdo, trainerOrders);
+    return fillObject(OrdersRdo, trainerOrders);
   }
 
   @ApiResponse({
-    type: FriendRdo,
+    type: UserRdo,
     status: HttpStatus.OK,
-    description: 'Get trainer orders',
+    description: 'Get trainer friends',
   })
   @UseGuards(JwtAuthGuard, RoleTrainerGuard)
   @Get('friends')
-  async findFriends(@Req() req: IRequestWithTokenPayload) {
-    const trainerId: number = req?.user.sub;
-    const friends = await this.trainerRoomService.getFriends(trainerId);
+  async findFriends(@Req() { user: payload }: IRequestWithTokenPayload) {
+    const friends = await this.trainerRoomService.getFriends(payload.sub);
 
-    return fillObject(FriendRdo, friends);
-  }
-
-  @ApiResponse({
-    type: PersonalOrderRdo,
-    status: HttpStatus.OK,
-    description: 'The personal training order list successfully showed',
-  })
-  @UseGuards(JwtAuthGuard)
-  @Get('personal-order')
-  public async checkTrainerPersonalOrders(
-    @Req() { user: payload }: IRequestWithTokenPayload,
-  ) {
-    const personalOrders = await this.trainerRoomService.getPersonalOrder(
-      payload.sub,
-    );
-    return fillObject(PersonalOrderRdo, personalOrders);
+    return fillObject(UserRdo, friends);
   }
 }

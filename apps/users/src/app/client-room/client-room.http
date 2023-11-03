@@ -1,6 +1,6 @@
 # Add friend to user
-POST http://localhost:4000/api/client/friend/53 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NDk0MDQsImV4cCI6MTY5ODc1MDMwNH0.noL_PexjLgKrH31M5VqZo-5YNAnfBbautqVSUxc3dpw
+POST http://localhost:4000/api/client/friend/308 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNywiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMjA1NjMsImV4cCI6MTY5OTAyNzQ2M30.fSivaZxpdRb4moGm8vNocJVyZLxxugZvsu2W1NpBG88
 ###
 
 # Delete friend from user
@@ -14,13 +14,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1ha
 GET http://localhost:4000/api/client/friends/ HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTE2NzAsImV4cCI6MTY5ODc1MjU3MH0.LH4L5tIDmafLVET1xkuDfTLNkuiLnI69Cz_nFaCrVcI
 ###
-
-# Get friends
-
-GET http://localhost:4000/api/client/friends-list/ HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTE2NzAsImV4cCI6MTY5ODc1MjU3MH0.LH4L5tIDmafLVET1xkuDfTLNkuiLnI69Cz_nFaCrVcI
-###
-
 
 # Check balance training
 GET http://localhost:4000/api/client/balance-training/2 HTTP/1.1
@@ -50,38 +43,16 @@ Content-Type: application/json
 # add Order training
 
 POST http://localhost:4000/api/client/order HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTI4MzUsImV4cCI6MTY5ODc1MzczNX0.Vocyo_saC7IPakT6yS1buutXfHAmIdXQFQFYWTxdrqg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNiwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMTc2OTAsImV4cCI6MTY5OTAyNDU5MH0.RtuTsvsKuFarfw2_OgS3o9_z5Gy2CbEWom7KcsPt4IQ
 Content-Type: application/json
 
 {
   "type": "абонемент",
-  "trainingId": 2,
+  "trainingId": 305,
   "price": 12,
   "quantity": 100,
   "typeOfPayment": "visa"
 }
-###
-
-# add personal order by trainer id
-
-POST http://localhost:4000/api/client/personal-order/104 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMiwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTY2MzYsImV4cCI6MTY5ODc1NzUzNn0.KBMCVRCkpok3B_H8QgDJvHyHio6qrwD-28ayEKGfFkY
-###
-
-# Get personal order id
-GET http://localhost:4000/api/client/personal-order/205 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTQxMDIsImV4cCI6MTY5ODc1NTAwMn0.oEMZ-YOdbr_NM66NMaycC_XkVIwyOKSHBL4uiEr2XhI
-###
-
-# Get all personal orders
-GET http://localhost:4000/api/client/personal-orders HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTQxMDIsImV4cCI6MTY5ODc1NTAwMn0.oEMZ-YOdbr_NM66NMaycC_XkVIwyOKSHBL4uiEr2XhI
-###
-
-# Get all personal orders by trainer id
-#
-GET http://localhost:4000/api/client/personal-orders/104 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTQxMDIsImV4cCI6MTY5ODc1NTAwMn0.oEMZ-YOdbr_NM66NMaycC_XkVIwyOKSHBL4uiEr2XhI
 ###
 
 # # Reciving recomendations userroom list of trainining

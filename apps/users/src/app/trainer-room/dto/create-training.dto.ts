@@ -95,11 +95,4 @@ export default class CreateTrainingDto {
   })
   @IsString()
   public video: string;
-
-  @ApiProperty({
-    description: 'Id of the trainer who created the training',
-    example: '2',
-  })
-  @IsNumber()
-  public trainerId: number;
 }

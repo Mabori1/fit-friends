@@ -50,7 +50,7 @@ export class TrainingQuery {
 
   @IsIn(['asc', 'desc', 'none'])
   @IsOptional()
-  public priceSort: 'asc' | 'desc' = 'desc';
+  public priceSort: 'asc' | 'desc' = DefaultTraining.SortDirection;
 
   @Min(CaloriesOfDay.Min)
   @Max(CaloriesOfDay.Max)

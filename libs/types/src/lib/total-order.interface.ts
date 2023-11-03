@@ -1,6 +1,6 @@
-import { IOrder } from './order.interface';
+import { ITraining } from './training.interface';
 
-export interface ITotalOrder extends IOrder {
-  totalQtt: number;
+export interface ITotalOrder extends ITraining {
+  totalQuantity: number;
   totalPrice: number;
 }

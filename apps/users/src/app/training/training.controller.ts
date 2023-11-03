@@ -33,7 +33,7 @@ export class TrainingController {
     description: 'The new training has been successfully created.',
   })
   @UseGuards(RoleTrainerGuard, JwtAuthGuard)
-  @Post('/register')
+  @Post('/create')
   public async create(@Body() dto: CreateTrainingDto) {
     const newTraining = await this.trainingService.create(dto);
     return fillObject(TrainingRdo, newTraining);

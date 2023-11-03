@@ -13,9 +13,8 @@ import { TrainingQuery } from './query/training.query';
 import { OrderQuery } from './query/order.query';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import { ITokenPayload, ITotalOrder } from '@fit-friends/types';
-import { PersonalOrderRepository } from '../personal-order/personal-order.repository';
-import { PersonalOrderEntity } from '../personal-order/personal-order.entity';
+import { ITotalOrder, IUser } from '@fit-friends/types';
+import { UserRepository } from '../user/user.repository';
 
 @Injectable()
 export class TrainerRoomService {
@@ -25,21 +24,28 @@ export class TrainerRoomService {
     private readonly trainingRepository: TrainingRepository,
     private readonly orderRepository: OrderRepository,
     private readonly friendsRepository: FriendRepository,
-    private readonly personalOrderRepository: PersonalOrderRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
-  async create(dto: CreateTrainingDto) {
-    const existsTraining = await this.trainingRepository.findByTitle(dto.title);
+  async createTraning(trainerId: number, dto: CreateTrainingDto) {
+    const existsTraining = await this.trainingRepository
+      .findByTitle(dto.title)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new NotFoundException('Training not found');
+      });
+
     if (existsTraining) {
       throw new ConflictException('Training with this title already exists');
     }
-    const training = { ...dto, feedbacks: [] };
+
+    const training = { ...dto, trainerId, feedbacks: [] };
     const trainingEntity = new TrainingEntity(training);
 
     return await this.trainingRepository.create(trainingEntity);
   }
 
-  async update(id: number, dto: UpdateTrainingDto) {
+  async update(id: number, trainerId: number, dto: UpdateTrainingDto) {
     const oldTraining = await this.trainingRepository
       .findById(id)
       .catch((err) => {
@@ -52,6 +58,10 @@ export class TrainerRoomService {
         ...oldTraining,
         ...dto,
       });
+
+      if (oldTraining.trainerId !== trainerId) {
+        throw new ForbiddenException('Это не ваша тренировка');
+      }
 
       return await this.trainingRepository.update(id, trainingEntity);
     } else {
@@ -70,15 +80,31 @@ export class TrainerRoomService {
     if (!training) {
       throw new NotFoundException('Training not found');
     }
+
     return training;
   }
 
   public async getTrainings(query: TrainingQuery, trainerId: number) {
-    return await this.trainingRepository.find(query, trainerId);
+    const trainings = await this.trainingRepository
+      .find(query, trainerId)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new NotFoundException('Training not found');
+      });
+
+    if (!trainings) {
+      throw new NotFoundException('Trainings not found');
+    }
+
+    return trainings;
   }
 
   async remove(id: number) {
     return await this.trainingRepository.destroy(id);
+  }
+
+  public async getTrainingsByTrainerId(trainerId: number) {
+    return await this.trainingRepository.findFromTrainer(trainerId);
   }
 
   public async getOrders(query: OrderQuery, trainerId: number) {
@@ -89,13 +115,17 @@ export class TrainerRoomService {
     for (let i = 0; i < orders.length; i++) {
       if (!tempId.includes(orders[i].trainingId)) {
         tempId.push(orders[i].trainingId);
+        const training = await this.trainingRepository.findByIdNotFeedback(
+          orders[i].trainingId,
+        );
+
         totalOrders.push({
-          ...orders[i],
-          totalQtt: orders[i].quantity,
+          ...training,
+          totalQuantity: orders[i].quantity,
           totalPrice: orders[i].sumPrice,
         });
       } else {
-        totalOrders[totalOrders.length - 1].totalQtt += orders[i].quantity;
+        totalOrders[totalOrders.length - 1].totalQuantity += orders[i].quantity;
         totalOrders[totalOrders.length - 1].totalPrice += orders[i].sumPrice;
       }
     }
@@ -110,49 +140,22 @@ export class TrainerRoomService {
 
     function compareByQtt(a: ITotalOrder, b: ITotalOrder) {
       if (query.sortQtt === 'asc') {
-        return a.totalQtt - b.totalQtt;
+        return a.totalQuantity - b.totalQuantity;
       } else if (query.sortQtt === 'desc') {
-        return b.totalQtt - a.totalQtt;
+        return b.totalQuantity - a.totalQuantity;
       }
     }
 
     return totalOrders.sort(compareByPrice).sort(compareByQtt);
   }
 
-  public async getFriends(userId: number) {
-    return await this.friendsRepository.findByUserId(userId);
-  }
-
-  public async getPersonalOrder(trainerId: number) {
-    return await this.personalOrderRepository.findByTrainerId(trainerId);
-  }
-
-  public async changeStatus(
-    payload: ITokenPayload,
-    { orderId: orderId, newStatus: newStatus },
-  ) {
-    const order = await this.personalOrderRepository
-      .findById(orderId)
-      .catch((err) => {
-        this.logger.error(err);
-        throw new NotFoundException('Order not found');
-      });
-
-    if (!order) {
-      throw new NotFoundException('Order not found');
+  public async getFriends(friendId: number) {
+    const friends = await this.friendsRepository.findByFriendId(friendId);
+    const users: IUser[] = [];
+    for (let i = 0; i < friends.length; i++) {
+      const user = await this.userRepository.findById(friends[i].userId);
+      users.push(user);
     }
-    if (order.trainerId !== payload.sub) {
-      throw new ForbiddenException('You are not the trainer');
-    }
-
-    if (order.orderStatus !== newStatus) {
-      const entity = new PersonalOrderEntity({
-        ...order,
-        orderStatus: newStatus,
-      });
-      entity.createdAt = order.createdAt;
-      await this.personalOrderRepository.update(orderId, entity);
-      return await this.personalOrderRepository.findById(orderId);
-    }
+    return users;
   }
 }

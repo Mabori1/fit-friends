@@ -1,5 +1,5 @@
 # Create a new training
-POST http://localhost:4000/api/trainings/register HTTP/1.1
+POST http://localhost:4000/api/trainings/create HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MzM5NzM5LCJleHAiOjE2OTgzNDA2Mzl9.qV2E_RbnWw5SMNYyyzpRxJVgQaMl5sIDx6abR93GLMc
 Content-Type: application/json
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 # Update training information by ID
 
-PATCH  http://localhost:4000/api/trainings/1 HTTP/1.1
+PATCH  http://localhost:4000/api/trainer/update-training/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MzM5NzM5LCJleHAiOjE2OTgzNDA2Mzl9.qV2E_RbnWw5SMNYyyzpRxJVgQaMl5sIDx6abR93GLMc
 Content-Type: application/json
 

@@ -7,20 +7,12 @@ import {
 import { TrainingRepository } from '../training/training.repository';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import {
-  IFriend,
-  ITokenPayload,
-  IUser,
-  OrderStatus,
-  UserRole,
-} from '@fit-friends/types';
+import { IFriend, ITokenPayload, IUser } from '@fit-friends/types';
 import { FriendEntity } from '../friend/friend.entity';
 import { BalanceRepository } from '../balance/balance.repository';
 import { BalanceEntity } from '../balance/balance.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderEntity } from '../order/order.entity';
-import { PersonalOrderEntity } from '../personal-order/personal-order.entity';
-import { PersonalOrderRepository } from '../personal-order/personal-order.repository';
 import { UserRepository } from '../user/user.repository';
 
 @Injectable()
@@ -33,7 +25,6 @@ export class ClientRoomService {
     private readonly orderRepository: OrderRepository,
     private readonly friendRepository: FriendRepository,
     private readonly balanceRepository: BalanceRepository,
-    private readonly personalOrderRepository: PersonalOrderRepository,
   ) {}
 
   public async addFriend(
@@ -201,40 +192,6 @@ export class ClientRoomService {
 
     const orderEntity = new OrderEntity({ ...dto, userId });
     return await this.orderRepository.create(orderEntity);
-  }
-
-  public async buyPersonalTraining(userId: number, trainerId: number) {
-    const trainer = await this.userRepository
-      .findById(trainerId)
-      .catch((err) => {
-        this.logger.error(err);
-        throw new NotFoundException('User not found');
-      });
-
-    if (!trainer || trainer.role === UserRole.Client) {
-      throw new NotFoundException('Trainer not found');
-    }
-
-    if (userId !== trainerId) {
-      const entity = new PersonalOrderEntity({
-        userId,
-        trainerId,
-        orderStatus: OrderStatus.Pending,
-      });
-      return await this.personalOrderRepository.create(entity);
-    }
-  }
-
-  public async getPersonalOrder(orderId: number) {
-    return await this.personalOrderRepository.findById(orderId);
-  }
-
-  public async getPersonalOrders(userId: number) {
-    return await this.personalOrderRepository.findByUserId(userId);
-  }
-
-  public async getPersonalOrdersByTrainer(trainerId: number) {
-    return await this.personalOrderRepository.findByTrainerId(trainerId);
   }
 
   public async createRecomandationList(payload: ITokenPayload) {
