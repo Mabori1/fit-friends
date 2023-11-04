@@ -1,0 +1,12 @@
+```
+From: Aleksey Makeev <a@makeev.me>
+To: Keks <keks@htmlacademy.local>
+Subject: Hello Keks
+Date: Sat, 4 Nov 2023 12:32:00
+Content-Type: text/html; charset=utf8
+
+<html>
+<body>
+Hello, Keks!
+</body>
+```

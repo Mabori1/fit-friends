@@ -168,11 +168,11 @@ model Subscriber {
   @@map("subscribers")
 }
 
-model Notification {
-  id                  Int    @id @default(autoincrement())
-  targetUserId        Int    @map("target_user_id")
-  typesOfNotification String
-  askingUserId        Int    @map("asking_user_id")
+model Notify {
+  id           Int    @id @default(autoincrement())
+  targetUserId Int    @map("target_user_id")
+  type         String
+  srcUserId    Int    @map("src_user_id")
 
   @@map("notifications")
 }

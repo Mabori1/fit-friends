@@ -1,0 +1,5 @@
+# Subscribe
+
+POST http://localhost:4000/api/subscriber/110 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJlbWFpbCI6InNlcDNvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5NjkwMTMxLCJleHAiOjE2ODk2OTEwMzF9.NI1Cl6X-xuPRVCZxZc-pbfIoqSNAqIsMNYGUKLXlpTo
+###

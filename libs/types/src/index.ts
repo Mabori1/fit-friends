@@ -31,3 +31,8 @@ export * from './lib/training-filter.interface';
 export * from './lib/type-of-order.enum';
 export * from './lib/constants/order.constant';
 export * from './lib/total-order.interface';
+export * from './lib/subscriber.interface';
+export * from './lib/notify.interface';
+export * from './lib/notify-type.enum';
+export * from './lib/rabbit-connection.interface';
+export * from './lib/rabbit-routing.enum';

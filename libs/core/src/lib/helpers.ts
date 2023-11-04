@@ -1,3 +1,4 @@
+import { IRabbitConnection } from '@fit-friends/types';
 import { plainToInstance, ClassConstructor } from 'class-transformer';
 
 export function fillObject<T, V>(someDto: ClassConstructor<T>, plainObject: V) {
@@ -26,4 +27,13 @@ export function parseTime(time: string): TimeAndUnit {
   }
 
   return { value, unit };
+}
+
+export function getRabbitMQConnectionString({
+  user,
+  password,
+  host,
+  port,
+}): string {
+  return `amqp://${user}:${password}@${host}:${port}`;
 }

@@ -14,8 +14,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('The «Users» service')
-    .setDescription('Users service API')
+    .setTitle('The «Backend» service')
+    .setDescription('Backend service API')
     .setVersion('1.0')
     .build();
 
@@ -32,8 +32,12 @@ async function bootstrap() {
   const port = configService.get('application.port');
 
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
-  Logger.log(`🎯  Current mode: ${configService.get('application.environment')}`);
+  Logger.log(
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+  );
+  Logger.log(
+    `🎯  Current mode: ${configService.get('application.environment')}`,
+  );
 }
 
 bootstrap();

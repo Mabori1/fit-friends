@@ -1,0 +1,23 @@
+# Get all user notify
+
+GET http://localhost:4000/api/notify HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJlbWFpbCI6InNlcDNvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoiY2xpZW50IiwibmFtZSI6ItCS0LDRgdC40LvQuNC5IiwiaWF0IjoxNjg5NjkwMTMxLCJleHAiOjE2ODk2OTEwMzF9.NI1Cl6X-xuPRVCZxZc-pbfIoqSNAqIsMNYGUKLXlpTo
+###
+
+#Create notify
+
+POST http://localhost:4000/api/notify HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTY4OTk3MCwiZXhwIjoxNjg5NjkwODcwfQ.GAP0aElhOzz_7gIWojZ2kmB3x6WbnKHoCjRy9gr394Q
+Content-Type: application/json
+
+{
+  "type": "добавить в друзья",
+  "targetUserId": 16
+}
+
+###
+
+#Delete notify
+
+DELETE http://localhost:4000/api/notify/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJlbWFpbC

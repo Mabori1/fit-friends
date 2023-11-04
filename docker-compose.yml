@@ -48,6 +48,24 @@ services:
     networks:
       - fitfriends
 
+  fitfriends.rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: fitfriends.rabbitmq
+    restart: always
+    ports:
+      - '1088:15672'
+      - '5672:5672'
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: test
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fitfriends
+
 volumes:
   fitfriends.postgres:
 
