@@ -15,3 +15,7 @@
    $ `npx ts-node ./prisma/seed.ts`
 6. Запустить сервер:
    $ `nx serve backend`
+
+## По умолчанию сервер запускается на порту 4000.
+
+## API: <http://localhost:4000/spec>

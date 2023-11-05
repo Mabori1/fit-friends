@@ -5,14 +5,14 @@ import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 export class CreateNotifyDto {
   @ApiProperty({
     description: 'Id of user which will responce',
-    example: '100',
+    example: 'mabori1@gmail.com',
   })
   @IsEmail()
   public targetUserEmail: string;
 
   @ApiProperty({
     description: 'Type of notification',
-    example: 'добавить в друзья',
+    example: 'Хотел добавить тебя в друзья',
   })
   @IsString()
   @MinLength(NotifyText.Min)
