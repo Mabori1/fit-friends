@@ -1,6 +1,5 @@
 export interface INotify {
   id?: number;
-  targetUserId: number;
-  type: string;
-  srcUserId: number;
+  targetUserEmail: string;
+  text: string;
 }

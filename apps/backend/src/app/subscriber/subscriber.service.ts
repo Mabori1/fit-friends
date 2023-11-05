@@ -1,63 +1,44 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { SubscriberRepository } from './subscriber.repository';
 import { SubscriberEntity } from './subscriber.entity';
-import { MailerService } from '@nestjs-modules/mailer';
-import { UserRepository } from '../user/user.repository';
-import { ITokenPayload } from '@fit-friends/types';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
+import { IUnsubscribe } from '@fit-friends/types';
 
 @Injectable()
 export class SubscriberService {
   private readonly logger = new Logger(SubscriberService.name);
 
-  constructor(
-    private readonly subscriberRepository: SubscriberRepository,
-    private readonly userRepository: UserRepository,
-    private readonly mailerServer: MailerService,
-  ) {}
+  constructor(private readonly subscriberRepository: SubscriberRepository) {}
 
   public async createSubscriber(subscriber: CreateSubscriberDto) {
     const { email, name, trainerId } = subscriber;
-    const trainer = await this.userRepository
-      .findById(trainerId)
+    const existingSubscriber = await this.subscriberRepository
+      .findByEmailAndTrainerId(email, trainerId)
       .catch((err) => {
         this.logger.error(err);
-        throw new NotFoundException('Trainer not found');
+        throw new NotFoundException('Subscriber not found');
       });
 
-    if (!trainer) {
-      throw new NotFoundException('Trainer not found');
+    if (existingSubscriber) {
+      return existingSubscriber;
     }
 
     const entity = new SubscriberEntity({ email, name, trainerId });
     return await this.subscriberRepository.create(entity);
   }
 
-  public async sendMail(payload: ITokenPayload) {
-    const { sub, name } = payload;
-    const subscribers = await this.subscriberRepository
-      .findByTrainerId(sub)
+  public async deleteSubscribe(unsubscriber: IUnsubscribe) {
+    const subscriber = await this.subscriberRepository
+      .findByEmailAndTrainerId(unsubscriber.email, unsubscriber.trainerId)
       .catch((err) => {
         this.logger.error(err);
-        throw new NotFoundException('Subscribers not found');
+        throw new NotFoundException('Subscriber not found');
       });
 
-    if (!subscribers) {
-      throw new NotFoundException('Subscribers not found');
+    if (!subscriber) {
+      throw new NotFoundException('Subscriber not found');
     }
 
-    await Promise.all(
-      subscribers.map(async (item) => {
-        await this.mailerServer.sendMail({
-          to: item.email,
-          subject: 'New training',
-          template: '../../new-training',
-          context: {
-            user: `${item.name} `,
-            trainer: `${name}`,
-          },
-        });
-      }),
-    );
+    await this.subscriberRepository.destroy(subscriber.id);
   }
 }

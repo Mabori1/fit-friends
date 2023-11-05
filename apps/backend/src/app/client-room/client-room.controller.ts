@@ -21,6 +21,7 @@ import { BalanceRdo } from './rdo/balance.rdo';
 import { OrderRdo } from '../order/rdo/order.rdo';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { TrainingRdo } from '../training/rdo/training.tdo';
+import { SubscriberRdo } from '../subscriber/rdo/subscriber.rdo';
 
 @ApiTags('client-room')
 @Controller('client')
@@ -145,5 +146,38 @@ export class ClientRoomController {
       payload,
     );
     return fillObject(TrainingRdo, trainings);
+  }
+
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @ApiResponse({
+    type: SubscriberRdo,
+    status: HttpStatus.OK,
+    description: 'Subscribe to the trainer.',
+  })
+  @Post('/subscribe/:id')
+  public async subscribe(
+    @Param('id') id: number,
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    const { name, email } = payload;
+    await this.clientRoomService.subscribe({ trainerId: id, name, email });
+
+    return fillObject(SubscriberRdo, { trainerId: id, name, email });
+  }
+
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @ApiResponse({
+    type: SubscriberRdo,
+    status: HttpStatus.OK,
+    description: 'Unsubscribe to the trainer.',
+  })
+  @Delete('/unsubscribe/:id')
+  public async unsubscribe(
+    @Param('id') id: number,
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    await this.clientRoomService.unsubscribe({ ...payload, trainerId: id });
+
+    return 'Unsubscribe to the trainer.';
   }
 }

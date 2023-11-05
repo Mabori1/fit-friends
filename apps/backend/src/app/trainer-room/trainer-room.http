@@ -2,11 +2,11 @@
 # Create a new training
 
 POST http://localhost:4000/api/trainer/create HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNiwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMTc2OTAsImV4cCI6MTY5OTAyNDU5MH0.RtuTsvsKuFarfw2_OgS3o9_z5Gy2CbEWom7KcsPt4IQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkxOTU3NDEsImV4cCI6MTY5OTIwMjY0MX0.bi2796XkPA3J6C5JesmmHf_2C56w5IgRyLFuUP9clRU
 Content-Type: application/json
 
 {
-  "title": "Побегаем4!",
+  "title": "Побегаем1!",
   "backgroundPicture": "bg-image1.jpg" ,
   "levelOfUser": "любитель",
   "typeOfTraining": "бег",

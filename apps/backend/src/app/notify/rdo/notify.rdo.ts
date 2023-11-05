@@ -17,16 +17,16 @@ export class NotifyRdo {
   public targetUserId: number;
 
   @ApiProperty({
-    description: 'Type of notification',
+    description: 'Date of notify',
+    example: '2021-01-01T00:00:00.000Z',
+  })
+  @Expose()
+  public createdAt: Date;
+
+  @ApiProperty({
+    description: 'Text of notify',
     example: 'добавить в друзья',
   })
   @Expose()
-  public type: string;
-
-  @ApiProperty({
-    description: 'Source user id',
-    example: '12',
-  })
-  @Expose()
-  public srcUserId: number;
+  public text: string;
 }

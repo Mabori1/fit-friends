@@ -1,20 +1,21 @@
-import { NotifyType } from '@fit-friends/types';
+import { NotifyText } from '@fit-friends/types';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateNotifyDto {
   @ApiProperty({
     description: 'Id of user which will responce',
     example: '100',
   })
-  @IsNumber()
-  public targetUserId: number;
+  @IsEmail()
+  public targetUserEmail: string;
 
   @ApiProperty({
     description: 'Type of notification',
     example: 'добавить в друзья',
   })
   @IsString()
-  @IsEnum(NotifyType)
-  public type: string;
+  @MinLength(NotifyText.Min)
+  @MaxLength(NotifyText.Max)
+  public text: string;
 }

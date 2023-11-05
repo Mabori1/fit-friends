@@ -26,10 +26,12 @@ export class UserService {
   public async getUsers(query: UserQuery): Promise<IUser[] | null> {
     const { limit, page } = query;
     const userFilter: IUserFilter = { ...query };
-    const users = await this.userRepository.find(limit, userFilter, page).catch((err) => {
-      this.logger.error(err);
-      throw new NotFoundException('Users not found');
-    });
+    const users = await this.userRepository
+      .find(limit, userFilter, page)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new NotFoundException('Users not found');
+      });
 
     if (!users) {
       throw new NotFoundException('Users not found');

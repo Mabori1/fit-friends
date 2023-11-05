@@ -22,6 +22,19 @@ export class SubscriberRepository
     return await this.prisma.subscriber.findFirst({ where: { id } });
   }
 
+  public async findByEmail(email: string): Promise<ISubscriber> {
+    return await this.prisma.subscriber.findFirst({ where: { email } });
+  }
+
+  public async findByEmailAndTrainerId(
+    email: string,
+    trainerId: number,
+  ): Promise<ISubscriber> {
+    return await this.prisma.subscriber.findFirst({
+      where: { trainerId, email },
+    });
+  }
+
   public async findByTrainerId(trainerId: number): Promise<ISubscriber[]> {
     return await this.prisma.subscriber.findMany({ where: { trainerId } });
   }

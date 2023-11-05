@@ -1,33 +1,33 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Expose } from 'class-transformer';
+import { IsEmail, IsNumber, IsString } from 'class-validator';
 
-export class CreateSubscriberDto {
+export class SubscriberRdo {
+  @ApiProperty({
+    description: 'Id of subscriber',
+    example: 'keks@keks.com',
+  })
+  @Expose()
+  public id: number;
+
   @ApiProperty({
     description: 'Email of subscriber',
     example: 'keks@keks.com',
   })
-  @IsString()
-  @IsEmail(
-    {},
-    {
-      message: 'The email is not valid',
-    },
-  )
+  @Expose()
   public email: string;
 
   @ApiProperty({
     description: 'Name of subscriber',
     example: 'keks',
   })
-  @IsString()
-  @IsNotEmpty({ message: 'The first name is empty' })
+  @Expose()
   public name: string;
 
   @ApiProperty({
     description: 'Trainers Id',
     example: '7',
   })
-  @IsNumber()
-  @IsNotEmpty({ message: 'The trainerId is empty' })
+  @Expose()
   public trainerId: number;
 }

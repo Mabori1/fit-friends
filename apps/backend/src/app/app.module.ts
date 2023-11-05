@@ -18,6 +18,8 @@ import jwtConfig from './config/jwt.config';
 import subscriberConfig from './config/subscriber.config';
 import { NotifyModule } from './notify/notify.module';
 import rabbitConfig from './config/rabbit.config';
+import notifyConfig from './config/notify.config';
+import { SubscriberModule } from './subscriber/subscriber.module';
 
 const ENV_FILE_PATH = '../../../../.env';
 
@@ -35,11 +37,19 @@ const ENV_FILE_PATH = '../../../../.env';
     FeedbackModule,
     OrderModule,
     ClientRoomModule,
+    SubscriberModule,
     TrainerRoomModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [appConfig, dbConfig, jwtConfig, subscriberConfig, rabbitConfig],
+      load: [
+        appConfig,
+        dbConfig,
+        jwtConfig,
+        subscriberConfig,
+        rabbitConfig,
+        notifyConfig,
+      ],
       envFilePath: ENV_FILE_PATH,
     }),
   ],

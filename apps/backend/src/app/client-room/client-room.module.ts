@@ -11,9 +11,12 @@ import { ClientRoomController } from './client-room.controller';
 import { ClientRoomService } from './client-room.service';
 import { BalanceModule } from '../balance/balance.module';
 import { FeedbackModule } from '../feedback/feedback.module';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { getRabbitMQOptions } from '@fit-friends/core';
 
 @Module({
   imports: [
+    RabbitMQModule.forRootAsync(RabbitMQModule, getRabbitMQOptions('rabbit')),
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: getJwtOptions,

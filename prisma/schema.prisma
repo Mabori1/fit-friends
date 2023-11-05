@@ -169,10 +169,10 @@ model Subscriber {
 }
 
 model Notify {
-  id           Int    @id @default(autoincrement())
-  targetUserId Int    @map("target_user_id")
-  type         String
-  srcUserId    Int    @map("src_user_id")
+  id              Int      @id @default(autoincrement())
+  targetUserEmail String   @map("target_user_id")
+  text            String   @default("")
+  createdAt       DateTime @default(now()) @map("created_at")
 
   @@map("notifications")
 }

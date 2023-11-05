@@ -1,3 +1,8 @@
+export enum NotifyText {
+  Min = 10,
+  Max = 140,
+}
+
 export enum Rating {
   Min = 0,
   Max = 5,
@@ -59,12 +64,35 @@ export enum TrainerMeritLength {
 
 export const userGenders: string[] = ['женский', 'мужской', 'неважно'];
 
-export const userLocations: string[] = ['Пионерская', 'Петроградская', 'Удельная', 'Звёздная', 'Спортивная'];
+export const userLocations: string[] = [
+  'Пионерская',
+  'Петроградская',
+  'Удельная',
+  'Звёздная',
+  'Спортивная',
+];
 
-export const durationOfTraining: string[] = ['10-30 мин', '30-50 мин', '50-80 мин', '80-100 мин'];
+export const durationOfTraining: string[] = [
+  '10-30 мин',
+  '30-50 мин',
+  '50-80 мин',
+  '80-100 мин',
+];
 
-export const typesOfTraining: string[] = ['йога', 'бег', 'бокс', 'стрейчинг', 'кроссфит', 'аэробика', 'пилатес'];
+export const typesOfTraining: string[] = [
+  'йога',
+  'бег',
+  'бокс',
+  'стрейчинг',
+  'кроссфит',
+  'аэробика',
+  'пилатес',
+];
 
-export const trainingGender: string[] = ['для женщин', 'для мужчин', 'для всех'];
+export const trainingGender: string[] = [
+  'для женщин',
+  'для мужчин',
+  'для всех',
+];
 
 export const trainingBackgroundTypes: string[] = ['.jpg', '.jpeg', '.png'];

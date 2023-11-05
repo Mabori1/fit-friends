@@ -13,8 +13,10 @@ import { TrainingQuery } from './query/training.query';
 import { OrderQuery } from './query/order.query';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import { ITotalOrder, IUser } from '@fit-friends/types';
+import { ITokenPayload, ITotalOrder, IUser } from '@fit-friends/types';
 import { UserRepository } from '../user/user.repository';
+import { SubscriberRepository } from '../subscriber/subscriber.repository';
+import { NotifyService } from '../notify/notify.service';
 
 @Injectable()
 export class TrainerRoomService {
@@ -25,9 +27,13 @@ export class TrainerRoomService {
     private readonly orderRepository: OrderRepository,
     private readonly friendsRepository: FriendRepository,
     private readonly userRepository: UserRepository,
+    private readonly notifyService: NotifyService,
+    private readonly subscriberRepository: SubscriberRepository,
   ) {}
 
-  async createTraning(trainerId: number, dto: CreateTrainingDto) {
+  async createTraning(payload: ITokenPayload, dto: CreateTrainingDto) {
+    const { name, sub } = payload;
+
     const existsTraining = await this.trainingRepository
       .findByTitle(dto.title)
       .catch((err) => {
@@ -39,10 +45,23 @@ export class TrainerRoomService {
       throw new ConflictException('Training with this title already exists');
     }
 
-    const training = { ...dto, trainerId, feedbacks: [] };
+    const training = { ...dto, trainerId: sub, feedbacks: [] };
     const trainingEntity = new TrainingEntity(training);
 
-    return await this.trainingRepository.create(trainingEntity);
+    const subscribers = await this.subscriberRepository.findByTrainerId(sub);
+
+    const newTraining = await this.trainingRepository.create(trainingEntity);
+
+    subscribers.forEach(async (subscriber) => {
+      await this.notifyService.addNewTraining({
+        trainerName: name,
+        title: newTraining.title,
+        email: subscriber.email,
+        name: subscriber.name,
+      });
+    });
+
+    return newTraining;
   }
 
   async update(id: number, trainerId: number, dto: UpdateTrainingDto) {

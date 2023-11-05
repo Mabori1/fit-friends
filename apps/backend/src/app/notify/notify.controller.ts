@@ -25,26 +25,20 @@ export class NotifyController {
   @UseGuards(JwtAuthGuard)
   @Get('/')
   public async show(@Req() { user: payload }: IRequestWithTokenPayload) {
-    const notifications = await this.notifyService.getNotify(payload.sub);
-    return fillObject(NotifyRdo, notifications);
+    const notify = await this.notifyService.getNotify(payload.email);
+    return fillObject(NotifyRdo, notify);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('/')
-  public async create(
-    @Req() { user: payload }: IRequestWithTokenPayload,
-    @Body() dto: CreateNotifyDto,
-  ) {
-    const newNotification = await this.notifyService.addNotify(
-      dto,
-      payload.sub,
-    );
-    return fillObject(NotifyRdo, newNotification);
+  public async create(@Body() dto: CreateNotifyDto) {
+    const newNotify = await this.notifyService.makeNewNotify(dto);
+    return fillObject(NotifyRdo, newNotify);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  public async delete(@Param('id', ParseIntPipe) id: number) {
+  @Delete('/:id')
+  public async delete(@Param('id') id: number) {
     await this.notifyService.deleteNotify(id);
   }
 }

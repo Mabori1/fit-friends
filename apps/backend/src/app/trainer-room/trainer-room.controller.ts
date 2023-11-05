@@ -41,9 +41,10 @@ export class TrainerRoomController {
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {
     const newTraining = await this.trainerRoomService.createTraning(
-      payload.sub,
+      payload,
       dto,
     );
+
     return fillObject(TrainingRdo, newTraining);
   }
 

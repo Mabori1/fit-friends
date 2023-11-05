@@ -8,6 +8,7 @@ export class NotifyRepository
   implements ICRUDRepository<NotifyEntity, number, INotify>
 {
   constructor(private readonly prisma: PrismaService) {}
+
   public async create(item: NotifyEntity): Promise<INotify> {
     const entity = item.toObject();
     return await this.prisma.notify.create({ data: { ...entity } });
@@ -23,9 +24,9 @@ export class NotifyRepository
     });
   }
 
-  public async findByUserId(userId: number): Promise<INotify[]> {
-    return await this.prisma.notify.findMany({
-      where: { targetUserId: userId },
+  public async findByEmail(targetUserEmail: string): Promise<INotify> {
+    return await this.prisma.notify.findFirst({
+      where: { targetUserEmail },
     });
   }
 }

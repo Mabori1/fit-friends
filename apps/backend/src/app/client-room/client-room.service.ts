@@ -7,13 +7,22 @@ import {
 import { TrainingRepository } from '../training/training.repository';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import { IFriend, ITokenPayload, IUser } from '@fit-friends/types';
+import {
+  IFriend,
+  ITokenPayload,
+  IUnsubscribe,
+  IUser,
+  RabbitRouting,
+} from '@fit-friends/types';
 import { FriendEntity } from '../friend/friend.entity';
 import { BalanceRepository } from '../balance/balance.repository';
 import { BalanceEntity } from '../balance/balance.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderEntity } from '../order/order.entity';
 import { UserRepository } from '../user/user.repository';
+import { CreateSubscriberDto } from '../subscriber/dto/create-subscriber.dto';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ClientRoomService {
@@ -25,6 +34,8 @@ export class ClientRoomService {
     private readonly orderRepository: OrderRepository,
     private readonly friendRepository: FriendRepository,
     private readonly balanceRepository: BalanceRepository,
+    private readonly rabbitClient: AmqpConnection,
+    private readonly configService: ConfigService,
   ) {}
 
   public async addFriend(
@@ -32,7 +43,6 @@ export class ClientRoomService {
     friendId: number,
   ): Promise<IFriend | null> {
     const userId = payload.sub;
-    console.log(userId, friendId);
 
     const friend = await this.userRepository.findById(friendId).catch((err) => {
       this.logger.error(err);
@@ -212,5 +222,21 @@ export class ClientRoomService {
       duration: client.client.timeOfTraining,
       levelOfUser: client.level,
     });
+  }
+
+  public async subscribe(dto: CreateSubscriberDto) {
+    await this.rabbitClient.publish<CreateSubscriberDto>(
+      this.configService.get<string>('rabbit.exchange'),
+      RabbitRouting.AddSubscriber,
+      { ...dto },
+    );
+  }
+
+  public async unsubscribe(unsubscriber: IUnsubscribe) {
+    await this.rabbitClient.publish<IUnsubscribe>(
+      this.configService.get<string>('rabbit.exchange'),
+      RabbitRouting.Unsubscribe,
+      { ...unsubscriber },
+    );
   }
 }

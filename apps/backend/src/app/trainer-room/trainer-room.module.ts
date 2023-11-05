@@ -9,6 +9,8 @@ import { FriendModule } from '../friend/friend.module';
 import { PersonalOrderModule } from '../personal-order/personal-order.module';
 import { TrainerRoomController } from './trainer-room.controller';
 import { TrainerRoomService } from './trainer-room.service';
+import { NotifyModule } from '../notify/notify.module';
+import { SubscriberModule } from '../subscriber/subscriber.module';
 
 @Module({
   imports: [
@@ -18,9 +20,12 @@ import { TrainerRoomService } from './trainer-room.service';
     }),
     UserModule,
     TrainingModule,
+    NotifyModule,
     FriendModule,
     OrderModule,
     PersonalOrderModule,
+    NotifyModule,
+    SubscriberModule,
   ],
   controllers: [TrainerRoomController],
   providers: [TrainerRoomService],
