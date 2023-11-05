@@ -13,6 +13,7 @@ import { BalanceModule } from '../balance/balance.module';
 import { FeedbackModule } from '../feedback/feedback.module';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { getRabbitMQOptions } from '@fit-friends/core';
+import { NotifyModule } from '../notify/notify.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { getRabbitMQOptions } from '@fit-friends/core';
     PersonalOrderModule,
     BalanceModule,
     FeedbackModule,
+    NotifyModule,
   ],
   controllers: [ClientRoomController],
   providers: [ClientRoomService],

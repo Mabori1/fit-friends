@@ -4,18 +4,6 @@ GET http://localhost:4000/api/notify HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkxOTY3MTQsImV4cCI6MTY5OTIwMzYxNH0.t65VMIrl6XeiJql00ZEawWdQ6ucMPbDfiFyJkzeXiYE
 ###
 
-#Create notify
-
-POST http://localhost:4000/api/notify HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkxOTY3MTQsImV4cCI6MTY5OTIwMzYxNH0.t65VMIrl6XeiJql00ZEawWdQ6ucMPbDfiFyJkzeXiYE
-Content-Type: application/json
-
-{
-  "targetUserEmail": "mabori2@gmail.com",
-  "text": "Хочу добавить тебя в друзья!"
-}
-
-###
 
 #Delete notify
 

@@ -9,6 +9,7 @@ import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
 import {
   IFriend,
+  IFriendInfo,
   ITokenPayload,
   IUnsubscribe,
   IUser,
@@ -23,6 +24,7 @@ import { UserRepository } from '../user/user.repository';
 import { CreateSubscriberDto } from '../subscriber/dto/create-subscriber.dto';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { ConfigService } from '@nestjs/config';
+import { NotifyService } from '../notify/notify.service';
 
 @Injectable()
 export class ClientRoomService {
@@ -36,6 +38,7 @@ export class ClientRoomService {
     private readonly balanceRepository: BalanceRepository,
     private readonly rabbitClient: AmqpConnection,
     private readonly configService: ConfigService,
+    private readonly notifyService: NotifyService,
   ) {}
 
   public async addFriend(
@@ -68,9 +71,24 @@ export class ClientRoomService {
       friendId,
       isConfirmed,
     });
-    console.log(userFriendEntity);
 
-    return await this.friendRepository.create(userFriendEntity);
+    const newfriend = await this.friendRepository.create(userFriendEntity);
+
+    await this.notifyService.makeNewNotify({
+      targetUserEmail: friend.email,
+      text: `${payload.name} добавил вас в друзья`,
+    });
+
+    const rabbitNewFriend = {
+      targetEmail: friend.email,
+      targetName: friend.name,
+      srcName: payload.name,
+      srcEmail: payload.email,
+    };
+
+    this.rabbitNewFrend(rabbitNewFriend);
+
+    return newfriend;
   }
 
   public async deleteFriend(userId: number, friendId: number): Promise<void> {
@@ -237,6 +255,14 @@ export class ClientRoomService {
       this.configService.get<string>('rabbit.exchange'),
       RabbitRouting.Unsubscribe,
       { ...unsubscriber },
+    );
+  }
+
+  public async rabbitNewFrend(dto: IFriendInfo) {
+    await this.rabbitClient.publish<IFriendInfo>(
+      this.configService.get<string>('rabbit.exchange'),
+      RabbitRouting.AddFriend,
+      { ...dto },
     );
   }
 }
