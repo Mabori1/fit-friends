@@ -10,10 +10,10 @@ import { FriendRepository } from '../friend/friend.repository';
 import {
   IFriend,
   IFriendInfo,
+  ISubscriber,
   ITokenPayload,
   IUnsubscribe,
   IUser,
-  RabbitRouting,
 } from '@fit-friends/types';
 import { FriendEntity } from '../friend/friend.entity';
 import { BalanceRepository } from '../balance/balance.repository';
@@ -21,10 +21,10 @@ import { BalanceEntity } from '../balance/balance.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderEntity } from '../order/order.entity';
 import { UserRepository } from '../user/user.repository';
-import { CreateSubscriberDto } from '../subscriber/dto/create-subscriber.dto';
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { ConfigService } from '@nestjs/config';
+import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { NotifyService } from '../notify/notify.service';
+import { SubscriberRepository } from '../subscriber/subscriber.repository';
+import { SubscriberEntity } from '../subscriber/subscriber.entity';
 
 @Injectable()
 export class ClientRoomService {
@@ -36,9 +36,8 @@ export class ClientRoomService {
     private readonly orderRepository: OrderRepository,
     private readonly friendRepository: FriendRepository,
     private readonly balanceRepository: BalanceRepository,
-    private readonly rabbitClient: AmqpConnection,
-    private readonly configService: ConfigService,
     private readonly notifyService: NotifyService,
+    private readonly subscriberRepository: SubscriberRepository,
   ) {}
 
   public async addFriend(
@@ -72,23 +71,16 @@ export class ClientRoomService {
       isConfirmed,
     });
 
-    const newfriend = await this.friendRepository.create(userFriendEntity);
+    const newFriend = await this.friendRepository.create(userFriendEntity);
 
-    await this.notifyService.makeNewNotify({
-      targetUserEmail: friend.email,
-      text: `${payload.name} добавил вас в друзья`,
-    });
-
-    const rabbitNewFriend = {
+    await this.notifyService.addFriend({
       targetEmail: friend.email,
       targetName: friend.name,
       srcName: payload.name,
       srcEmail: payload.email,
-    };
+    });
 
-    this.rabbitNewFrend(rabbitNewFriend);
-
-    return newfriend;
+    return newFriend;
   }
 
   public async deleteFriend(userId: number, friendId: number): Promise<void> {
@@ -103,7 +95,7 @@ export class ClientRoomService {
       throw new NotFoundException('Friend not found');
     }
 
-    return await this.friendRepository.destroy(friend.friendId);
+    return await this.friendRepository.destroy(friend.id);
   }
 
   public async showFriends(userId: number): Promise<IFriend[] | null> {
@@ -243,26 +235,40 @@ export class ClientRoomService {
   }
 
   public async subscribe(dto: CreateSubscriberDto) {
-    await this.rabbitClient.publish<CreateSubscriberDto>(
-      this.configService.get<string>('rabbit.exchange'),
-      RabbitRouting.AddSubscriber,
-      { ...dto },
+    const subscriber = await this.subscriberRepository
+      .findByTrainerId(dto.trainerId)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new ConflictException('Subscriber already exists');
+      });
+
+    if (subscriber) {
+      throw new ConflictException('Subscriber already exists');
+    }
+    const subscriberEntity = new SubscriberEntity(dto);
+    const newSubscriber = await this.subscriberRepository.create(
+      subscriberEntity,
     );
+
+    await this.notifyService.addSubscribe(newSubscriber);
+    return newSubscriber;
   }
 
-  public async unsubscribe(unsubscriber: IUnsubscribe) {
-    await this.rabbitClient.publish<IUnsubscribe>(
-      this.configService.get<string>('rabbit.exchange'),
-      RabbitRouting.Unsubscribe,
-      { ...unsubscriber },
-    );
-  }
+  public async unsubscribe(unsubscriber: ISubscriber) {
+    const subscriber = await this.subscriberRepository
+      .findByEmailAndTrainerId(unsubscriber.email, unsubscriber.trainerId)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new NotFoundException('Subscriber not found');
+      });
 
-  public async rabbitNewFrend(dto: IFriendInfo) {
-    await this.rabbitClient.publish<IFriendInfo>(
-      this.configService.get<string>('rabbit.exchange'),
-      RabbitRouting.AddFriend,
-      { ...dto },
-    );
+    if (!subscriber) {
+      throw new NotFoundException('Subscriber not found');
+    }
+
+    await this.subscriberRepository.destroy(subscriber.id);
+    await this.notifyService.deleteSubscribe(unsubscriber);
+
+    return 'Unsubscribe to the trainer.';
   }
 }

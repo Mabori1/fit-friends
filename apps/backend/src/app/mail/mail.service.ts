@@ -18,7 +18,7 @@ export class MailService {
     private readonly serviceConfig: ConfigType<typeof notifyConfig>,
   ) {}
 
-  public async sendNotifyNewSubscriber(subscriber: ISubscriber) {
+  public async sendMailNewSubscribe(subscriber: ISubscriber) {
     await this.mailerService.sendMail({
       from: this.serviceConfig.mail.from,
       to: subscriber.email,
@@ -31,7 +31,7 @@ export class MailService {
     });
   }
 
-  public async sendNotifyUnsubscriber(unsubscriber: IUnsubscribe) {
+  public async sendMailUnsubscribe(unsubscriber: ISubscriber) {
     await this.mailerService.sendMail({
       from: this.serviceConfig.mail.from,
       to: unsubscriber.email,
@@ -44,7 +44,7 @@ export class MailService {
     });
   }
 
-  public async sendNotifyNewTraining(trainerInfo: INewTrainingInfo) {
+  public async sendMailNewTraining(trainerInfo: INewTrainingInfo) {
     await this.mailerService.sendMail({
       from: this.serviceConfig.mail.from,
       to: trainerInfo.email,
@@ -58,7 +58,7 @@ export class MailService {
     });
   }
 
-  public async sendNotifyNewFriend(friendInfo: IFriendInfo) {
+  public async sendMailNewFriend(friendInfo: IFriendInfo) {
     await this.mailerService.sendMail({
       from: this.serviceConfig.mail.from,
       to: friendInfo.targetEmail,

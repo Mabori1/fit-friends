@@ -15,7 +15,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { IRequestWithTokenPayload } from '@fit-friends/types';
 import { fillObject } from '@fit-friends/core';
 import { NotifyRdo } from './rdo/notify.rdo';
-import { CreateNotifyDto } from './dto/create-notify.dto';
 
 @ApiTags('Notify')
 @Controller('notify')
@@ -27,13 +26,6 @@ export class NotifyController {
   public async show(@Req() { user: payload }: IRequestWithTokenPayload) {
     const notify = await this.notifyService.getNotify(payload.email);
     return fillObject(NotifyRdo, notify);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('/')
-  public async create(@Body() dto: CreateNotifyDto) {
-    const newNotify = await this.notifyService.makeNewNotify(dto);
-    return fillObject(NotifyRdo, newNotify);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -11,13 +11,11 @@ import { ClientRoomController } from './client-room.controller';
 import { ClientRoomService } from './client-room.service';
 import { BalanceModule } from '../balance/balance.module';
 import { FeedbackModule } from '../feedback/feedback.module';
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
-import { getRabbitMQOptions } from '@fit-friends/core';
 import { NotifyModule } from '../notify/notify.module';
+import { SubscriberModule } from '../subscriber/subscriber.module';
 
 @Module({
   imports: [
-    RabbitMQModule.forRootAsync(RabbitMQModule, getRabbitMQOptions('rabbit')),
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: getJwtOptions,
@@ -30,6 +28,7 @@ import { NotifyModule } from '../notify/notify.module';
     BalanceModule,
     FeedbackModule,
     NotifyModule,
+    SubscriberModule,
   ],
   controllers: [ClientRoomController],
   providers: [ClientRoomService],

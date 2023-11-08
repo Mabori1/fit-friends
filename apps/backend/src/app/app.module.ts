@@ -17,7 +17,6 @@ import dbConfig from './config/db.config';
 import jwtConfig from './config/jwt.config';
 import subscriberConfig from './config/subscriber.config';
 import { NotifyModule } from './notify/notify.module';
-import rabbitConfig from './config/rabbit.config';
 import notifyConfig from './config/notify.config';
 import { SubscriberModule } from './subscriber/subscriber.module';
 
@@ -42,14 +41,7 @@ const ENV_FILE_PATH = '../../../../.env';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [
-        appConfig,
-        dbConfig,
-        jwtConfig,
-        subscriberConfig,
-        rabbitConfig,
-        notifyConfig,
-      ],
+      load: [appConfig, dbConfig, jwtConfig, subscriberConfig, notifyConfig],
       envFilePath: ENV_FILE_PATH,
     }),
   ],
