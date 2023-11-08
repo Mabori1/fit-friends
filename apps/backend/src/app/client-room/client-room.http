@@ -1,40 +1,40 @@
 # Add friend to user
-POST http://localhost:4000/api/client/friend/308 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNywiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMjA1NjMsImV4cCI6MTY5OTAyNzQ2M30.fSivaZxpdRb4moGm8vNocJVyZLxxugZvsu2W1NpBG88
+POST http://localhost:4000/api/client/friend/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk5NDUxNTU4LCJleHAiOjE2OTk0NTg0NTh9.vbiantt_n75BpFc2FU5nKNkxsmJN-daH74_f7OLRnwU
 ###
 
 # Delete friend from user
-DELETE http://localhost:4000/api/client/friend/54 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NDk0MDQsImV4cCI6MTY5ODc1MDMwNH0.noL_PexjLgKrH31M5VqZo-5YNAnfBbautqVSUxc3dpw
+DELETE http://localhost:4000/api/client/friend/150 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwNCwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTk0NDY0MzIsImV4cCI6MTY5OTQ1MzMzMn0.nPSTfzTA6ouPTUVoL-IFKAAdswWSB3dINnjB0t95ysY
 
 ###
 
 # Get friends
 
 GET http://localhost:4000/api/client/friends/ HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTE2NzAsImV4cCI6MTY5ODc1MjU3MH0.LH4L5tIDmafLVET1xkuDfTLNkuiLnI69Cz_nFaCrVcI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk5NDUxNTU4LCJleHAiOjE2OTk0NTg0NTh9.vbiantt_n75BpFc2FU5nKNkxsmJN-daH74_f7OLRnwU
 ###
 
-# Check balance training
-GET http://localhost:4000/api/client/balance-training/2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTMxNDksImV4cCI6MTY5ODc1NDA0OX0.2wwJItwIVPmszdiTY2LJqM-mUfp7C42IyB-Rj3kdHl4
+# show all balance
+GET http://localhost:4000/api/client/balance HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk5NDUxNzMzLCJleHAiOjE2OTk0NTg2MzN9.TN0VZtH02iWP4lgU85JfUqLVe_xw-RqGDIs6rhVAxfs
 ###
 
 # Use training
 
-DELETE  http://localhost:4000/api/client/training/2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTMxNDksImV4cCI6MTY5ODc1NDA0OX0.2wwJItwIVPmszdiTY2LJqM-mUfp7C42IyB-Rj3kdHl4
+DELETE  http://localhost:4000/api/client/training/110 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwNCwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTk0NDY0MzIsImV4cCI6MTY5OTQ1MzMzMn0.nPSTfzTA6ouPTUVoL-IFKAAdswWSB3dINnjB0t95ysY
 ###
 
 
 # Post feedback
 
 POST http://localhost:4000/api/feedbacks/create HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTg3NTMxNDksImV4cCI6MTY5ODc1NDA0OX0.2wwJItwIVPmszdiTY2LJqM-mUfp7C42IyB-Rj3kdHl4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwNCwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTk0NDY0MzIsImV4cCI6MTY5OTQ1MzMzMn0.nPSTfzTA6ouPTUVoL-IFKAAdswWSB3dINnjB0t95ysY
 Content-Type: application/json
 
 {
-  "trainingId": 2,
+  "trainingId": 111,
   "rating": 4,
   "text": "Вроде нормальная тренировка, но изюминки нету... Минимум 100 символов это сильно! Может учат нас печатать?"
 }
@@ -43,41 +43,27 @@ Content-Type: application/json
 # add Order training
 
 POST http://localhost:4000/api/client/order HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNiwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMTc2OTAsImV4cCI6MTY5OTAyNDU5MH0.RtuTsvsKuFarfw2_OgS3o9_z5Gy2CbEWom7KcsPt4IQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk5NDUxNzMzLCJleHAiOjE2OTk0NTg2MzN9.TN0VZtH02iWP4lgU85JfUqLVe_xw-RqGDIs6rhVAxfs
 Content-Type: application/json
 
 {
   "type": "абонемент",
-  "trainingId": 305,
+  "trainerId": 1,
+  "trainingId": 1,
   "price": 12,
-  "quantity": 100,
+  "quantity": 10,
   "typeOfPayment": "visa"
 }
 ###
 
 # Subscribe to trainer
 
-POST http://localhost:4000/api/client/subscribe/101 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMiwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkxOTA1NDYsImV4cCI6MTY5OTE5NzQ0Nn0.rGdMbNQXlOgXR_sHmZr77OMGEGdcA4I3gtM0xvr0i74
-
+POST http://localhost:4000/api/client/subscribe/203 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwNCwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTk0NDc5OTMsImV4cCI6MTY5OTQ1NDg5M30.QhqEkqh4RSzF2QeJwBxO-Rpe4MlvuVE4NFHx4j2H4a0
 ###
 
 # Unsubscribe to trainer
 
-DELETE http://localhost:4000/api/client/unsubscribe/7 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMiwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkxOTA1NDYsImV4cCI6MTY5OTE5NzQ0Nn0.rGdMbNQXlOgXR_sHmZr77OMGEGdcA4I3gtM0xvr0i74
-
+DELETE http://localhost:4000/api/client/unsubscribe/103 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwNCwiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTk0NDc5OTMsImV4cCI6MTY5OTQ1NDg5M30.QhqEkqh4RSzF2QeJwBxO-Rpe4MlvuVE4NFHx4j2H4a0
 ###
-
-
-
-# # Reciving recomendations userroom list of trainining
-# GET http://localhost:4000/api/user/recomendations HTTP/1.1
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InNlcDRvb2NsaWVudGllbnFxMjMyM292QGdtYWlsLmN3bSIsInVzZXJSb2xlIjoidHJhaW5lciIsIm5hbWUiOiLQktCw0YHQuNC70LjQuSIsImlhdCI6MTY4OTk0MzUwNywiZXhwIjoxNjg5OTQ0NDA3fQ.fYFoqatP9ZtErbZSdIeNna5FtK_S6eHOlmLS2BGTYfg
-# {
-#   "typesOfTraining": [],
-#   "timeOfTraining": 1,
-#   "levelOfExperience": "",
-#   "caloryLosingPlanTotal": 1000
-# }
-# ###

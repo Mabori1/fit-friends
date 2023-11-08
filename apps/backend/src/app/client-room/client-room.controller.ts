@@ -89,6 +89,20 @@ export class ClientRoomController {
     description: 'Users training successfully received.',
   })
   @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @Get('balance')
+  public async getBalance(@Req() { user: payload }: IRequestWithTokenPayload) {
+    const userBalance = await this.clientRoomService.showAllBalance(
+      payload.sub,
+    );
+    return fillObject(BalanceRdo, userBalance);
+  }
+
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: 'Users training successfully received.',
+  })
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
   @Get('balance-training/:id')
   public async checkTraining(
     @Param('id') id: number,

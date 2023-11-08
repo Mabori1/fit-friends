@@ -47,10 +47,10 @@ export class OrderRepository {
     });
   }
 
-  public async find(query: OrderQuery, userId: number): Promise<IOrder[]> {
+  public async find(query: OrderQuery, trainerId: number): Promise<IOrder[]> {
     const { limit, page } = query;
     return await this.prisma.order.findMany({
-      where: { userId },
+      where: { trainerId },
       orderBy: { trainingId: 'desc' },
       skip: page > 0 ? limit * (page - 1) : undefined,
     });

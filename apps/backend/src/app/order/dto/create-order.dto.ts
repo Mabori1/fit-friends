@@ -13,6 +13,15 @@ export class CreateOrderDto {
   public type!: TypeOfOrder;
 
   @ApiProperty({
+    description: 'Trainer id',
+    example: 1,
+    required: true,
+  })
+  @IsOptional()
+  @IsNumber()
+  public trainerId!: number;
+
+  @ApiProperty({
     description: 'Training id',
     example: 1,
     required: true,

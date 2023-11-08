@@ -2,12 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigType } from '@nestjs/config';
 import notifyConfig from '../config/notify.config';
-import {
-  IFriendInfo,
-  INewTrainingInfo,
-  ISubscriber,
-  IUnsubscribe,
-} from '@fit-friends/types';
+import { IFriendInfo, INewTrainingInfo, ISubscriber } from '@fit-friends/types';
 
 @Injectable()
 export class MailService {

@@ -7,14 +7,7 @@ import {
 import { TrainingRepository } from '../training/training.repository';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import {
-  IFriend,
-  IFriendInfo,
-  ISubscriber,
-  ITokenPayload,
-  IUnsubscribe,
-  IUser,
-} from '@fit-friends/types';
+import { IFriend, ISubscriber, ITokenPayload, IUser } from '@fit-friends/types';
 import { FriendEntity } from '../friend/friend.entity';
 import { BalanceRepository } from '../balance/balance.repository';
 import { BalanceEntity } from '../balance/balance.entity';
@@ -158,6 +151,16 @@ export class ClientRoomService {
     return balance;
   }
 
+  public async showAllBalance(userId: number) {
+    const balances = await this.balanceRepository.findByUserId(userId);
+
+    if (!balances) {
+      throw new NotFoundException('Balance not found');
+    }
+
+    return balances;
+  }
+
   public async spendTraining(userId: number, trainingId: number) {
     const userBalance = await this.balanceRepository
       .findByUserIdAndTrainingId(userId, trainingId)
@@ -242,7 +245,7 @@ export class ClientRoomService {
         throw new ConflictException('Subscriber already exists');
       });
 
-    if (subscriber) {
+    if (subscriber.length) {
       throw new ConflictException('Subscriber already exists');
     }
     const subscriberEntity = new SubscriberEntity(dto);

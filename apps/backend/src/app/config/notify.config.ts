@@ -18,14 +18,6 @@ export interface NotifyConfig {
     pgAdminEmail: string;
     pgAdminPassword: string;
   };
-  rabbit: {
-    host: string;
-    password: string;
-    user: string;
-    queue: string;
-    exchange: string;
-    port: number;
-  };
   mail: {
     host: string;
     port: number;
@@ -51,17 +43,6 @@ export default registerAs('application', (): NotifyConfig => {
       pgAdminEmail: process.env.PGADMIN_DEFAULT_EMAIL,
       pgAdminPassword: process.env.PGADMIN_DEFAULT_PASSWORD,
     },
-    rabbit: {
-      host: process.env.RABBIT_HOST,
-      password: process.env.RABBIT_PASSWORD,
-      port: parseInt(
-        process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(),
-        10,
-      ),
-      user: process.env.RABBIT_USER,
-      queue: process.env.RABBIT_QUEUE,
-      exchange: process.env.RABBIT_EXCHANGE,
-    },
     mail: {
       host: process.env.MAIL_SMTP_HOST,
       port: parseInt(
@@ -85,14 +66,6 @@ export default registerAs('application', (): NotifyConfig => {
       password: Joi.string().required(),
       pgAdminEmail: Joi.string().required(),
       pgAdminPassword: Joi.string().required(),
-    }),
-    rabbit: Joi.object({
-      host: Joi.string().valid().hostname().required(),
-      password: Joi.string().required(),
-      port: Joi.number().port().default(DEFAULT_RABBIT_PORT),
-      user: Joi.string().required(),
-      queue: Joi.string().required(),
-      exchange: Joi.string().required(),
     }),
     mail: Joi.object({
       host: Joi.string().valid().hostname().required(),

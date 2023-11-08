@@ -79,7 +79,10 @@ export class AuthService {
 
     await this.refreshTokenService.createRefreshSession(refreshTokenPayload);
 
+    const { passwordHash, ...userInfo } = user;
+
     return {
+      userInfo,
       accessToken: await this.jwtService.signAsync(accessTokenPayload),
       refreshToken: await this.jwtService.signAsync(refreshTokenPayload, {
         secret: this.configService.get<string>('jwt.refreshTokenSecret'),

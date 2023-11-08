@@ -115,6 +115,7 @@ model Order {
   id            Int      @id @default(autoincrement())
   userId        Int      @map("user_id")
   type          String   @default("")
+  trainerId     Int      @map("trainer_id")
   trainingId    Int      @map("training_id")
   price         Int      @default(0)
   quantity      Int      @default(0)

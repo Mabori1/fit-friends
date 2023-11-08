@@ -28,6 +28,12 @@ export class BalanceRepository
     });
   }
 
+  public async findByUserId(userId: number): Promise<IBalance[]> {
+    return await this.prisma.balance.findMany({
+      where: { userId },
+    });
+  }
+
   public async findByUserIdAndTrainingId(userId: number, trainingId: number) {
     return await this.prisma.balance.findFirst({
       where: { userId, trainingId },

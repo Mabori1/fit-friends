@@ -84,6 +84,7 @@ async function fiilDb() {
           create: [
             {
               type: faker.helpers.enumValue(TypeOfOrder),
+              trainerId: faker.number.int({ min: 1, max: 100 }),
               trainingId: i ? i + 1 : 1,
               price: priceTemp,
               quantity: qtt,
@@ -93,6 +94,7 @@ async function fiilDb() {
             },
             {
               type: faker.helpers.enumValue(TypeOfOrder),
+              trainerId: faker.number.int({ min: 1, max: 100 }),
               trainingId: i + 2,
               price: priceTemp + 100,
               quantity: qtt + 1,

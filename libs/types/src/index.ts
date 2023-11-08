@@ -38,4 +38,3 @@ export * from './lib/rabbit-connection.interface';
 export * from './lib/rabbit-routing.enum';
 export * from './lib/new-training-info.interface';
 export * from './lib/friend-info.interface';
-export * from './lib/unsubscribe.interface';

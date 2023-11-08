@@ -67,7 +67,7 @@ CREATE TABLE "trainings" (
     "gender" TEXT NOT NULL DEFAULT '',
     "video" TEXT NOT NULL DEFAULT '',
     "rating" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "trainerId" INTEGER NOT NULL DEFAULT 0,
+    "trainer_id" INTEGER NOT NULL,
     "is_promo" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "trainings_pkey" PRIMARY KEY ("id")
@@ -100,6 +100,7 @@ CREATE TABLE "orders" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "type" TEXT NOT NULL DEFAULT '',
+    "trainer_id" INTEGER NOT NULL,
     "training_id" INTEGER NOT NULL,
     "price" INTEGER NOT NULL DEFAULT 0,
     "quantity" INTEGER NOT NULL DEFAULT 0,
@@ -157,9 +158,9 @@ CREATE TABLE "subscribers" (
 -- CreateTable
 CREATE TABLE "notifications" (
     "id" SERIAL NOT NULL,
-    "target_user_id" INTEGER NOT NULL,
-    "typesOfNotification" TEXT NOT NULL,
-    "asking_user_id" INTEGER NOT NULL,
+    "target_user_id" TEXT NOT NULL,
+    "text" TEXT NOT NULL DEFAULT '',
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "notifications_pkey" PRIMARY KEY ("id")
 );
