@@ -1,13 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { ConfigService } from '@nestjs/config';
-import { CreateSubscriberDto } from '../client-room/dto/create-subscriber.dto';
 import {
   IFriendInfo,
   INewTrainingInfo,
   INotify,
   ISubscriber,
-  RabbitRouting,
 } from '@fit-friends/types';
 import { CreateNotifyDto } from './dto/create-notify.dto';
 import { NotifyEntity } from './notify.entity';

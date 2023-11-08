@@ -33,8 +33,5 @@ export * from './lib/constants/order.constant';
 export * from './lib/total-order.interface';
 export * from './lib/subscriber.interface';
 export * from './lib/notify.interface';
-export * from './lib/notify-type.enum';
-export * from './lib/rabbit-connection.interface';
-export * from './lib/rabbit-routing.enum';
 export * from './lib/new-training-info.interface';
 export * from './lib/friend-info.interface';
