@@ -1,12 +1,24 @@
+@baseUrl = http://localhost:4000/api
+@token = {{login.response.body.$.accessToken}}
 
-# Create a new training
-
-POST http://localhost:4000/api/trainer/create HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWFib3JpMUBnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk5NDUxNjI3LCJleHAiOjE2OTk0NTg1Mjd9.glt9N0FMb6aWINc48dOFRd1C6HUXo1FygSSV2rNKMLs
+# Login user by email and password
+# @name login
+POST {{baseUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Побегаем1!",
+  "email": "mabori1@gmail.com",
+  "password": "12345a"
+}
+###
+
+# Create a new training
+POST {{baseUrl}}/trainer/create HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Побегаем6!",
   "backgroundPicture": "bg-image1.jpg" ,
   "levelOfUser": "любитель",
   "typeOfTraining": "бег",
@@ -23,8 +35,8 @@ Content-Type: application/json
 
 # Update training by ID
 
-PATCH  http://localhost:4000/api/trainer/update/2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwMywiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTk0NDkwNzUsImV4cCI6MTY5OTQ1NTk3NX0.9lNNgBtVncdllkswo5_cvwI-lmzF6qk-wbG5WCeESsY
+PATCH  {{baseUrl}}/trainer/update/2 HTTP/1.1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -35,26 +47,25 @@ Content-Type: application/json
 
 #Get training by ID
 
-GET http://localhost:4000/api/trainer/training/211 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwMywiZW1haWwiOiJtYWJvcmkxQGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTk0NDkwNzUsImV4cCI6MTY5OTQ1NTk3NX0.9lNNgBtVncdllkswo5_cvwI-lmzF6qk-wbG5WCeESsY
+GET {{baseUrl}}/trainer/training/211 HTTP/1.1
+Authorization: Bearer {{token}}
 ###
 
 # Get trainings feed
 
-GET  http://localhost:4000/api/trainer/feed?durations=10-30%20мин,30-50%20мин&priceMin=1&priceMax=1200&caloriesMin=1000&caloriesMax=2000&ratingMin=0&ratingMax=4 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWFib3JpMUBnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk5NDUxNjI3LCJleHAiOjE2OTk0NTg1Mjd9.glt9N0FMb6aWINc48dOFRd1C6HUXo1FygSSV2rNKMLs
+GET  {{baseUrl}}/trainer/feed?durations=10-30%20мин,30-50%20мин&priceMin=1&priceMax=1200&caloriesMin=1000&caloriesMax=2000&ratingMin=0&ratingMax=4 HTTP/1.1
+Authorization: Bearer {{token}}
 ####
 
 
 # get orders
-GET http://localhost:4000/api/trainer/orders?sorQtt=asc&sortPrice=asc HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWFib3JpMUBnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk5NDUxOTY2LCJleHAiOjE2OTk0NTg4NjZ9.N5LkcgWu5wpDlGDGWnW_JqQ_Wx4SACMFWW2oqmdaBRo
+GET {{baseUrl}}/trainer/orders?sorQtt=asc&sortPrice=asc HTTP/1.1
+Authorization: Bearer {{token}}
 ###
 
 
 # Get friends
 
-GET http://localhost:4000/api/trainer/friends/ HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWFib3JpMUBnbWFpbC5jb20iLCJyb2xlIjoi0YLRgNC10L3QtdGAIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk5NDUxNjI3LCJleHAiOjE2OTk0NTg1Mjd9.glt9N0FMb6aWINc48dOFRd1C6HUXo1FygSSV2rNKMLs
+GET {{baseUrl}}/trainer/friends/ HTTP/1.1
+Authorization: Bearer {{token}}
 ###
-

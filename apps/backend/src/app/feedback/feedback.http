@@ -1,8 +1,23 @@
+@baseUrl = http://localhost:4000/api
+@token = {{login.response.body.$.accessToken}}
+
+# Login user by email and password
+# @name login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "mabori1@gmail.com",
+  "password": "12345a"
+}
+###
+
+
 # Create a new feedback training
 
-POST http://localhost:4000/api/feedbacks/create HTTP/1.1
+POST {{baseUrl}}/feedbacks/create HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MzM5NzM5LCJleHAiOjE2OTgzNDA2Mzl9.qV2E_RbnWw5SMNYyyzpRxJVgQaMl5sIDx6abR93GLMc
+Authorization: Bearer {{token}}
 
 {
   "trainingId": 2,
@@ -11,5 +26,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsI
 }
 
 ### Find all feedbacks of Training
-GET http://localhost:4000/api/feedbacks/1?limit=22&page=1&sortDirection=desc HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibWFib3JpMkBnbWFpbC5jb20iLCJyb2xlIjoi0L_QvtC70YzQt9C-0LLQsNGC0LXQu9GMIiwibmFtZSI6ItCQ0LvQtdC60YHQtdC5IiwiaWF0IjoxNjk4MjcwMDMxLCJleHAiOjE2OTgyNzA5MzF9.o9r_NuniHg7s9kGIMjMAdv38u-oVhPTPlSaJYb_hsZU
+GET {{baseUrl}}/feedbacks/1?limit=22&page=1&sortDirection=desc HTTP/1.1
+Authorization: Bearer {{token}}

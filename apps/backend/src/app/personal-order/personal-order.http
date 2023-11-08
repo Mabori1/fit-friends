@@ -1,23 +1,36 @@
+@baseUrl = http://localhost:4000/api
+@token = {{login.response.body.$.accessToken}}
+
+# Login user by email and password
+# @name login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "mabori2@gmail.com",
+  "password": "12345a"
+}
+###
 
 # Order personal training
-POST http://localhost:4000/api/personal-order/306 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNywiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMjM4NzEsImV4cCI6MTY5OTAzMDc3MX0.kp4DnSpCgsl0kDCtxO5mD4d4iYRUKR94Bt367Xi-3cw
+POST {{baseUrl}}/personal-order/306 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 
 # Get personal order
-GET http://localhost:4000/api/personal-order/615 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNywiZW1haWwiOiJtYWJvcmkyQGdtYWlsLmNvbSIsInJvbGUiOiLQv9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMjQ4ODgsImV4cCI6MTY5OTAzMTc4OH0.Bi6rBqZ0jsXfrLm2gO8DCm4pQ3j5uiz1kRFh5Sexs-Y
+GET {{baseUrl}}/personal-order/615 HTTP/1.1
+Authorization: Bearer {{token}}
 ###
 
 # confirm personal training
-PATCH http://localhost:4000/api/personal-order?orderId=615&newStatus=принят HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNiwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMjUwNTMsImV4cCI6MTY5OTAzMTk1M30.wFHmBXGQGlcxywGOhVP6WXfoLHMwzUr-Tpjg7vsGsSs
+PATCH {{baseUrl}}/personal-order?orderId=615&newStatus=принят HTTP/1.1
+Authorization: Bearer {{token}}
 ###
 
 # Reject the personal training
-PATCH http://localhost:4000/api/personal-order?orderId=615&newStatus=отклонён HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwNiwiZW1haWwiOiJtYWJvcmk0QGdtYWlsLmNvbSIsInJvbGUiOiLRgtGA0LXQvdC10YAiLCJuYW1lIjoi0JDQu9C10LrRgdC10LkiLCJpYXQiOjE2OTkwMjUwNTMsImV4cCI6MTY5OTAzMTk1M30.wFHmBXGQGlcxywGOhVP6WXfoLHMwzUr-Tpjg7vsGsSs
+PATCH {{baseUrl}}/personal-order?orderId=615&newStatus=отклонён HTTP/1.1
+Authorization: Bearer {{token}}
 ###
 
 
