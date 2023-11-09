@@ -79,6 +79,7 @@ export class AuthService {
 
     await this.refreshTokenService.createRefreshSession(refreshTokenPayload);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...userInfo } = user;
 
     return {
