@@ -13,7 +13,11 @@
    $ `npx prisma migrate dev`
 5. Наполнить базу данных:
    $ `npx ts-node ./prisma/seed.ts`
-6. Запустить сервер:
+
+6. Произвести проверку проекта:
+   $ `nx run-many --all --target=lint`
+
+7. Запустить сервер:
    $ `nx serve backend`
 
 ## По умолчанию сервер запускается на порту 4000.
