@@ -78,7 +78,8 @@ export class TrainingRdo {
 
   @ApiProperty({
     description: 'Training descripion',
-    example: 'Сложный комплекс упражнений на отработку показателей в классическом стиле.',
+    example:
+      'Сложный комплекс упражнений на отработку показателей в классическом стиле.',
     required: true,
   })
   @Expose()

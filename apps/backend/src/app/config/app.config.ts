@@ -21,7 +21,9 @@ export default registerAs('application', (): ApplicationConfig => {
     serveRoot: process.env.SERVE_ROOT || '/static',
     uploadDirectory: process.env.UPLOAD_DIRECTORY_PATH || '/uploads',
   };
-  const appEnvironment = plainToInstance(AppEnvironment, config, { enableImplicitConversion: true });
+  const appEnvironment = plainToInstance(AppEnvironment, config, {
+    enableImplicitConversion: true,
+  });
 
   const errors = validateSync(appEnvironment, {
     skipMissingProperties: false,

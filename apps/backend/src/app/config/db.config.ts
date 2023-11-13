@@ -19,12 +19,18 @@ export default registerAs('db', (): DbConfig => {
     user: process.env['POSTGRES_USER'] ?? 'admin',
     password: process.env['POSTGRES_PASSWORD'] ?? 'test',
     name: process.env['POSTGRES_DB'] ?? 'fitfriends',
-    port: parseInt(process.env['POSTGRES_PORT '] ?? DEFAULT_POSTGRES_PORT.toString(), 10),
-    pgAdminEmail: process.env['PGADMIN_DEFAULT_EMAIL'] ?? 'keks@htmlacademy.local',
+    port: parseInt(
+      process.env['POSTGRES_PORT '] ?? DEFAULT_POSTGRES_PORT.toString(),
+      10,
+    ),
+    pgAdminEmail:
+      process.env['PGADMIN_DEFAULT_EMAIL'] ?? 'keks@htmlacademy.local',
     pgAdminPassword: process.env['PGADMIN_DEFAULT_PASSWORD'] ?? 'test',
   };
 
-  const databaseEnvironment = plainToInstance(DatabaseEnvironment, config, { enableImplicitConversion: true });
+  const databaseEnvironment = plainToInstance(DatabaseEnvironment, config, {
+    enableImplicitConversion: true,
+  });
 
   const errors = validateSync(databaseEnvironment, {
     skipMissingProperties: false,

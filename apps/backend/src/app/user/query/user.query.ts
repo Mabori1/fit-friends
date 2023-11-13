@@ -1,6 +1,22 @@
-import { DefaultUsersQuery, UserLevel, UserLocation, UserRole, UserTypesTraining } from '@fit-friends/types';
+import {
+  DefaultUsersQuery,
+  UserLevel,
+  UserLocation,
+  UserRole,
+  UserTypesTraining,
+} from '@fit-friends/types';
 import { Transform } from 'class-transformer';
-import { IsArray, IsEnum, IsIn, IsNumber, IsOptional, IsPositive, IsString, Max, Min } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsIn,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class UserQuery {
   @IsNumber()
@@ -11,9 +27,13 @@ export class UserQuery {
   public limit?: number = DefaultUsersQuery.Limit;
 
   @IsIn([DefaultUsersQuery.sortDesc, DefaultUsersQuery.sortAsc])
-  @Transform(({ value }) => (value === 'asc' ? DefaultUsersQuery.sortAsc : DefaultUsersQuery.sortDesc))
+  @Transform(({ value }) =>
+    value === 'asc' ? DefaultUsersQuery.sortAsc : DefaultUsersQuery.sortDesc,
+  )
   @IsOptional()
-  public sortDirection?: DefaultUsersQuery.sortDesc | DefaultUsersQuery.sortAsc = DefaultUsersQuery.Desc;
+  public sortDirection?:
+    | DefaultUsersQuery.sortDesc
+    | DefaultUsersQuery.sortAsc = DefaultUsersQuery.Desc;
 
   @IsPositive()
   @Transform(({ value }) => +value)

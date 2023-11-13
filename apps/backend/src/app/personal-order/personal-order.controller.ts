@@ -68,9 +68,8 @@ export class PersonalOrderController {
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   public async checkPersonalOrder(@Param('id') orderId: number) {
-    const personalOrder = await this.personalOrderService.getPersonalOrder(
-      orderId,
-    );
+    const personalOrder =
+      await this.personalOrderService.getPersonalOrder(orderId);
     return fillObject(PersonalOrderRdo, personalOrder);
   }
 }

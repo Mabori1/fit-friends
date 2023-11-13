@@ -8,7 +8,10 @@ import { IRefreshTokenPayload } from '@fit-friends/types';
 import { UserService } from '../../user/user.service';
 
 @Injectable()
-export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
+export class JwtRefreshStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh',
+) {
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,

@@ -156,9 +156,8 @@ export class ClientRoomController {
   public async getRecomendationTraining(
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {
-    const trainings = await this.clientRoomService.createRecomandationList(
-      payload,
-    );
+    const trainings =
+      await this.clientRoomService.createRecomandationList(payload);
     return fillObject(TrainingRdo, trainings);
   }
 

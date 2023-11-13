@@ -4,7 +4,9 @@ import { ICRUDRepository, IFile } from '@fit-friends/types';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
-export class FileRepository implements ICRUDRepository<FileEntity, number, IFile> {
+export class FileRepository
+  implements ICRUDRepository<FileEntity, number, IFile>
+{
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(fileEntity: FileEntity): Promise<IFile> {

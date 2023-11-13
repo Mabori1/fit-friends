@@ -21,7 +21,12 @@ import { getJwtOptions } from '../config/get-jwt-options';
     RefreshTokenModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtRefreshStrategy, JwtAccessStrategy, LocalStrategy],
+  providers: [
+    AuthService,
+    JwtRefreshStrategy,
+    JwtAccessStrategy,
+    LocalStrategy,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

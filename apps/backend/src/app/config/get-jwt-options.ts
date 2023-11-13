@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModuleOptions } from '@nestjs/jwt';
 
 export async function getJwtOptions(
-  configService: ConfigService
+  configService: ConfigService,
 ): Promise<JwtModuleOptions> {
   return {
     secret: configService.get<string>('jwt.accessTokenSecret'),

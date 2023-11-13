@@ -249,9 +249,8 @@ export class ClientRoomService {
       throw new ConflictException('Subscriber already exists');
     }
     const subscriberEntity = new SubscriberEntity(dto);
-    const newSubscriber = await this.subscriberRepository.create(
-      subscriberEntity,
-    );
+    const newSubscriber =
+      await this.subscriberRepository.create(subscriberEntity);
 
     await this.notifyService.addSubscribe(newSubscriber);
     return newSubscriber;

@@ -18,7 +18,9 @@ export default registerAs('jwt', (): JWTConfig => {
     refreshTokenExpiresIn: process.env['JWT_RT_EXPIRES_IN'],
   };
 
-  const jwtEnvironment = plainToInstance(JwtEnvironment, config, { enableImplicitConversion: true });
+  const jwtEnvironment = plainToInstance(JwtEnvironment, config, {
+    enableImplicitConversion: true,
+  });
 
   const errors = validateSync(jwtEnvironment, {
     skipMissingProperties: false,

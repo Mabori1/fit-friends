@@ -4,7 +4,9 @@ import { UserEntity } from './user.entity';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
-export class UserRepository implements ICRUDRepository<UserEntity, number, IUser> {
+export class UserRepository
+  implements ICRUDRepository<UserEntity, number, IUser>
+{
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: UserEntity): Promise<IUser> {
@@ -97,7 +99,9 @@ export class UserRepository implements ICRUDRepository<UserEntity, number, IUser
             ? {
                 update: {
                   timeOfTraining:
-                    userEntity.client.timeOfTraining != null ? userEntity.client.timeOfTraining : undefined,
+                    userEntity.client.timeOfTraining != null
+                      ? userEntity.client.timeOfTraining
+                      : undefined,
                   caloryLosingPlanTotal:
                     userEntity.client.caloryLosingPlanTotal != null
                       ? userEntity.client.caloryLosingPlanTotal
@@ -106,7 +110,10 @@ export class UserRepository implements ICRUDRepository<UserEntity, number, IUser
                     userEntity.client.caloryLosingPlanDaily != null
                       ? userEntity.client.caloryLosingPlanDaily
                       : undefined,
-                  isReady: userEntity.client.isReady != null ? userEntity.client.isReady : undefined,
+                  isReady:
+                    userEntity.client.isReady != null
+                      ? userEntity.client.isReady
+                      : undefined,
                 },
               }
             : undefined,
@@ -114,10 +121,18 @@ export class UserRepository implements ICRUDRepository<UserEntity, number, IUser
           userEntity.trainer != null
             ? {
                 update: {
-                  certificate: userEntity.trainer.certificate != null ? userEntity.trainer.certificate : undefined,
-                  merits: userEntity.trainer.merits != null ? userEntity.trainer.merits : undefined,
+                  certificate:
+                    userEntity.trainer.certificate != null
+                      ? userEntity.trainer.certificate
+                      : undefined,
+                  merits:
+                    userEntity.trainer.merits != null
+                      ? userEntity.trainer.merits
+                      : undefined,
                   isPersonalTraining:
-                    userEntity.trainer.isPersonalTraining != null ? userEntity.trainer.isPersonalTraining : undefined,
+                    userEntity.trainer.isPersonalTraining != null
+                      ? userEntity.trainer.isPersonalTraining
+                      : undefined,
                 },
               }
             : undefined,
@@ -148,7 +163,11 @@ export class UserRepository implements ICRUDRepository<UserEntity, number, IUser
       },
     });
   }
-  public async find(limit: number, filter: IUserFilter, page: number): Promise<IUser[]> | null {
+  public async find(
+    limit: number,
+    filter: IUserFilter,
+    page: number,
+  ): Promise<IUser[]> | null {
     return this.prisma.user.findMany({
       where: {
         role: { contains: filter.role },

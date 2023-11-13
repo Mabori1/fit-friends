@@ -14,7 +14,9 @@ export class RefreshTokenService {
   ) {}
 
   public async createRefreshSession(payload: IRefreshTokenPayload) {
-    const timeValue = parseTime(this.configService.get<string>('jwt.refreshTokenExpiresIn'));
+    const timeValue = parseTime(
+      this.configService.get<string>('jwt.refreshTokenExpiresIn'),
+    );
     const refreshToken = new RefreshTokenEntity({
       tokenId: payload.tokenId,
       createdAt: new Date(),
@@ -30,7 +32,8 @@ export class RefreshTokenService {
   }
 
   public async isExists(tokenId: string): Promise<boolean> {
-    const refreshToken = await this.refreshTokenRepository.findByTokenId(tokenId);
+    const refreshToken =
+      await this.refreshTokenRepository.findByTokenId(tokenId);
     return refreshToken !== null;
   }
 
