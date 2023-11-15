@@ -16,6 +16,11 @@ export enum AuthStatus {
 
 export enum NameSpace {
   User = 'USER',
-  Data = 'DATA',
   Training = 'TRAINING',
+}
+
+export enum APIRoute {
+  Login = '/login',
+  Logout = '/logout',
+  Trainings = '/trainings',
 }

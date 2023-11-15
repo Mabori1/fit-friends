@@ -60,3 +60,14 @@ export interface ICreateUser {
   location: UserLocation;
   level: UserLevel;
 }
+
+export type UserData = {
+  id: number;
+  email: string;
+  token: string;
+};
+
+export type AuthData = {
+  email: string;
+  password: string;
+};

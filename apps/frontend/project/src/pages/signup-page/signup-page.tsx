@@ -1,6 +1,23 @@
+import { useState } from 'react';
 import BackgroundLogo from '../../components/background-logo/background-logo';
 
+const initialState = {
+  name: '',
+  email: '',
+  avatar: '',
+  birthDate: '',
+  role: '',
+  password: '',
+  confirmPassword: '',
+};
+
 function SignUpPage() {
+  const [formValue, setFormValue] = useState(initialState);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  };
+
   return (
     <>
       <BackgroundLogo />
@@ -56,7 +73,11 @@ function SignUpPage() {
                       <label>
                         <span className="custom-input__label">Имя</span>
                         <span className="custom-input__wrapper">
-                          <input type="text" name="name" />
+                          <input
+                            type="text"
+                            name="name"
+                            onChange={handleChange}
+                          />
                         </span>
                         /
                       </label>
@@ -65,7 +86,11 @@ function SignUpPage() {
                       <label>
                         <span className="custom-input__label">E-mail</span>
                         <span className="custom-input__wrapper">
-                          <input type="email" name="email" />
+                          <input
+                            type="email"
+                            name="email"
+                            onChange={handleChange}
+                          />
                         </span>
                       </label>
                     </div>
@@ -117,6 +142,7 @@ function SignUpPage() {
                             type="password"
                             name="password"
                             autoComplete="off"
+                            onChange={handleChange}
                           />
                         </span>
                       </label>

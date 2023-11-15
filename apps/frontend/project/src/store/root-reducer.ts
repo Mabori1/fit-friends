@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { NameSpace } from '../common/const';
-import { userData } from './user-data/user-data';
+import { userSlice } from './user-slice/user-slice';
 
 export const rootReducer = combineReducers({
-  [NameSpace.Data]: userData.reducer,
+  [NameSpace.User]: userSlice.reducer,
 });

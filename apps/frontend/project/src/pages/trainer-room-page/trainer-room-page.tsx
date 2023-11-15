@@ -1,13 +1,14 @@
-import { HelmetProvider } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 
 function TrainerRoomPage() {
   return (
     <>
-      <HelmetProvider>
+      <Helmet>
         <title>Комната тренера</title>
-      </HelmetProvider>
+      </Helmet>
       <Header />
+      <h1>Комната тренера</h1>
     </>
   );
 }
