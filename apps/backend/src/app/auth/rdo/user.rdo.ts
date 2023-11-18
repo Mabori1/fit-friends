@@ -29,7 +29,7 @@ export class UserRdo {
     example: 'user@gmail.com',
   })
   @Expose()
-  public mail!: string;
+  public email!: string;
 
   @ApiProperty({
     description: 'User avatar',

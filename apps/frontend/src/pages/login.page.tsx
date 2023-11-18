@@ -1,48 +1,66 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppRoute } from '../../common/const';
 import { useAppDispatch } from '../redux/store';
-import { BackgroundLogo } from '../components/backgroundLogo';
+import { loginUserAction } from '../redux/authSlice/apiAuthActions';
+import { z } from 'zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
+
+const formSchema = z.object({
+  email: z.string().email('Некорректный email'),
+  password: z
+    .string()
+    .min(6, 'Пароль слишком короткий')
+    .max(32, 'Пароль слишком длинный'),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 function LoginPage(): JSX.Element {
-  const userRef = useRef();
-  const errRef = useRef();
-  const [user, setUser] = useState('');
-  const [pwd, setPwd] = useState('');
-  const [errMsg, setErrMsg] = useState('');
-  const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    setErrMsg('');
-  }, [user, pwd]);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setFocus,
+    formState: { isDirty, isSubmitting, errors },
+  } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      setUser('');
-      setPwd('');
-      navigate(AppRoute.Main);
-    } catch (error: any) {
-      if (!error?.response) {
-        setErrMsg('No Server Response');
-      } else if (error.response?.status === 400) {
-        setErrMsg('Missing Username or Password');
-      } else if (error.response?.status === 401) {
-        setErrMsg('Unauthorized');
-      } else {
-        setErrMsg('Login Failed');
-      }
-    }
+  const onSubmit: SubmitHandler<FormSchema> = (data) => {
+    console.log(data);
+    dispatch(
+      loginUserAction({
+        email: data.email,
+        password: data.password,
+      }),
+    );
+    reset();
   };
 
+  useEffect(() => {
+    setFocus('email');
+  }, []);
+
   return (
-    <>
-      <BackgroundLogo />
-      <p className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">
-        {errMsg}
-      </p>
+    <main>
+      <div className="background-logo">
+        <svg
+          className="background-logo__logo"
+          width="750"
+          height="284"
+          aria-hidden="true"
+        >
+          <use xlinkHref="#logo-big"></use>
+        </svg>
+        <svg
+          className="background-logo__icon"
+          width="343"
+          height="343"
+          aria-hidden="true"
+        >
+          <use xlinkHref="#icon-logotype"></use>
+        </svg>
+      </div>
       <div className="popup-form popup-form--sign-in">
         <div className="popup-form__wrapper">
           <div className="popup-form__content">
@@ -50,19 +68,26 @@ function LoginPage(): JSX.Element {
               <h1 className="popup-form__title">Вход</h1>
             </div>
             <div className="popup-form__form">
-              <form onSubmit={handleSubmit}>
+              <form method="get" onSubmit={handleSubmit(onSubmit)}>
                 <div className="sign-in">
                   <div className="custom-input sign-in__input">
                     <label>
                       <span className="custom-input__label">E-mail</span>
                       <span className="custom-input__wrapper">
                         <input
+                          {...register('email')}
                           type="email"
                           name="email"
-                          value={user}
-                          required
-                          autoComplete="off"
+                          id="email"
+                          className="input"
+                          placeholder="name@mail.com"
+                          aria-invalid={errors.email ? 'true' : 'false'}
                         />
+                        {errors.email && (
+                          <span role="alert" className="error">
+                            {errors.email?.message}
+                          </span>
+                        )}
                       </span>
                     </label>
                   </div>
@@ -71,22 +96,35 @@ function LoginPage(): JSX.Element {
                       <span className="custom-input__label">Пароль</span>
                       <span className="custom-input__wrapper">
                         <input
+                          {...register('password')}
                           type="password"
-                          name="password"
-                          value={pwd}
-                          required
+                          id="password"
+                          placeholder="Не менее 6 символов"
+                          className="input"
+                          aria-invalid={errors.password ? 'true' : 'false'}
                         />
+                        {errors.password && (
+                          <span role="alert" className="error">
+                            {errors.password?.message}
+                          </span>
+                        )}
                       </span>
                     </label>
                   </div>
-                  <button className="btn sign-in__button">Продолжить</button>
+                  <button
+                    className="btn sign-in__button"
+                    type="submit"
+                    disabled={!isDirty || isSubmitting}
+                  >
+                    Продолжить
+                  </button>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 }
 
