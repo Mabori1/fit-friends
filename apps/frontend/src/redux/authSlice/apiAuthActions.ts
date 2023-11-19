@@ -15,10 +15,10 @@ export const registerUserAction = createAsyncThunk<
     state: State;
     extra: AxiosInstance[];
   }
->('auth/register', async (registerUserRequestBody, { extra: api }) => {
+>('auth/register', async (createUserDto, { extra: api }) => {
   const { data } = await api[0].post<UserResponse>(
     `${BASE_URL}${APIRoute.Register}`,
-    registerUserRequestBody,
+    createUserDto,
   );
   saveTokens(data.tokens.access_token, data.tokens.refresh_token);
   return data;
@@ -32,11 +32,12 @@ export const loginUserAction = createAsyncThunk<
     state: State;
     extra: AxiosInstance[];
   }
->('auth/login', async (signInUserRequestBody, { extra: api }) => {
+>('auth/login', async (loginUserDto, { extra: api }) => {
   const { data } = await api[0].post<UserResponse>(
     `${BASE_URL}${APIRoute.Login}`,
-    signInUserRequestBody,
+    loginUserDto,
   );
+  console.log(data);
   saveTokens(data.tokens.access_token, data.tokens.refresh_token);
   return data;
 });

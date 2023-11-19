@@ -7,7 +7,6 @@ export function App() {
   return (
     <Routes>
       <Route path={AppRoute.Main} element={<IntroPage />} />
-      <Route path={AppRoute.Login} element={<LoginPage />} />
 
       <Route path="*" element={<IntroPage />} />
     </Routes>
