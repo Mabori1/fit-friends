@@ -9,7 +9,7 @@ import {
 
 type AuthSlice = {
   authStatus: AuthStatus;
-  userRole: UserRole;
+  userRole?: UserRole;
 };
 
 const initialState: AuthSlice = {
@@ -32,7 +32,7 @@ export const authSlice = createSlice({
       })
       .addCase(loginUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        state.userRole = action.payload.userInfo.role;
+        state.userRole = action.payload?.userInfo.role;
       })
       .addCase(loginUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;

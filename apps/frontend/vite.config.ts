@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import svgLoader from 'vite-svg-loader';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/frontend',
@@ -16,7 +17,7 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [react(), nxViteTsPaths()],
+  plugins: [react(), nxViteTsPaths(), svgLoader()],
 
   // Uncomment this if you are using workers.
   // worker: {

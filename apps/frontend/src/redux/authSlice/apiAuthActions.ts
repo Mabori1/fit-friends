@@ -21,7 +21,7 @@ export const registerUserAction = createAsyncThunk<
     saveTokens(data.access_token, data.refresh_token);
     return data;
   } catch (error) {
-    let message = 'Неизвестная ошибка';
+    let message = 'Неизвестная ошибка auth/register';
     if (isAxiosError(err)) {
       message = err.response?.data.message;
     }
@@ -39,7 +39,7 @@ export const loginUserAction = createAsyncThunk<
     saveTokens(data.access_token, data.refresh_token);
     return data;
   } catch (err) {
-    let message = 'Неизвестная ошибка';
+    let message = 'Неизвестная ошибка auth/login';
 
     if (isAxiosError(err)) {
       message = err.response?.data.message;
