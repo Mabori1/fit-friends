@@ -1,17 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { createAPI, createRefreshTokensAPI } from '../services/api';
+import { createAPI } from '../services/api';
 import { rootReducer } from './root-reducer';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 export const api = createAPI();
-export const refreshTokensAPI = createRefreshTokensAPI();
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {
-        extraArgument: [api, refreshTokensAPI],
+        extraArgument: api,
       },
     }),
 });

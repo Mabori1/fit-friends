@@ -15,7 +15,6 @@ const SERVE_ROOT = '/static';
         const rootPath = configService.get<string>(
           'application.uploadDirectory',
         );
-        console.log(rootPath);
 
         return [
           {

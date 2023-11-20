@@ -25,21 +25,21 @@ export const authSlice = createSlice({
     builder
       .addCase(registerUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        state.userRole = action.payload.user.role;
+        state.userRole = action.payload.userInfo.role;
       })
       .addCase(registerUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
       })
       .addCase(loginUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        state.userRole = action.payload.user.role;
+        state.userRole = action.payload.userInfo.role;
       })
       .addCase(loginUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
       })
       .addCase(refreshTokensAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        state.userRole = action.payload.user.role;
+        state.userRole = action.payload.userInfo.role;
       })
       .addCase(refreshTokensAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;

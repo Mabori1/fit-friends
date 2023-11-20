@@ -28,13 +28,7 @@ function LoginPage(): JSX.Element {
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    console.log(data);
-    dispatch(
-      loginUserAction({
-        email: data.email,
-        password: data.password,
-      }),
-    );
+    dispatch(loginUserAction(data));
     reset();
   };
 
