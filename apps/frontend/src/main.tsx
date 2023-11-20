@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { HelmetProvider } from 'react-helmet-async';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -14,10 +15,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
-        <ToastContainer limit={1} />
-        <App />
-      </Provider>
+      <HelmetProvider>
+        <Provider store={store}>
+          <ToastContainer limit={1} />
+          <App />
+        </Provider>
+      </HelmetProvider>
     </BrowserRouter>
   </StrictMode>,
 );

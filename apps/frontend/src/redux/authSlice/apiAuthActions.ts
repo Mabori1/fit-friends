@@ -9,7 +9,7 @@ import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
 export const registerUserAction = createAsyncThunk<
-  UserResponse,
+  UserResponse | undefined,
   CreateUserDto,
   AsyncThunkConfig
 >('auth/register', async (createUserDto, { extra: api }) => {
@@ -20,7 +20,7 @@ export const registerUserAction = createAsyncThunk<
   try {
     saveTokens(data.access_token, data.refresh_token);
     return data;
-  } catch (error) {
+  } catch (err) {
     let message = 'Неизвестная ошибка auth/register';
     if (isAxiosError(err)) {
       message = err.response?.data.message;

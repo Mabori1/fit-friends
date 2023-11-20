@@ -43,6 +43,7 @@ function LoginPage(): JSX.Element {
 
   const isAuth = useAppSelector(getIsAuth);
   const role = useAppSelector(getUserRole);
+  console.log(role, ' ', isAuth);
 
   useEffect(() => {
     if (role === UserRole.Trainer && isAuth) {

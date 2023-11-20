@@ -6,6 +6,8 @@ export enum AppRoute {
   Login = '/login',
   Main = '/main',
   TrainerRoom = '/trainer-room',
+  ClientRoom = '/client-room',
+  Info = '/info',
   Register = '/register',
   CreateTraining = '/create-training',
   MyTrainings = '/my-trainings',

@@ -25,7 +25,7 @@ export const authSlice = createSlice({
     builder
       .addCase(registerUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        state.userRole = action.payload.userInfo.role;
+        state.userRole = action.payload?.userInfo.role;
       })
       .addCase(registerUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
