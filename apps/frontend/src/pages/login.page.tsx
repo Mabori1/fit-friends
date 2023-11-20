@@ -4,13 +4,14 @@ import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
+import { UserPasswordLength } from '@fit-friends/types';
 
 const formSchema = z.object({
   email: z.string().email('Некорректный email'),
   password: z
     .string()
-    .min(6, 'Пароль слишком короткий')
-    .max(32, 'Пароль слишком длинный'),
+    .min(UserPasswordLength.Min, 'Пароль слишком короткий')
+    .max(UserPasswordLength.Max, 'Пароль слишком длинный'),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
