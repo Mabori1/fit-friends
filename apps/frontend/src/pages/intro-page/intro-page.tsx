@@ -72,11 +72,7 @@ function IntroPage(): JSX.Element {
             </picture>
           </div>
           <div className="intro__buttons">
-            <Link
-              className="btn intro__button"
-              type="button"
-              to="/registration"
-            >
+            <Link className="btn intro__button" type="button" to="/register">
               Регистрация
             </Link>
             <p className="intro__text">

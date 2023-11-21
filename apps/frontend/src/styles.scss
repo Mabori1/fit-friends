@@ -1689,6 +1689,11 @@ input:disabled ~ .role-btn__btn,
   transition: opacity 0.3s ease;
 }
 
+.error {
+  color: #e4001b;
+  padding-left: 6px;
+}
+
 .custom-input--error .custom-input__error,
 .custom-input--error .custom-textarea__error {
   opacity: 1;

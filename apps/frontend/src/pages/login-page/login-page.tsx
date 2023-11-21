@@ -11,7 +11,7 @@ import { AppRoute } from '../../const';
 import { LogoBig, LogoType } from '../../helper/svg-const';
 
 const formSchema = z.object({
-  email: z.string().email('Некорректный email'),
+  email: z.string().email('Некорректный email').toLowerCase(),
   password: z
     .string()
     .min(UserPasswordLength.Min, 'Пароль слишком короткий')

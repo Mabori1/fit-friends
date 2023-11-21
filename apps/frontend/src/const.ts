@@ -1,8 +1,7 @@
 export const BASE_RESPONSE_URL = 'http//localhost:4000/api';
 
 export enum AppRoute {
-  Root = '/',
-  Intro = '/intro',
+  Intro = '/',
   Login = '/login',
   Main = '/main',
   TrainerRoom = '/trainer-room',
@@ -50,3 +49,14 @@ export enum APIRoute {
   RecommendedTrainings = '/trainings/recommended',
   Orders = '/orders/trainings',
 }
+
+export const LOCATIONS_ZOD = [
+  'Пионерская',
+  'Петроградская',
+  'Удельная',
+  'Звёздная',
+  'Спортивная',
+] as const;
+
+export const GENDER_ZOD = ['Мужской', 'Женский', 'неважно'] as const;
+export const ROLE_ZOD = ['тренер', 'пользователь'] as const;
