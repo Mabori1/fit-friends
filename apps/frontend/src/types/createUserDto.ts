@@ -18,8 +18,8 @@ export class CreateUserDto {
   public role!: UserRole;
   public description?: string;
   public location!: UserLocation;
-  public level!: UserLevel;
-  public typesOfTraining!: UserTypesTraining[];
+  public level?: UserLevel;
+  public typesOfTraining?: UserTypesTraining[];
   public trainer?: ITrainer;
   public client?: IClient;
 }

@@ -22,8 +22,8 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
   public description?: string;
   public location: string;
   public createdAt?: Date;
-  public level: string;
-  public typesOfTraining: string[];
+  public level?: string;
+  public typesOfTraining?: string[];
   public client?: IClient | null;
   public trainer?: ITrainer | null;
   public refreshTokenHash?: string;
@@ -51,8 +51,8 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
     this.description = user.description || '';
     this.location = user.location;
     this.createdAt = user.createdAt || new Date();
-    this.level = user.level;
-    this.typesOfTraining = user.typesOfTraining;
+    this.level = user.level || '';
+    this.typesOfTraining = user.typesOfTraining || [];
     this.client = user.client;
     this.trainer = user.trainer;
     this.orders = user.orders || [];

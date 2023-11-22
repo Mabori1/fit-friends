@@ -104,6 +104,7 @@ export class CreateUserDto {
     required: true,
   })
   @IsString()
+  @IsOptional()
   @Length(UserDescriptionLength.Min, UserDescriptionLength.Max, {
     message: UsersErrorMessage.DescriptionLengthNotValid,
   })
@@ -125,7 +126,8 @@ export class CreateUserDto {
     required: true,
   })
   @IsEnum(UserLevel)
-  public level!: UserLevel;
+  @IsOptional()
+  public level?: UserLevel;
 
   @ApiProperty({
     description: 'Training type',
@@ -135,8 +137,9 @@ export class CreateUserDto {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayMaxSize(3)
+  @IsOptional()
   @IsEnum(UserTypesTraining, { each: true })
-  public typesOfTraining!: UserTypesTraining[];
+  public typesOfTraining?: UserTypesTraining[];
 
   @ApiProperty({
     description: 'User of Trainer',

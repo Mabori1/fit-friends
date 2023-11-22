@@ -2120,6 +2120,13 @@ input:active + .custom-textarea__text {
   } */
 }
 
+.custom-label {
+  display: block;
+  padding: 4px;
+  width: 100%;
+  z-index: 10;
+}
+
 .custom-select__label {
   color: #aeaeae;
   margin-bottom: 9px;

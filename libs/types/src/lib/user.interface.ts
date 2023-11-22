@@ -16,8 +16,8 @@ export interface IUser {
   description?: string;
   location: string;
   createdAt?: Date;
-  level: string;
-  typesOfTraining: string[];
+  level?: string;
+  typesOfTraining?: string[];
   client?: IClient | null;
   trainer?: ITrainer | null;
   alerts?: IAlert[];

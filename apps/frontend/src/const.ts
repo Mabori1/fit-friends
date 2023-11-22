@@ -58,5 +58,9 @@ export const LOCATIONS_ZOD = [
   'Спортивная',
 ] as const;
 
-export const GENDER_ZOD = ['Мужской', 'Женский', 'неважно'] as const;
+export const GENDER_ZOD = ['мужской', 'женский', 'неважно'] as const;
 export const ROLE_ZOD = ['тренер', 'пользователь'] as const;
+
+export const AVATAR_FILE_TYPES = ['jpg', 'png', 'jpeg'] as const;
+
+export const AVATAR_MAX_SIZE = 1000000;

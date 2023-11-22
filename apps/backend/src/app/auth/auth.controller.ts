@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { fillObject } from '@fit-friends/core';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRdo } from './rdo/user.rdo';
@@ -29,9 +28,10 @@ export class AuthController {
     description: 'The new user has been successfully created.',
   })
   @Post('/register')
-  public async create(@Body() dto: CreateUserDto): Promise<UserRdo> {
+  public async create(@Body() dto: CreateUserDto) {
+    console.log(dto);
     const newUser = await this.authService.createUser(dto);
-    return fillObject(UserRdo, newUser);
+    return this.authService.createUserToken(newUser);
   }
 
   @UseGuards(LocalAuthGuard)

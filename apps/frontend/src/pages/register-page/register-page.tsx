@@ -1,7 +1,17 @@
+import { Navigate } from 'react-router-dom';
 import BackgroundLogo from '../../components/background-logo/background-logo';
 import FormRegister from '../../components/form-register/form-register';
+import { AppRoute } from '../../const';
+import { useAppSelector } from '../../redux/store';
+import { getIsAuth } from '../../redux/authSlice/selectors';
 
 function RegisterPage() {
+  const isAuth = useAppSelector(getIsAuth);
+
+  if (isAuth) {
+    return <Navigate to={AppRoute.Main} />;
+  }
+
   return (
     <>
       <BackgroundLogo />

@@ -7,19 +7,28 @@ import {
   IconWeight,
 } from '../../helper/svg-const';
 import { UserNameLength, UserPasswordLength } from '@fit-friends/types';
-import { GENDER_ZOD, LOCATIONS_ZOD, ROLE_ZOD } from '../../const';
+import {
+  GENDER_ZOD,
+  LOCATIONS_ZOD,
+  ROLE_ZOD,
+  AVATAR_FILE_TYPES,
+  AVATAR_MAX_SIZE,
+} from '../../const';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { registerUserAction } from '../../redux/authSlice/apiAuthActions';
+import { getIsAuth } from '../../redux/authSlice/selectors';
 
 const formSchema = z.object({
-  avatar: z.string().optional(),
+  avatar: z.object({}),
   name: z
     .string()
     .min(UserNameLength.Min, 'Имя слишком короткое')
     .max(UserNameLength.Max, 'Имя слишком длинное'),
   email: z.string().email('Некорректный email'),
-  birthDay: z.coerce
+  birthDate: z.coerce
     .date()
     .min(new Date('1900-01-01'), { message: 'Слишком старый' })
     .max(new Date(), {
@@ -33,25 +42,33 @@ const formSchema = z.object({
   gender: z.enum(GENDER_ZOD),
   role: z.enum(ROLE_ZOD),
   terms: z.literal(true, {
-    errorMap: () => ({
-      message: 'Примите политику конфиденциальности компании',
-    }),
+    errorMap: () => ({ message: 'Согласие обязательно' }),
   }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 function FormRegister() {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     reset,
     setFocus,
+    watch,
     formState: { isDirty, isSubmitting, errors },
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
+  console.log(useAppSelector(getIsAuth));
+
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    console.log(data);
+    const { terms, ...newUser } = data;
+    dispatch(
+      registerUserAction({
+        ...newUser,
+        avatar,
+      }),
+    );
     reset();
   };
 
@@ -59,20 +76,59 @@ function FormRegister() {
     setFocus('name');
   }, [setFocus]);
 
+  const [isSelectOpened, setIsSelectOpened] = useState(false);
+  const [avatar, setAvatar] = useState('');
+  const [avatarError, setAvatarError] = useState('');
+
+  const handleAvatarFileInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const file = evt.currentTarget.files && evt.currentTarget.files[0];
+    const fileName = file ? file.name.toLowerCase() : '';
+    const matches = AVATAR_FILE_TYPES.some((fileType) =>
+      fileName.endsWith(fileType),
+    );
+
+    if (matches && file) {
+      setAvatar(URL.createObjectURL(file));
+
+      setAvatarError('');
+    } else if (!matches && file) {
+      setAvatarError('Загрузите сюда файлы формата PDF, JPG или PNG');
+    } else {
+      setAvatarError('Добавьте подтверждающий документ');
+    }
+
+    if (file?.size && file?.size > AVATAR_MAX_SIZE) {
+      setAvatarError(
+        `Максимальный размер файла ${AVATAR_MAX_SIZE * 1e-6} Мбайт`,
+      );
+    }
+  };
+
   return (
-    <form method="get" onSubmit={handleSubmit(onSubmit)}>
+    <form method="post" onSubmit={handleSubmit(onSubmit)}>
       <div className="sign-up">
         <div className="sign-up__load-photo">
           <div className="input-load-avatar">
             <label>
               <input
                 {...register('avatar')}
+                onChange={handleAvatarFileInputChange}
+                disabled={isSubmitting}
                 className="visually-hidden"
                 type="file"
+                name="avatar"
                 accept="image/png, image/jpeg"
                 aria-invalid={errors.avatar ? 'true' : 'false'}
               />
               <span className="input-load-avatar__btn">
+                {avatar && (
+                  <img
+                    src={avatar}
+                    width="334"
+                    height="573"
+                    alt="user avatar"
+                  />
+                )}
                 <svg width="20" height="20" aria-hidden="true">
                   <IconImport />
                 </svg>
@@ -89,6 +145,7 @@ function FormRegister() {
                 {errors.avatar?.message}
               </span>
             )}
+            <span className="error">{avatarError}</span>
           </div>
         </div>
         <div className="sign-up__data">
@@ -98,6 +155,7 @@ function FormRegister() {
               <span className="custom-input__wrapper">
                 <input
                   {...register('name')}
+                  disabled={isSubmitting}
                   type="text"
                   name="name"
                   placeholder="Ваше имя"
@@ -117,6 +175,7 @@ function FormRegister() {
               <span className="custom-input__wrapper">
                 <input
                   {...register('email')}
+                  disabled={isSubmitting}
                   type="email"
                   name="email"
                   placeholder="email@mail.ru"
@@ -135,57 +194,76 @@ function FormRegister() {
               <span className="custom-input__label">Дата рождения</span>
               <span className="custom-input__wrapper">
                 <input
-                  {...register('birthDay')}
+                  {...register('birthDate')}
+                  disabled={isSubmitting}
                   type="date"
-                  name="birthday"
+                  name="birthDate"
                   max="2023-11-21"
-                  aria-invalid={errors.birthDay ? 'true' : 'false'}
+                  aria-invalid={errors.birthDate ? 'true' : 'false'}
                 />
-                {errors.birthDay && (
+                {errors.birthDate && (
                   <span role="alert" className="error">
-                    {errors.birthDay?.message}
+                    {errors.birthDate?.message}
                   </span>
                 )}
               </span>
             </label>
           </div>
-          <div className="custom-select custom-select--not-selected">
+          <div
+            className={`
+                        custom-select
+                        ${watch('location') ? 'not-empty' : ''}
+                        ${
+                          isSelectOpened
+                            ? 'is-open'
+                            : 'custom-select--not-selected'
+                        }
+                      `}
+          >
             <span className="custom-select__label">Ваша локация</span>
             <button
+              onClick={() => setIsSelectOpened((prevState) => !prevState)}
               className="custom-select__button"
               type="button"
               aria-label="Выберите одну из опций"
             >
-              <span className="custom-select__text"></span>
+              <span className="custom-select__text">{watch('location')}</span>
               <span className="custom-select__icon">
                 <svg width="15" height="6" aria-hidden="true">
                   <ArrowDown />
                 </svg>
               </span>
             </button>
-
-            <ul className="custom-select__list" role="listbox">
+            <ul
+              className="custom-select__list"
+              role="listbox"
+              onClick={() => setIsSelectOpened((prevState) => !prevState)}
+            >
               {LOCATIONS_ZOD.map((station) => (
                 <li key={station} className="custom-select__item">
-                  <span className="custom-input__wrapper">
+                  <label htmlFor={station} className="custom-label">
                     <input
                       {...register('location')}
-                      placeholder="Ваша станция метро"
-                      type="text"
+                      disabled={isSubmitting}
+                      hidden
+                      type="radio"
+                      id={station}
                       name="location"
                       value={station}
-                      aria-invalid={errors.location ? 'true' : 'false'}
+                      onClick={() =>
+                        setIsSelectOpened((prevState) => !prevState)
+                      }
                     />
-                    {errors.location && (
-                      <span role="alert" className="error">
-                        {errors.location?.message}
-                      </span>
-                    )}
-                  </span>
-                  {station}
+                    {station}
+                  </label>
                 </li>
               ))}
             </ul>
+            {errors.location && (
+              <span role="alert" className="error">
+                {errors.location?.message}
+              </span>
+            )}
           </div>
           <div className="custom-input">
             <label>
@@ -193,6 +271,7 @@ function FormRegister() {
               <span className="custom-input__wrapper">
                 <input
                   {...register('password')}
+                  disabled={isSubmitting}
                   type="password"
                   name="password"
                   placeholder="Не менее 6 символов"
@@ -212,26 +291,49 @@ function FormRegister() {
             <div className="custom-toggle-radio custom-toggle-radio--big">
               <div className="custom-toggle-radio__block">
                 <label>
-                  <input {...register('gender')} type="radio" name="sex" />
+                  <input
+                    {...register('gender')}
+                    disabled={isSubmitting}
+                    type="radio"
+                    name="gender"
+                    value="мужской"
+                  />
                   <span className="custom-toggle-radio__icon"></span>
                   <span className="custom-toggle-radio__label">Мужской</span>
                 </label>
               </div>
               <div className="custom-toggle-radio__block">
                 <label>
-                  <input type="radio" name="sex" checked />
+                  <input
+                    {...register('gender')}
+                    disabled={isSubmitting}
+                    type="radio"
+                    name="gender"
+                    value="женский"
+                  />
                   <span className="custom-toggle-radio__icon"></span>
                   <span className="custom-toggle-radio__label">Женский</span>
                 </label>
               </div>
               <div className="custom-toggle-radio__block">
                 <label>
-                  <input type="radio" name="sex" />
+                  <input
+                    {...register('gender')}
+                    disabled={isSubmitting}
+                    type="radio"
+                    name="gender"
+                    value="неважно"
+                  />
                   <span className="custom-toggle-radio__icon"></span>
                   <span className="custom-toggle-radio__label">Неважно</span>
                 </label>
               </div>
             </div>
+            {errors.gender && (
+              <span role="alert" className="error">
+                {errors.gender?.message}
+              </span>
+            )}
           </div>
         </div>
         <div className="sign-up__role">
@@ -240,11 +342,12 @@ function FormRegister() {
             <div className="role-btn">
               <label>
                 <input
+                  {...register('role')}
+                  disabled={isSubmitting}
                   className="visually-hidden"
                   type="radio"
                   name="role"
                   value="тренер"
-                  checked
                 />
                 <span className="role-btn__icon">
                   <svg width="12" height="13" aria-hidden="true">
@@ -257,6 +360,8 @@ function FormRegister() {
             <div className="role-btn">
               <label>
                 <input
+                  {...register('role')}
+                  disabled={isSubmitting}
                   className="visually-hidden"
                   type="radio"
                   name="role"
@@ -276,11 +381,11 @@ function FormRegister() {
           <label>
             <input
               {...register('terms')}
+              disabled={isSubmitting}
               id="terms"
               aria-describedby="terms"
               type="checkbox"
-              value="user-agreement"
-              name="user-agreement"
+              name="terms"
               aria-invalid={errors.terms ? 'true' : 'false'}
             />
             <span className="sign-up__checkbox-icon">
@@ -292,10 +397,9 @@ function FormRegister() {
               Я соглашаюсь с <span>политикой конфиденциальности</span> компании
             </span>
           </label>
-          {errors.terms && (
-            <span className="error">{errors.terms?.message}</span>
-          )}
         </div>
+        {errors.terms && <span className="error">{errors.terms?.message}</span>}
+        <pre>{JSON.stringify(watch(), null, 2)}</pre>
         <button
           className="btn sign-up__button"
           type="submit"
