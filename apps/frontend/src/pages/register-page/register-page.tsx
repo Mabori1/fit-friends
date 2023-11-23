@@ -10,10 +10,10 @@ function RegisterPage() {
   const isTrainer = useAppSelector(getIsTrainer);
 
   if (isAuth && isTrainer) {
-    return <Navigate to={AppRoute.TrainerRoom} />;
+    return <Navigate to={AppRoute.RegisterTrainer} />;
   }
   if (isAuth && !isTrainer) {
-    return <Navigate to={AppRoute.Main} />;
+    return <Navigate to={AppRoute.RegisterClient} />;
   }
 
   return (

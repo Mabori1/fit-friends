@@ -27,7 +27,6 @@ import { registerUserAction } from '../../redux/authSlice/apiAuthActions';
 import { getIsAuth } from '../../redux/authSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
-import { UserGender } from '@fit-friends/types';
 
 const formSchema = z.object({
   avatar: z.object({}),
@@ -256,8 +255,11 @@ function FormRegister() {
               role="listbox"
               onClick={() => setIsSelectOpened((prevState) => !prevState)}
             >
-              {LOCATIONS_ZOD.map((station) => (
-                <li key={station} className="custom-select__item">
+              {LOCATIONS_ZOD.map((station, i) => (
+                <li
+                  key={`location-${i} ${station}`}
+                  className="custom-select__item"
+                >
                   <label htmlFor={station} className="custom-label">
                     <input
                       {...register('location')}
@@ -306,8 +308,8 @@ function FormRegister() {
           <div className="sign-up__radio">
             <span className="sign-up__label">Пол</span>
             <div className="custom-toggle-radio custom-toggle-radio--big">
-              {Object.values(UserGender).map((gender) => (
-                <div className="custom-toggle-radio__block">
+              {GENDER_ZOD.map((gender) => (
+                <div key={gender} className="custom-toggle-radio__block">
                   <label>
                     <input
                       {...register('gender')}

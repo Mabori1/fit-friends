@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -55,12 +56,12 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: 'User has been successfully logged out.',
   })
+  @Post('logout')
   async logout(@Req() user: IRequestWithUser) {
     return this.authService.logout(user.user.userId);
   }

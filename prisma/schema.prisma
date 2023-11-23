@@ -52,7 +52,7 @@ model Trainer {
   userId             Int      @unique @map("user_id")
   merits             String   @default("")
   isPersonalTraining Boolean? @default(false) @map("personal_training")
-  certificate        String
+  certificate        String[]
 
   @@map("trainers")
 }

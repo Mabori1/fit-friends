@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function HeaderSearch(): JSX.Element {
   return (
     <div className="search">
@@ -30,34 +32,34 @@ function HeaderSearch(): JSX.Element {
         </label>
         <ul className="search__list">
           <li className="search__item">
-            <a className="search__link" href="#">
+            <Link className="search__link" to="#">
               Бокс
-            </a>
+            </Link>
           </li>
           <li className="search__item">
-            <a className="search__link is-active" href="#">
+            <Link className="search__link is-active" to="#">
               Бег
-            </a>
+            </Link>
           </li>
           <li className="search__item">
-            <a className="search__link" href="#">
+            <Link className="search__link" to="#">
               Аэробика
-            </a>
+            </Link>
           </li>
           <li className="search__item">
-            <a className="search__link" href="#">
+            <Link className="search__link" to="#">
               Фитнес
-            </a>
+            </Link>
           </li>
           <li className="search__item">
-            <a className="search__link" href="#">
+            <Link className="search__link" to="#">
               Стрейчинг
-            </a>
+            </Link>
           </li>
           <li className="search__item">
-            <a className="search__link" href="#">
+            <Link className="search__link" to="#">
               Йога
-            </a>
+            </Link>
           </li>
         </ul>
       </form>

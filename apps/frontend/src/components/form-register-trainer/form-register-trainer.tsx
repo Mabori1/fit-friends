@@ -10,12 +10,17 @@ import { ArrowCheck, IconImport } from '../../helper/svg-const';
 import BackgroundLogo from '../background-logo/background-logo';
 import { upFirstWord } from '../../helper/utils';
 import { ChangeEvent, useState } from 'react';
-import { UserDescriptionLength } from '@fit-friends/types';
+import {
+  MAXIMUM_TRAINING_TYPES_CHOICE,
+  UserDescriptionLength,
+} from '@fit-friends/types';
 
 const formSchema = z.object({
-  typesOfTraining: z.array(z.enum(TYPE_TRAINING_ZOD)),
+  typesOfTraining: z
+    .array(z.enum(TYPE_TRAINING_ZOD))
+    .max(MAXIMUM_TRAINING_TYPES_CHOICE, 'Не более трех типов тренировок'),
   level: z.enum(LEVEL_TRAINING_ZOD),
-  sertificate: z.array(z.string()),
+  certificate: z.any(),
   description: z
     .string()
     .min(
@@ -40,12 +45,12 @@ function FormRegisgerTrainer() {
     formState: { isSubmitting, errors },
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
+  const [certificate, setCertificate] = useState<File | null>(null);
+
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    console.log(data);
+    dispatch(updateUserAction({ ...data, certificate }));
     reset();
   };
-
-  const [certificate, setCertificate] = useState<File | null>(null);
 
   const handleCertificateFileInputChange = (
     evt: ChangeEvent<HTMLInputElement>,
@@ -78,13 +83,13 @@ function FormRegisgerTrainer() {
                       </span>
                       <div className="specialization-checkbox questionnaire-coach__specializations">
                         {TYPE_TRAINING_ZOD.map((type) => (
-                          <div className="btn-checkbox">
+                          <div key={type} className="btn-checkbox">
                             <label>
                               <input
                                 {...register('typesOfTraining')}
                                 className="visually-hidden"
                                 type="checkbox"
-                                name="specialisation"
+                                name="typesOfTraining"
                                 value={type}
                                 aria-invalid={
                                   errors.typesOfTraining ? 'true' : 'false'
@@ -109,7 +114,10 @@ function FormRegisgerTrainer() {
                       </span>
                       <div className="custom-toggle-radio custom-toggle-radio--big questionnaire-coach__radio">
                         {LEVEL_TRAINING_ZOD.map((level) => (
-                          <div className="custom-toggle-radio__block">
+                          <div
+                            key={level}
+                            className="custom-toggle-radio__block"
+                          >
                             <label>
                               <input
                                 {...register('level')}
@@ -145,20 +153,16 @@ function FormRegisgerTrainer() {
                             </svg>
                           </span>
                           <input
-                            {...register('sertificate')}
+                            {...register('certificate')}
                             onChange={handleCertificateFileInputChange}
                             type="file"
-                            name="sertificate"
+                            name="certificate"
                             tabIndex={-1}
                             accept=".pdf, .jpg, .png"
                             disabled={isSubmitting}
-                            aria-invalid={errors.sertificate ? 'true' : 'false'}
+                            aria-invalid={errors.certificate ? 'true' : 'false'}
+                            multiple
                           />
-                          {errors.sertificate && (
-                            <span role="alert" className="error">
-                              {errors.sertificate?.message}
-                            </span>
-                          )}
                         </label>
                       </div>
                     </div>

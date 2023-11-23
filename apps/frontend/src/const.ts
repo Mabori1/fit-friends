@@ -38,8 +38,10 @@ export enum AuthStatus {
 export enum APIRoute {
   Register = '/auth/register',
   Login = '/auth/login',
+  Check = '/auth/check',
   Logout = '/auth/logout',
   Refresh = '/auth/refresh',
+  UpdateUser = '/users/update',
   Users = '/users',
   Friends = '/users/friends',
   Avatar = '/users/avatar',

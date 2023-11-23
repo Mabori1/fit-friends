@@ -32,7 +32,7 @@ function LoginPage(): JSX.Element {
     if (isTrainer && isAuth) {
       navigate(AppRoute.TrainerRoom);
     } else if (!isTrainer && isAuth) {
-      setTimeout(() => navigate(AppRoute.Main), 100);
+      navigate(AppRoute.Main);
     }
   }, [isTrainer, isAuth, navigate]);
 

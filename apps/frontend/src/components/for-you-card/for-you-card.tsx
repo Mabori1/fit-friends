@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function ForYouCard() {
   return (
     <li className="special-for-you__item">
@@ -20,9 +22,9 @@ function ForYouCard() {
         <div className="thumbnail-preview__inner">
           <h3 className="thumbnail-preview__title">boxing</h3>
           <div className="thumbnail-preview__button-wrapper">
-            <a className="btn btn--small thumbnail-preview__button" href="#">
+            <Link className="btn btn--small thumbnail-preview__button" to="#">
               Подробнее
-            </a>
+            </Link>
           </div>
         </div>
       </div>

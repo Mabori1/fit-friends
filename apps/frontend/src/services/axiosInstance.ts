@@ -48,15 +48,11 @@ axiosInstance.interceptors.request.use(
         if (!isRefreshTokenExpired) {
           console.log('refresh token not expired');
 
-          const response = await axios.post(
-            `${BASE_URL}/auth/refresh`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${refreshToken}`,
-              },
+          const response = await axios.post(`${BASE_URL}/auth/refresh`, {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
             },
-          );
+          });
 
           console.log(response);
 

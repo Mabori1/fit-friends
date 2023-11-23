@@ -6,6 +6,8 @@ import {
   loginUserAction,
   refreshTokensAction,
   checkUserAction,
+  logoutAction,
+  updateUserAction,
 } from '../authSlice/apiAuthActions';
 
 type AuthSlice = {
@@ -51,6 +53,17 @@ export const authSlice = createSlice({
       })
       .addCase(checkUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
+      })
+      .addCase(logoutAction.rejected, (state) => {
+        state.authStatus = AuthStatus.NoAuth;
+        state.user = undefined;
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.authStatus = AuthStatus.NoAuth;
+        state.user = undefined;
+      })
+      .addCase(updateUserAction.fulfilled, (state, action) => {
+        state.user = action.payload?.userInfo;
       });
   },
 });
