@@ -84,7 +84,10 @@ export class AuthService {
 
     return {
       userInfo,
-      access_token: await this.jwtService.signAsync(accessTokenPayload),
+      access_token: await this.jwtService.signAsync(accessTokenPayload, {
+        secret: this.configService.get<string>('jwt.accessTokenSecret'),
+        expiresIn: this.configService.get<string>('jwt.accessTokenExpiresIn'),
+      }),
       refresh_token: await this.jwtService.signAsync(refreshTokenPayload, {
         secret: this.configService.get<string>('jwt.refreshTokenSecret'),
         expiresIn: this.configService.get<string>('jwt.refreshTokenExpiresIn'),

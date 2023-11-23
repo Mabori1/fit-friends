@@ -7,20 +7,21 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { HelmetProvider } from 'react-helmet-async';
+import { checkUserAction } from './redux/authSlice/apiAuthActions';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
+
+store.dispatch(checkUserAction());
+
 root.render(
   <StrictMode>
     <BrowserRouter>
-      <HelmetProvider>
-        <Provider store={store}>
-          <ToastContainer limit={1} />
-          <App />
-        </Provider>
-      </HelmetProvider>
+      <Provider store={store}>
+        <App />
+        <ToastContainer limit={1} />
+      </Provider>
     </BrowserRouter>
   </StrictMode>,
 );

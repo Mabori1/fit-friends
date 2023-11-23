@@ -3,8 +3,9 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
+import { toast } from 'react-toastify';
 
-import { dropTokens, getToken, saveTokens } from './tokens';
+import { dropAccessTokens, getToken, saveTokens } from './tokens';
 import { Tokens } from '../types/tokens';
 
 const REQUEST_TIMEOUT = 5000;
@@ -38,12 +39,22 @@ export const createAPI = () => {
       };
 
       if (response?.status !== 401 || originalRequest._retry) {
+        toast.warn(error.response.statusText, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
         return Promise.reject(error);
       }
 
       try {
-        dropTokens();
-        const { data } = await api.get<Tokens>('/auth/refresh');
+        dropAccessTokens();
+        const { data } = await api.post<Tokens>('/auth/refresh');
         saveTokens(data.access_token, data.refresh_token);
 
         originalRequest._retry = true;

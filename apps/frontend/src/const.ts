@@ -8,6 +8,8 @@ export enum AppRoute {
   ClientRoom = '/client-room',
   Info = '/info',
   Register = '/register',
+  RegisterTrainer = '/register-trainer',
+  RegisterClient = '/register-client',
   CreateTraining = '/create-training',
   MyTrainings = '/my-trainings',
   MyOrders = '/my-orders',
@@ -56,6 +58,32 @@ export const LOCATIONS_ZOD = [
   'Удельная',
   'Звёздная',
   'Спортивная',
+] as const;
+
+export const CERTIFICATE_FILE_TYPES = ['jpg', 'pdf', 'png'];
+
+export const TYPE_TRAINING_ZOD = [
+  'йога',
+  'бег',
+  'силовые',
+  'аэробика',
+  'кроссфит',
+  'бокс',
+  'пилатес',
+  'стрейчинг',
+] as const;
+
+export const LEVEL_TRAINING_ZOD = [
+  'новичок',
+  'любитель',
+  'профессионал',
+] as const;
+
+export const DURATION_TRAINING_ZOD = [
+  '10-30 мин',
+  '30-50 мин',
+  '50-80 мин',
+  'больше 80 мин',
 ] as const;
 
 export const GENDER_ZOD = ['мужской', 'женский', 'неважно'] as const;

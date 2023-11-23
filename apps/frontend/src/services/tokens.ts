@@ -23,6 +23,10 @@ export const saveTokens = (accessToken: Token, refreshToken: Token): void => {
   localStorage.setItem(REFRESH_TOKEN_KEY_NAME, refreshToken);
 };
 
+export const dropAccessTokens = (): void => {
+  localStorage.removeItem(ACCESS_TOKEN_KEY_NAME);
+};
+
 export const dropTokens = (): void => {
   localStorage.removeItem(ACCESS_TOKEN_KEY_NAME);
   localStorage.removeItem(REFRESH_TOKEN_KEY_NAME);

@@ -8,5 +8,8 @@ export const getAuthStatus = (state: State): AuthStatus =>
 export const getIsAuth = (state: State): boolean =>
   state[NameSpace.AuthSlice].authStatus === AuthStatus.Auth;
 
-export const getUserRole = (state: State): UserRole =>
-  state[NameSpace.AuthSlice].userRole ?? UserRole.Client;
+export const getIsTrainer = (state: State): boolean =>
+  state[NameSpace.AuthSlice].user?.role === UserRole.Trainer;
+
+export const getRole = (state: State): string =>
+  state[NameSpace.AuthSlice].user?.role ?? UserRole.Client;

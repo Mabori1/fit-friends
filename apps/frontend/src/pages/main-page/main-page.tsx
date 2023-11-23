@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async';
 import ForYou from '../../components/for-you/for-you';
 import Header from '../../components/header/header';
 import LookForCompany from '../../components/look-for-company/look-for-company';
@@ -8,9 +7,6 @@ import SpecialOffers from '../../components/special-offers/special-offers';
 function MainPage() {
   return (
     <>
-      <Helmet>
-        <title>FitFriends-MainPage</title>
-      </Helmet>
       <Header />
       <main>
         <h1 className="visually-hidden">

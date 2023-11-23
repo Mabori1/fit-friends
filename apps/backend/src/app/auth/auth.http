@@ -11,9 +11,9 @@ Content-Type: application/json
 
 {
   "name": "Алексей",
-  "email": "mabori3@gmail.com",
+  "email": "mabori11@gmail.com",
   "avatar": "avatar.jpg",
-  "password": "22222222",
+  "password": "222222",
   "gender": "мужской",
   "birthDate": "1974-01-25T00:00:00.000Z",
   "role": "тренер",
@@ -35,9 +35,9 @@ Content-Type: application/json
 
 {
   "name": "Алексей",
-  "email": "mabori9@gmail.com",
+  "email": "mabori22@gmail.com",
   "avatar": "avatar.jpg",
-  "password": "22222222",
+  "password": "222222",
   "gender": "мужской",
   "birthDate": "1974-01-25T00:00:00.000Z",
   "role": "пользователь",
@@ -60,8 +60,8 @@ POST {{baseUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "mabori3@gmail.com",
-  "password": "22222222"
+  "email": "mabori22@gmail.com",
+  "password": "222222"
 }
 ###
 
@@ -90,7 +90,7 @@ Authorization: Bearer {{token}}
 ###
 
 # Get user by ID
-GET {{baseUrl}}/users/250 HTTP/1.1
+GET {{baseUrl}}/users/50 HTTP/1.1
 Authorization: Bearer {{token}}
 ###
 

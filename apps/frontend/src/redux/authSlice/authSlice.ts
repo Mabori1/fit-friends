@@ -1,20 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { UserRole } from '@fit-friends/types';
+import { IUser } from '@fit-friends/types';
 import { AuthStatus, NameSpace } from '../../const';
 import {
   registerUserAction,
   loginUserAction,
   refreshTokensAction,
+  checkUserAction,
 } from '../authSlice/apiAuthActions';
 
 type AuthSlice = {
   authStatus: AuthStatus;
-  userRole?: UserRole;
+  user: IUser | undefined;
 };
 
 const initialState: AuthSlice = {
   authStatus: AuthStatus.Unknown,
-  userRole: UserRole.Client,
+  user: undefined,
 };
 
 export const authSlice = createSlice({
@@ -25,23 +26,30 @@ export const authSlice = createSlice({
     builder
       .addCase(registerUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        state.userRole = action.payload?.userInfo.role;
+        state.user = action.payload?.userInfo;
       })
       .addCase(registerUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
       })
       .addCase(loginUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        state.userRole = action.payload?.userInfo.role;
+        state.user = action.payload?.userInfo;
       })
       .addCase(loginUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
       })
       .addCase(refreshTokensAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        state.userRole = action.payload.userInfo.role;
+        state.user = action.payload.userInfo;
       })
       .addCase(refreshTokensAction.rejected, (state) => {
+        state.authStatus = AuthStatus.NoAuth;
+      })
+      .addCase(checkUserAction.fulfilled, (state, action) => {
+        state.authStatus = AuthStatus.Auth;
+        state.user = action.payload?.userInfo;
+      })
+      .addCase(checkUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
       });
   },

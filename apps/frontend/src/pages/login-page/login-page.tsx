@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
-import { UserPasswordLength, UserRole } from '@fit-friends/types';
-import { getIsAuth, getUserRole } from '../../redux/authSlice/selectors';
+import { UserPasswordLength } from '@fit-friends/types';
+import { getIsAuth, getIsTrainer } from '../../redux/authSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { LogoBig, LogoType } from '../../helper/svg-const';
@@ -24,6 +24,18 @@ function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const isAuth = useAppSelector(getIsAuth);
+  const isTrainer = useAppSelector(getIsTrainer);
+  console.log(isAuth);
+
+  useEffect(() => {
+    if (isTrainer && isAuth) {
+      navigate(AppRoute.TrainerRoom);
+    } else if (!isTrainer && isAuth) {
+      setTimeout(() => navigate(AppRoute.Main), 100);
+    }
+  }, [isTrainer, isAuth, navigate]);
+
   const {
     register,
     handleSubmit,
@@ -40,18 +52,6 @@ function LoginPage(): JSX.Element {
   useEffect(() => {
     setFocus('email');
   }, [setFocus]);
-
-  const isAuth = useAppSelector(getIsAuth);
-  const role = useAppSelector(getUserRole);
-  console.log(role, ' ', isAuth);
-
-  useEffect(() => {
-    if (role === UserRole.Trainer && isAuth) {
-      navigate(AppRoute.TrainerRoom);
-    } else if (role === UserRole.Client && isAuth) {
-      setTimeout(() => navigate(AppRoute.Main), 100);
-    }
-  }, [role, isAuth, navigate]);
 
   return (
     <main>

@@ -6,13 +6,18 @@ import {
   IconImport,
   IconWeight,
 } from '../../helper/svg-const';
-import { UserNameLength, UserPasswordLength } from '@fit-friends/types';
+import {
+  UserNameLength,
+  UserPasswordLength,
+  UserRole,
+} from '@fit-friends/types';
 import {
   GENDER_ZOD,
   LOCATIONS_ZOD,
   ROLE_ZOD,
   AVATAR_FILE_TYPES,
   AVATAR_MAX_SIZE,
+  AppRoute,
 } from '../../const';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -20,6 +25,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { registerUserAction } from '../../redux/authSlice/apiAuthActions';
 import { getIsAuth } from '../../redux/authSlice/selectors';
+import { useNavigate } from 'react-router-dom';
+import { upFirstWord } from '../../helper/utils';
+import { UserGender } from '@fit-friends/types';
 
 const formSchema = z.object({
   avatar: z.object({}),
@@ -49,6 +57,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 function FormRegister() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -62,14 +71,22 @@ function FormRegister() {
   console.log(useAppSelector(getIsAuth));
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    const { terms, ...newUser } = data;
     dispatch(
       registerUserAction({
-        ...newUser,
+        ...data,
         avatar,
       }),
     );
     reset();
+
+    switch (data.role) {
+      case UserRole.Trainer:
+        navigate(AppRoute.RegisterTrainer);
+        break;
+      case UserRole.Client:
+        navigate(AppRoute.RegisterClient);
+        break;
+    }
   };
 
   useEffect(() => {
@@ -289,45 +306,23 @@ function FormRegister() {
           <div className="sign-up__radio">
             <span className="sign-up__label">Пол</span>
             <div className="custom-toggle-radio custom-toggle-radio--big">
-              <div className="custom-toggle-radio__block">
-                <label>
-                  <input
-                    {...register('gender')}
-                    disabled={isSubmitting}
-                    type="radio"
-                    name="gender"
-                    value="мужской"
-                  />
-                  <span className="custom-toggle-radio__icon"></span>
-                  <span className="custom-toggle-radio__label">Мужской</span>
-                </label>
-              </div>
-              <div className="custom-toggle-radio__block">
-                <label>
-                  <input
-                    {...register('gender')}
-                    disabled={isSubmitting}
-                    type="radio"
-                    name="gender"
-                    value="женский"
-                  />
-                  <span className="custom-toggle-radio__icon"></span>
-                  <span className="custom-toggle-radio__label">Женский</span>
-                </label>
-              </div>
-              <div className="custom-toggle-radio__block">
-                <label>
-                  <input
-                    {...register('gender')}
-                    disabled={isSubmitting}
-                    type="radio"
-                    name="gender"
-                    value="неважно"
-                  />
-                  <span className="custom-toggle-radio__icon"></span>
-                  <span className="custom-toggle-radio__label">Неважно</span>
-                </label>
-              </div>
+              {Object.values(UserGender).map((gender) => (
+                <div className="custom-toggle-radio__block">
+                  <label>
+                    <input
+                      {...register('gender')}
+                      disabled={isSubmitting}
+                      type="radio"
+                      name="gender"
+                      value={gender}
+                    />
+                    <span className="custom-toggle-radio__icon"></span>
+                    <span className="custom-toggle-radio__label">
+                      {upFirstWord(gender)}
+                    </span>
+                  </label>
+                </div>
+              ))}
             </div>
             {errors.gender && (
               <span role="alert" className="error">
@@ -403,7 +398,7 @@ function FormRegister() {
         <button
           className="btn sign-up__button"
           type="submit"
-          disabled={!isDirty || isSubmitting}
+          disabled={!isDirty || isSubmitting || !watch('terms') || !errors}
         >
           Продолжить
         </button>

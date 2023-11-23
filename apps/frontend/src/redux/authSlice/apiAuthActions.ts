@@ -53,7 +53,17 @@ export const refreshTokensAction = createAsyncThunk<
   undefined,
   AsyncThunkConfig
 >('auth/refresh', async (_arg, { extra: api }) => {
-  const { data } = await api.get<UserResponse>(APIRoute.Refresh);
+  const { data } = await api.post<UserResponse>(APIRoute.Refresh);
+  saveTokens(data.access_token, data.refresh_token);
+  return data;
+});
+
+export const checkUserAction = createAsyncThunk<
+  UserResponse,
+  undefined,
+  AsyncThunkConfig
+>('auth/check', async (_arg, { extra: api }) => {
+  const { data } = await api.post<UserResponse>(APIRoute.Refresh);
   saveTokens(data.access_token, data.refresh_token);
   return data;
 });

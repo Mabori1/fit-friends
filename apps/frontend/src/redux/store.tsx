@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { createAPI } from '../services/api';
 import { rootReducer } from './root-reducer';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { axiosInstance } from '../services/axiosInstance';
 
-export const api = createAPI();
+//export const api = createAPI();
+export const api = axiosInstance;
 
 export const store = configureStore({
   reducer: rootReducer,

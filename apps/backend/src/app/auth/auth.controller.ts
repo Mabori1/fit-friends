@@ -16,11 +16,15 @@ import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { IRequestWithTokenPayload, IRequestWithUser } from '@fit-friends/types';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { UserService } from '../user/user.service';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @ApiResponse({
     type: UserRdo,
@@ -78,7 +82,9 @@ export class AuthController {
     description: 'Checkig token availibility',
   })
   @Post('check')
+  @HttpCode(HttpStatus.OK)
   public async checkToken(@Req() { user: payload }: IRequestWithTokenPayload) {
-    return payload;
+    const user = await this.userService.getUser(payload.sub);
+    return this.authService.createUserToken(user);
   }
 }

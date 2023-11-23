@@ -1,11 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { UserRole } from '@fit-friends/types';
-import { getUserRole } from '../../redux/authSlice/selectors';
 import { useAppSelector } from '../../redux/store';
+import { getIsTrainer } from '../../redux/authSlice/selectors';
 
 function HeaderNav(): JSX.Element {
-  const userRole = useAppSelector(getUserRole);
+  const isTrainer = useAppSelector(getIsTrainer);
   const navigate = useNavigate();
 
   return (
@@ -16,11 +15,7 @@ function HeaderNav(): JSX.Element {
             className="main-nav__link is-active"
             aria-label="На главную"
             onClick={() => {
-              navigate(
-                userRole === UserRole.Trainer
-                  ? AppRoute.TrainerRoom
-                  : AppRoute.Main,
-              );
+              navigate(isTrainer ? AppRoute.TrainerRoom : AppRoute.Main);
             }}
           >
             <svg id="icon-home" viewBox="0 0 18 18" width="18" height="18">
@@ -39,7 +34,7 @@ function HeaderNav(): JSX.Element {
             aria-label="Личный кабинет"
             onClick={() => {
               navigate(
-                userRole === UserRole.Trainer
+                isTrainer
                   ? `${AppRoute.TrainerRoom}/${AppRoute.Info}`
                   : `${AppRoute.ClientRoom}/${AppRoute.Info}`,
               );
