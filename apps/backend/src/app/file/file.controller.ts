@@ -43,7 +43,7 @@ export class FileController {
       );
     }
     const newFile = await this.fileService.saveFile(file);
-    const path = `${this.configService.get('application.serveRoot')}${
+    const path = `${this.configService.get<string>('application.serveRoot')}${
       newFile.path
     }`;
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
@@ -68,11 +68,12 @@ export class FileController {
       );
     }
     const newFile = await this.fileService.saveFile(file);
-    const path = `${this.configService.get('application.serveRoot')}${
+    const path = `${this.configService.get<string>('application.serveRoot')}${
       newFile.path
     }`;
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
   }
+
   @Post('/upload/pdf')
   @UseInterceptors(FileInterceptor('file'))
   public async uploadPDFile(@UploadedFile() file: Express.Multer.File) {
@@ -93,9 +94,10 @@ export class FileController {
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
   }
 
-  @Get(':fileId')
-  public async show(@Param() fileId: number) {
-    const existFile = await this.fileService.getFileById(fileId);
+  @Get(':id')
+  public async show(@Param('id') id: number) {
+    const existFile = await this.fileService.getFileById(id);
+    console.log(existFile);
     const path = `${this.configService.get('application.serveRoot')}${
       existFile.path
     }`;

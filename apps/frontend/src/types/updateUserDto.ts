@@ -9,7 +9,7 @@ export class UpdateUserDto {
   public description?: string;
   public location?: string;
   public level?: string;
-  public typesOfTraining?: UserTypesTraining[];
+  public typesOfTraining?: string[];
   public trainer?: ITrainer;
   public client?: IClient;
 }

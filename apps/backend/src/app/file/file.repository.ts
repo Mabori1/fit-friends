@@ -20,7 +20,11 @@ export class FileRepository
   }
 
   public async findById(id: number): Promise<IFile> {
-    return await this.prisma.file.findFirst({ where: { id } });
+    return await this.prisma.file.findFirst({
+      where: {
+        id,
+      },
+    });
   }
 
   public async findByHashName(hashName: string): Promise<IFile> {

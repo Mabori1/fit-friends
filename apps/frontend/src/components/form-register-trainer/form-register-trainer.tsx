@@ -9,18 +9,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowCheck, IconImport } from '../../helper/svg-const';
 import BackgroundLogo from '../background-logo/background-logo';
 import { upFirstWord } from '../../helper/utils';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import {
   MAXIMUM_TRAINING_TYPES_CHOICE,
   UserDescriptionLength,
 } from '@fit-friends/types';
+import { useAppDispatch } from '../../redux/store';
+import { updateUserAction } from '../../redux/authSlice/apiAuthActions';
 
 const formSchema = z.object({
   typesOfTraining: z
     .array(z.enum(TYPE_TRAINING_ZOD))
     .max(MAXIMUM_TRAINING_TYPES_CHOICE, 'Не более трех типов тренировок'),
   level: z.enum(LEVEL_TRAINING_ZOD),
-  certificate: z.any(),
   description: z
     .string()
     .min(
@@ -37,6 +38,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 function FormRegisgerTrainer() {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -46,9 +48,17 @@ function FormRegisgerTrainer() {
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
   const [certificate, setCertificate] = useState<File | null>(null);
+  const [imageInputUsed, setImageInputUsed] = useState(false);
+  const [certificateError, setCertificateError] = useState(
+    'Добавьте подтверждающий документ',
+  );
 
+  const handleSubmitButtonClick = (evt: FormEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    setImageInputUsed(true);
+  };
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    dispatch(updateUserAction({ ...data, certificate }));
+    dispatch(updateUserAction(data));
     reset();
   };
 
@@ -63,6 +73,12 @@ function FormRegisgerTrainer() {
 
     if (matches && file) {
       setCertificate(file);
+
+      setCertificateError('');
+    } else if (!matches && file) {
+      setCertificateError('Загрузите сюда файлы формата PDF, JPG или PNG');
+    } else {
+      setCertificateError('Добавьте подтверждающий документ');
     }
   };
 
@@ -145,24 +161,29 @@ function FormRegisgerTrainer() {
                         Ваши дипломы и сертификаты
                       </span>
                       <div className="drag-and-drop questionnaire-coach__drag-and-drop">
-                        <label>
+                        <label
+                          className={`${
+                            imageInputUsed && certificateError
+                              ? 'custom-input--error'
+                              : ''
+                          }`}
+                        >
                           <span className="drag-and-drop__label" tabIndex={0}>
                             Загрузите сюда файлы формата PDF, JPG или PNG
                             <svg width="20" height="20" aria-hidden="true">
-                              <IconImport />
+                              <use xlinkHref="#icon-import"></use>
                             </svg>
                           </span>
                           <input
-                            {...register('certificate')}
                             onChange={handleCertificateFileInputChange}
                             type="file"
-                            name="certificate"
+                            name="import"
                             tabIndex={-1}
                             accept=".pdf, .jpg, .png"
-                            disabled={isSubmitting}
-                            aria-invalid={errors.certificate ? 'true' : 'false'}
-                            multiple
                           />
+                          <span className="custom-input__error">
+                            {imageInputUsed && certificateError}
+                          </span>
                         </label>
                       </div>
                     </div>
@@ -219,6 +240,7 @@ function FormRegisgerTrainer() {
                     className="btn questionnaire-coach__button"
                     type="submit"
                     disabled={isSubmitting}
+                    onClick={handleSubmitButtonClick}
                   >
                     Продолжить
                   </button>

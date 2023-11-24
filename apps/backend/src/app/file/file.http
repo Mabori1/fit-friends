@@ -4,10 +4,15 @@ Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
 Content-Disposition: form-data; name="file"; filename="avatar.jpg"
-Content-Type: text/plain
+Content-Type: image/jpeg
 
 < ./avatar.jpg
 --boundary--
+###
+
+# Get file bi Id
+GET http://localhost:4000/api/files/22 HTTP/1.1
+
 ###
 
 # Get file by ID

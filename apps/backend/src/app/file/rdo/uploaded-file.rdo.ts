@@ -2,7 +2,7 @@ import { Expose } from 'class-transformer';
 
 export class UploadedFileRdo {
   @Expose()
-  public fileId: string;
+  public id: number;
 
   @Expose()
   public originalName: string;

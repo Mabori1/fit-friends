@@ -63,11 +63,11 @@ export class FileService {
     return this.fileRepository.create(newFile);
   }
 
-  public async getFileById(fileId: number) {
-    const existFile = await this.fileRepository.findById(fileId);
+  public async getFileById(id: number) {
+    const existFile = await this.fileRepository.findById(id);
 
     if (!existFile) {
-      throw new NotFoundException(`File with ${fileId} not found.`);
+      throw new NotFoundException(`File with ${id} not found.`);
     }
 
     return existFile;
