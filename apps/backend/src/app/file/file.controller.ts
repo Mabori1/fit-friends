@@ -97,7 +97,6 @@ export class FileController {
   @Get(':id')
   public async show(@Param('id') id: number) {
     const existFile = await this.fileService.getFileById(id);
-    console.log(existFile);
     const path = `${this.configService.get('application.serveRoot')}${
       existFile.path
     }`;
