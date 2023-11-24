@@ -2,7 +2,6 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import dayjs from 'dayjs';
 import { getAccessToken, getRefreshToken, saveTokens } from './tokens';
 import { jwtDecode } from 'jwt-decode';
-import { AppRoute } from '../const';
 
 const REQUEST_TIMEOUT = 2000;
 const BASE_URL = 'http://localhost:4000/api';
@@ -27,11 +26,9 @@ axiosInstance.interceptors.request.use(
     }
     const decodedToken = jwtDecode(token);
     if (decodedToken.exp) {
-      console.log('decodedToken.exp', decodedToken.exp);
       const isTokenExpired = dayjs.unix(decodedToken.exp).diff(dayjs()) < 1;
 
       if (!isTokenExpired) {
-        console.log('access token not expired');
         config.headers.Authorization = `Bearer ${token}`;
         return config;
       }
@@ -39,14 +36,10 @@ axiosInstance.interceptors.request.use(
       const decodedRefreshToken = jwtDecode(refreshToken);
 
       if (decodedRefreshToken.exp) {
-        console.log('decodedRefreshToken.exp', decodedRefreshToken.exp);
-
         const isRefreshTokenExpired =
           dayjs.unix(decodedRefreshToken.exp).diff(dayjs()) < 1;
 
         if (!isRefreshTokenExpired) {
-          console.log('refresh token not expired');
-
           const response = await axios.post(
             `${BASE_URL}/auth/refresh`,
             {},
@@ -57,8 +50,6 @@ axiosInstance.interceptors.request.use(
             },
           );
 
-          console.log(response);
-
           if (response.status === 200) {
             console.log('refresh token success');
             saveTokens(response.data.access_token, response.data.refresh_token);
@@ -66,7 +57,6 @@ axiosInstance.interceptors.request.use(
             return config;
           } else if (response.status === 401) {
             console.log('refresh token failed');
-            Navigate({ to: AppRoute.Intro, replace: true });
           }
         }
       }
