@@ -1,5 +1,3 @@
-import { IClient, ITrainer, UserTypesTraining } from '@fit-friends/types';
-
 export class UpdateUserDto {
   public name?: string;
   public avatar?: string;
@@ -10,6 +8,19 @@ export class UpdateUserDto {
   public location?: string;
   public level?: string;
   public typesOfTraining?: string[];
-  public trainer?: ITrainer;
-  public client?: IClient;
+  public trainer?: TrainerDto;
+  public client?: ClientDto;
+}
+
+class ClientDto {
+  public timeOfTraining?: string;
+  public caloryLosingPlanTotal?: number;
+  public caloryLosingPlanDaily?: number;
+  public isReady?: boolean;
+}
+
+class TrainerDto {
+  public certificate?: string[];
+  public merits?: string;
+  public isPersonalTraining?: boolean;
 }

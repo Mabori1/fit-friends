@@ -39,7 +39,7 @@ export interface IClient {
 export interface ITrainer {
   trainerId?: number;
   userId?: number;
-  certificate: string[];
+  certificate?: string[];
   merits?: string;
   isPersonalTraining?: boolean;
 }

@@ -2,7 +2,6 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import dayjs from 'dayjs';
 import { getAccessToken, getRefreshToken, saveTokens } from './tokens';
 import { jwtDecode } from 'jwt-decode';
-import { Navigate } from 'react-router-dom';
 import { AppRoute } from '../const';
 
 const REQUEST_TIMEOUT = 2000;
@@ -20,8 +19,8 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
+    const token = getAccessToken();
     if (!token) {
-      const token = getAccessToken();
       console.log('No token, ');
       config.headers.Authorization = `Bearer ${token}`;
       return config;

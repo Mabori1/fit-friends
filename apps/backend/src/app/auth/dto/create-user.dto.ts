@@ -145,7 +145,7 @@ export class CreateUserDto {
     description: 'User of Trainer',
     example: [
       {
-        certificate: 'certificate.pdf',
+        certificate: ['certificate.pdf'],
         merits: 'Вырастил двоих олимпиадников',
         isPersonalTraining: true,
       },

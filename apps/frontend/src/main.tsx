@@ -8,20 +8,25 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { checkUserAction } from './redux/authSlice/apiAuthActions';
+import { getToken } from './services/tokens';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
-store.dispatch(checkUserAction());
+const token = getToken();
+if (token) {
+  console.log(token);
+  store.dispatch(checkUserAction());
+}
 
 root.render(
   <StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
+    <Provider store={store}>
+      <BrowserRouter>
         <App />
         <ToastContainer limit={1} />
-      </Provider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   </StrictMode>,
 );

@@ -99,7 +99,6 @@ export const updateUserAction = createAsyncThunk<
     updateUserDto,
   );
   try {
-    saveTokens(data.access_token, data.refresh_token);
     toast.success('Вы успешно изменили профиль!');
     return data;
   } catch (err) {

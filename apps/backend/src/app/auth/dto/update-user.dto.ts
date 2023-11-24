@@ -1,6 +1,7 @@
 import {
   IsISO8601,
   IsString,
+  IsArray,
   IsOptional,
   Length,
   IsEnum,
@@ -46,6 +47,7 @@ class ClientDto {
     required: true,
   })
   @IsNumber()
+  @IsOptional()
   @Min(CaloriesOfDay.Min)
   @Max(CaloriesOfDay.Max)
   public caloryLosingPlanTotal?: number;
@@ -58,6 +60,7 @@ class ClientDto {
     required: true,
   })
   @IsNumber()
+  @IsOptional()
   @Min(CaloriesOfDay.Min)
   @Max(CaloriesOfDay.Max)
   public caloryLosingPlanDaily?: number;
@@ -67,6 +70,7 @@ class ClientDto {
     example: true,
     required: true,
   })
+  @IsOptional()
   @IsBoolean()
   public isReady?: boolean;
 }
@@ -77,8 +81,9 @@ class TrainerDto {
     example: 'certificate.pdf',
   })
   @IsOptional()
-  @IsString()
-  public certificate!: string[];
+  @IsArray()
+  @IsString({ each: true })
+  public certificate?: string[];
 
   @ApiProperty({
     description: 'Trainer merits',
@@ -180,10 +185,12 @@ export class UpdateUserDto {
   @ApiProperty({})
   @ValidateNested()
   @Type(() => ClientDto)
+  @IsOptional()
   public client?: ClientDto;
 
   @ApiProperty({})
   @ValidateNested()
   @Type(() => TrainerDto)
+  @IsOptional()
   public trainer?: TrainerDto;
 }

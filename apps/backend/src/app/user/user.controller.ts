@@ -59,6 +59,7 @@ export class UserController {
     @Req() { user: payload }: IRequestWithTokenPayload,
     @Body() dto: UpdateUserDto,
   ) {
+    console.log(dto);
     const updatedUser = await this.userService.updateUser(payload.sub, dto);
     return fillObject(UserRdo, updatedUser);
   }

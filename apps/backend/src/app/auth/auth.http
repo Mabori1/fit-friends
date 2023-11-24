@@ -11,7 +11,7 @@ Content-Type: application/json
 
 {
   "name": "Алексей",
-  "email": "mabori11@gmail.com",
+  "email": "mabori6@gmail.com",
   "avatar": "avatar.jpg",
   "password": "222222",
   "gender": "мужской",
@@ -20,7 +20,7 @@ Content-Type: application/json
   "description": "Сброшу ка я Вам жирок!",
   "location": "Пионерская",
   "trainer": {
-    "certificate": "sertificate.pdf",
+    "certificate": ["sertificate.pdf"],
     "merits": "У меня вся грудь в орденах!",
     "isPersonalTraining": true
   },
@@ -72,7 +72,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "description": "Пять лет здесь помогаю железо таскать!"
+  "client": {"caloryLosingPlanDaily": 1500}
 }
 ###
 

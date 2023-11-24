@@ -9,10 +9,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowCheck, IconImport } from '../../helper/svg-const';
 import BackgroundLogo from '../background-logo/background-logo';
 import { upFirstWord } from '../../helper/utils';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import {
   MAXIMUM_TRAINING_TYPES_CHOICE,
-  UserDescriptionLength,
+  TrainerMeritLength,
 } from '@fit-friends/types';
 import { useAppDispatch } from '../../redux/store';
 import { updateUserAction } from '../../redux/authSlice/apiAuthActions';
@@ -22,15 +22,15 @@ const formSchema = z.object({
     .array(z.enum(TYPE_TRAINING_ZOD))
     .max(MAXIMUM_TRAINING_TYPES_CHOICE, 'Не более трех типов тренировок'),
   level: z.enum(LEVEL_TRAINING_ZOD),
-  description: z
+  merits: z
     .string()
     .min(
-      UserDescriptionLength.Min,
-      `Минимальное значение ${UserDescriptionLength.Min}`,
+      TrainerMeritLength.Min,
+      `Минимальное значение ${TrainerMeritLength.Min}`,
     )
     .max(
-      UserDescriptionLength.Max,
-      `Максимальное значение ${UserDescriptionLength.Max}`,
+      TrainerMeritLength.Max,
+      `Максимальное значение ${TrainerMeritLength.Max}`,
     ),
   isPersonalTraining: z.boolean(),
 });
@@ -52,13 +52,22 @@ function FormRegisgerTrainer() {
   const [certificateError, setCertificateError] = useState(
     'Добавьте подтверждающий документ',
   );
+  const [certificateName, setCertificateName] = useState([
+    'Загрузите сюда файлы формата PDF, JPG или PNG',
+  ]);
 
-  const handleSubmitButtonClick = (evt: FormEvent<HTMLButtonElement>) => {
-    evt.preventDefault();
-    setImageInputUsed(true);
-  };
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    dispatch(updateUserAction(data));
+    setImageInputUsed(true);
+    const updateData = {
+      level: data.level,
+      typesOfTraining: data.typesOfTraining,
+      trainer: {
+        merits: data.merits,
+        isPersonalTraining: data.isPersonalTraining,
+        certificate: certificateName,
+      },
+    };
+    dispatch(updateUserAction(updateData));
     reset();
   };
 
@@ -70,6 +79,7 @@ function FormRegisgerTrainer() {
     const matches = CERTIFICATE_FILE_TYPES.some((fileType) =>
       fileName.endsWith(fileType),
     );
+    setCertificateName([fileName]);
 
     if (matches && file) {
       setCertificate(file);
@@ -169,9 +179,9 @@ function FormRegisgerTrainer() {
                           }`}
                         >
                           <span className="drag-and-drop__label" tabIndex={0}>
-                            Загрузите сюда файлы формата PDF, JPG или PNG
+                            {certificateName}
                             <svg width="20" height="20" aria-hidden="true">
-                              <use xlinkHref="#icon-import"></use>
+                              <IconImport />
                             </svg>
                           </span>
                           <input
@@ -180,9 +190,11 @@ function FormRegisgerTrainer() {
                             name="import"
                             tabIndex={-1}
                             accept=".pdf, .jpg, .png"
+                            disabled={isSubmitting}
+                            multiple
                           />
                           <span className="custom-input__error">
-                            {imageInputUsed && certificateError}
+                            {certificateError}
                           </span>
                         </label>
                       </div>
@@ -194,17 +206,15 @@ function FormRegisgerTrainer() {
                       <div className="custom-textarea questionnaire-coach__textarea">
                         <label>
                           <textarea
-                            {...register('description')}
+                            {...register('merits')}
                             disabled={isSubmitting}
-                            aria-invalid={errors.description ? 'true' : 'false'}
-                            name="description"
+                            aria-invalid={errors.merits ? 'true' : 'false'}
+                            name="merits"
                             placeholder=" "
                           ></textarea>
                         </label>
-                        {errors.description && (
-                          <span role="alert" className="error">
-                            {errors.description?.message}
-                          </span>
+                        {errors.merits && (
+                          <span role="alert" className="error"></span>
                         )}
                       </div>
                       <div className="questionnaire-coach__checkbox">
@@ -240,7 +250,6 @@ function FormRegisgerTrainer() {
                     className="btn questionnaire-coach__button"
                     type="submit"
                     disabled={isSubmitting}
-                    onClick={handleSubmitButtonClick}
                   >
                     Продолжить
                   </button>

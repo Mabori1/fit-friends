@@ -24,7 +24,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { registerUserAction } from '../../redux/authSlice/apiAuthActions';
-import { getIsAuth } from '../../redux/authSlice/selectors';
+import { getIsAuth, getRole } from '../../redux/authSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
 
@@ -58,6 +58,7 @@ type FormSchema = z.infer<typeof formSchema>;
 function FormRegister() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -67,7 +68,8 @@ function FormRegister() {
     formState: { isDirty, isSubmitting, errors },
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
-  console.log(useAppSelector(getIsAuth));
+  const isAuth = useAppSelector(getIsAuth);
+  const role = useAppSelector(getRole);
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     dispatch(
@@ -77,16 +79,20 @@ function FormRegister() {
       }),
     );
     reset();
-
-    switch (data.role) {
-      case UserRole.Trainer:
-        navigate(AppRoute.RegisterTrainer);
-        break;
-      case UserRole.Client:
-        navigate(AppRoute.RegisterClient);
-        break;
-    }
   };
+
+  useEffect(() => {
+    if (isAuth) {
+      switch (role) {
+        case UserRole.Trainer:
+          navigate(AppRoute.RegisterTrainer);
+          break;
+        case UserRole.Client:
+          navigate(AppRoute.RegisterClient);
+          break;
+      }
+    }
+  }, [isAuth, role, navigate]);
 
   useEffect(() => {
     setFocus('name');
