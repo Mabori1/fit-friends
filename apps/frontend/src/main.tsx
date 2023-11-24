@@ -16,7 +16,6 @@ const root = ReactDOM.createRoot(
 
 const token = getToken();
 if (token) {
-  console.log(token);
   store.dispatch(checkUserAction());
 }
 

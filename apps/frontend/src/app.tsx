@@ -7,6 +7,7 @@ import MainPage from './pages/main-page/main-page';
 import TrainerRoomPage from './pages/trainer-room-page/trainer-room-page';
 import FromRegisterTrainer from './components/form-register-trainer/form-register-trainer';
 import FromRegisterClient from './components/form-register-client/form-register-client';
+import ClientRoomPage from './pages/client-room-page/client-room-page';
 
 export function App() {
   return (
@@ -23,6 +24,7 @@ export function App() {
       <Route path={AppRoute.RegisterClient} element={<FromRegisterClient />} />
 
       <Route path={AppRoute.TrainerRoom} element={<TrainerRoomPage />} />
+      <Route path={AppRoute.ClientRoom} element={<ClientRoomPage />} />
 
       <Route path={AppRoute.Main} element={<MainPage />} />
     </Routes>

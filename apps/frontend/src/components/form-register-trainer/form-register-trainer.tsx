@@ -16,10 +16,13 @@ import {
 } from '@fit-friends/types';
 import { useAppDispatch } from '../../redux/store';
 import { updateUserAction } from '../../redux/authSlice/apiAuthActions';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 const formSchema = z.object({
   typesOfTraining: z
     .array(z.enum(TYPE_TRAINING_ZOD))
+    .min(1, 'Должен быть выбран хотя бы один тип тренировок')
     .max(MAXIMUM_TRAINING_TYPES_CHOICE, 'Не более трех типов тренировок'),
   level: z.enum(LEVEL_TRAINING_ZOD),
   merits: z
@@ -39,6 +42,8 @@ type FormSchema = z.infer<typeof formSchema>;
 
 function FormRegisgerTrainer() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -69,6 +74,7 @@ function FormRegisgerTrainer() {
     };
     dispatch(updateUserAction(updateData));
     reset();
+    navigate(AppRoute.TrainerRoom);
   };
 
   const handleCertificateFileInputChange = (
