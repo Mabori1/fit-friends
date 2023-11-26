@@ -24,8 +24,8 @@ export class NotifyRepository
     });
   }
 
-  public async findByEmail(targetUserEmail: string): Promise<INotify> {
-    return await this.prisma.notify.findFirst({
+  public async findByEmail(targetUserEmail: string): Promise<INotify[]> {
+    return await this.prisma.notify.findMany({
       where: { targetUserEmail },
     });
   }

@@ -91,7 +91,7 @@ export class NotifyService {
     return await this.notifyRepository.findById(id);
   }
 
-  public async getNotify(email: string): Promise<INotify> {
+  public async getNotify(email: string): Promise<INotify[]> {
     return await this.notifyRepository.findByEmail(email);
   }
 }

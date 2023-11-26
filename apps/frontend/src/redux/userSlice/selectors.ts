@@ -1,4 +1,4 @@
-import { IUser, UserRole } from '@fit-friends/types';
+import { INotify, IUser, UserRole } from '@fit-friends/types';
 import { AuthStatus, NameSpace } from '../../const';
 import { State } from '../store';
 
@@ -16,3 +16,6 @@ export const getRole = (state: State): string =>
 
 export const getUser = (state: State): IUser | undefined =>
   state[NameSpace.UserSlice].user;
+
+export const getNotify = (state: State): INotify[] | undefined =>
+  state[NameSpace.UserSlice].notify;

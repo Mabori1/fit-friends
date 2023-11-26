@@ -8,6 +8,7 @@ import { AsyncThunkConfig } from '../../types/asyncThunkConfig';
 import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/updateUserDto';
+import { NotifyRdo } from '../../types/notifyRdo';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -53,7 +54,7 @@ export const loginUserAction = createAsyncThunk<
 
 export const logoutAction = createAsyncThunk<void, undefined, AsyncThunkConfig>(
   'user/logout',
-  async (loginUserDto, { extra: api }) => {
+  async (_, { extra: api }) => {
     try {
       await api.post<void>(APIRoute.Logout);
       toast.success('Вы успешно вышли!');
@@ -114,9 +115,8 @@ export const uploadAvatarAction = createAsyncThunk<
   UserResponse,
   FormData,
   AsyncThunkConfig
->('user/avatar', async (avatar, { dispatch, extra: api }) => {
+>('user/avatar', async (avatar, { extra: api }) => {
   const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
-  console.log(data);
   return data;
 });
 
@@ -124,7 +124,7 @@ export const uploadCertificateAction = createAsyncThunk<
   UserResponse,
   FormData,
   AsyncThunkConfig
->('user/certificate', async (avatar, { dispatch, extra: api }) => {
+>('user/certificate', async (avatar, { extra: api }) => {
   const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
   return data;
 });
@@ -133,7 +133,25 @@ export const deleteCertificateAction = createAsyncThunk<
   UserResponse,
   string,
   AsyncThunkConfig
->('user/certificate', async (avatar, { dispatch, extra: api }) => {
+>('user/certificate', async (avatar, { extra: api }) => {
   const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
+  return data;
+});
+
+export const fetchNotifyAction = createAsyncThunk<
+  NotifyRdo[],
+  undefined,
+  AsyncThunkConfig
+>('user/getNotify', async (_arg, { extra: api }) => {
+  const { data } = await api.get<NotifyRdo[]>(APIRoute.Notify);
+  return data;
+});
+
+export const deleteNotifyAction = createAsyncThunk<
+  undefined,
+  number,
+  AsyncThunkConfig
+>('user/deleteNotify', async (id, { extra: api }) => {
+  const { data } = await api.delete(`${APIRoute.Notify}/${id}`);
   return data;
 });

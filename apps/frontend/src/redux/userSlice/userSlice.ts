@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IUser } from '@fit-friends/types';
+import { INotify, IUser } from '@fit-friends/types';
 import { AuthStatus, NameSpace } from '../../const';
 import {
   registerUserAction,
@@ -9,16 +9,20 @@ import {
   logoutAction,
   updateUserAction,
   uploadAvatarAction,
+  fetchNotifyAction,
+  deleteNotifyAction,
 } from './apiUserActions';
 
 type UserSlice = {
   authStatus: AuthStatus;
   user: IUser | undefined;
+  notices: INotify[] | [];
 };
 
 const initialState: UserSlice = {
   authStatus: AuthStatus.Unknown,
   user: undefined,
+  notices: [],
 };
 
 export const userSlice = createSlice({
@@ -66,6 +70,16 @@ export const userSlice = createSlice({
       .addCase(updateUserAction.fulfilled, (state, action) => {
         state.user = action.payload?.userInfo;
       })
-      .addCase(uploadAvatarAction.fulfilled, (state) => {});
+      .addCase(uploadAvatarAction.fulfilled, (state, action) => {
+        state.user = action.payload?.userInfo.avatar;
+      })
+      .addCase(fetchNotifyAction.fulfilled, (state, action) => {
+        state.notices = action.payload;
+      })
+      .addCase(deleteNotifyAction.fulfilled, (state, action) => {
+        state.notices = state.notices.filter(
+          (nofity) => nofity.id !== action.payload,
+        );
+      });
   },
 });

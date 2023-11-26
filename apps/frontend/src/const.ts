@@ -44,6 +44,7 @@ export enum APIRoute {
   Refresh = '/auth/refresh',
   UpdateUser = '/users/update',
   Users = '/users',
+  Notify = '/notify',
   Friends = '/users/friends',
   Avatar = 'files/upload/img',
   Certificate = '/users/certificate',

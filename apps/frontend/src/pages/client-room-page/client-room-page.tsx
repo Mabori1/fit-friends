@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Header from '../../components/header/header1';
+import Header from '../../components/header/header';
 import {
   ArrowCheck,
   ArrowDown,
@@ -8,7 +8,7 @@ import {
   IconBook,
   IconChartFilled,
   IconEdit,
-  IconFriend,
+  IconFriends,
   IconRanking,
   IconShoppingCart,
   IconWeight,
@@ -439,7 +439,7 @@ function ClientRoomPage() {
                     >
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">
-                          <IconFriend />
+                          <IconFriends />
                         </svg>
                       </div>
                       <span className="thumbnail-link__text">Мои друзья</span>

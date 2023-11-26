@@ -1,5 +1,6 @@
 export interface INotify {
-  id?: number;
+  id: number;
+  createdAt: Date;
   targetUserEmail: string;
   text: string;
 }
