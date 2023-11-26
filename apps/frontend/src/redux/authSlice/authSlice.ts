@@ -8,6 +8,7 @@ import {
   checkUserAction,
   logoutAction,
   updateUserAction,
+  uploadAvatarAction,
 } from '../authSlice/apiAuthActions';
 
 type AuthSlice = {
@@ -64,6 +65,7 @@ export const authSlice = createSlice({
       })
       .addCase(updateUserAction.fulfilled, (state, action) => {
         state.user = action.payload?.userInfo;
-      });
+      })
+      .addCase(uploadAvatarAction.fulfilled, (state) => {});
   },
 });

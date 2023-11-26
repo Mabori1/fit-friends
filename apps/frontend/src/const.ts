@@ -1,4 +1,6 @@
 export const BASE_RESPONSE_URL = 'http//localhost:4000/api';
+export const BASE_SERVER_URL = 'http//localhost:4000';
+export const SERVER_API_URL = 'http//localhost:4000/api';
 
 export enum AppRoute {
   Intro = '/',
@@ -44,7 +46,7 @@ export enum APIRoute {
   UpdateUser = '/users/update',
   Users = '/users',
   Friends = '/users/friends',
-  Avatar = '/users/avatar',
+  Avatar = 'files/upload/img',
   Certificate = '/users/certificate',
   DeleteCertificate = '/users/certificate/delete',
   AddFriend = '/users/friends/add',
@@ -61,6 +63,8 @@ export const LOCATIONS_ZOD = [
   'Звёздная',
   'Спортивная',
 ] as const;
+
+export const MAX_CERTIFICATES_COUNT_PER_PAGE = 3;
 
 export const CERTIFICATE_FILE_TYPES = ['jpg', 'pdf', 'png'];
 

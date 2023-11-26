@@ -109,3 +109,31 @@ export const updateUserAction = createAsyncThunk<
     toast.error(message);
   }
 });
+
+export const uploadAvatarAction = createAsyncThunk<
+  UserResponse,
+  FormData,
+  AsyncThunkConfig
+>('auth/avatar', async (avatar, { dispatch, extra: api }) => {
+  const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
+  console.log(data);
+  return data;
+});
+
+export const uploadCertificateAction = createAsyncThunk<
+  UserResponse,
+  FormData,
+  AsyncThunkConfig
+>('auth/certificate', async (avatar, { dispatch, extra: api }) => {
+  const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
+  return data;
+});
+
+export const deleteCertificateAction = createAsyncThunk<
+  UserResponse,
+  string,
+  AsyncThunkConfig
+>('auth/certificate', async (avatar, { dispatch, extra: api }) => {
+  const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
+  return data;
+});

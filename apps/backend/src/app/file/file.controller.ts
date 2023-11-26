@@ -81,7 +81,14 @@ export class FileController {
       file.originalname.lastIndexOf('.') + 1,
     );
 
-    if (!(fileType === 'pdf')) {
+    if (
+      !(
+        fileType === 'pdf' ||
+        fileType === 'jpg' ||
+        fileType === 'png' ||
+        fileType === 'jpeg'
+      )
+    ) {
       throw new HttpException(
         { status: HttpStatus.NOT_ACCEPTABLE, error: WRONG_FILE_TYPE },
         HttpStatus.NOT_ACCEPTABLE,

@@ -1,4 +1,4 @@
-import { UserRole } from '@fit-friends/types';
+import { IUser, UserRole } from '@fit-friends/types';
 import { AuthStatus, NameSpace } from '../../const';
 import { State } from '../store';
 
@@ -13,3 +13,6 @@ export const getIsTrainer = (state: State): boolean =>
 
 export const getRole = (state: State): string =>
   state[NameSpace.AuthSlice].user?.role ?? UserRole.Client;
+
+export const getUser = (state: State): IUser | undefined =>
+  state[NameSpace.AuthSlice].user;

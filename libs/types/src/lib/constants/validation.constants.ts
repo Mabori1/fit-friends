@@ -50,6 +50,11 @@ export enum UserDescriptionLength {
   Max = 140,
 }
 
+export enum TrainingTypesCount {
+  Min = 1,
+  Max = 3,
+}
+
 export enum CaloriesOfTotal {
   Min = 1000,
   Max = 5000,
