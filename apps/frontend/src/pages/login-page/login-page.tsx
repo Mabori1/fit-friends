@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { loginUserAction } from '../../redux/authSlice/apiAuthActions';
+import { loginUserAction } from '../../redux/userSlice/apiUserActions';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { UserPasswordLength } from '@fit-friends/types';
-import { getIsAuth, getIsTrainer } from '../../redux/authSlice/selectors';
+import { getIsAuth, getIsTrainer } from '../../redux/userSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { LogoBig, LogoType } from '../../helper/svg-const';

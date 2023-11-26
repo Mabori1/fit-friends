@@ -9,20 +9,20 @@ import {
   logoutAction,
   updateUserAction,
   uploadAvatarAction,
-} from '../authSlice/apiAuthActions';
+} from './apiUserActions';
 
-type AuthSlice = {
+type UserSlice = {
   authStatus: AuthStatus;
   user: IUser | undefined;
 };
 
-const initialState: AuthSlice = {
+const initialState: UserSlice = {
   authStatus: AuthStatus.Unknown,
   user: undefined,
 };
 
-export const authSlice = createSlice({
-  name: NameSpace.AuthSlice,
+export const userSlice = createSlice({
+  name: NameSpace.UserSlice,
   initialState,
   reducers: {},
   extraReducers(builder) {

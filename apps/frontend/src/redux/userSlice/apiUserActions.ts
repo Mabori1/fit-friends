@@ -13,7 +13,7 @@ export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
   CreateUserDto,
   AsyncThunkConfig
->('auth/register', async (createUserDto, { extra: api }) => {
+>('user/register', async (createUserDto, { extra: api }) => {
   const { data } = await api.post<UserResponse>(
     APIRoute.Register,
     createUserDto,
@@ -23,7 +23,7 @@ export const registerUserAction = createAsyncThunk<
     toast.success('Вы успешно зарегистрировались!');
     return data;
   } catch (err) {
-    let message = 'Неизвестная ошибка auth/register';
+    let message = 'Неизвестная ошибка user/register';
     if (isAxiosError(err)) {
       message = err.response?.data.message;
     }
@@ -35,14 +35,14 @@ export const loginUserAction = createAsyncThunk<
   UserResponse | undefined,
   LoginUserDto,
   AsyncThunkConfig
->('auth/login', async (loginUserDto, { extra: api }) => {
+>('user/login', async (loginUserDto, { extra: api }) => {
   try {
     const { data } = await api.post<UserResponse>(APIRoute.Login, loginUserDto);
     saveTokens(data.access_token, data.refresh_token);
     toast.success('Вы успешно вошли!');
     return data;
   } catch (err) {
-    let message = 'Неизвестная ошибка auth/login';
+    let message = 'Неизвестная ошибка user/login';
 
     if (isAxiosError(err)) {
       message = err.response?.data.message;
@@ -52,14 +52,14 @@ export const loginUserAction = createAsyncThunk<
 });
 
 export const logoutAction = createAsyncThunk<void, undefined, AsyncThunkConfig>(
-  'auth/logout',
+  'user/logout',
   async (loginUserDto, { extra: api }) => {
     try {
       await api.post<void>(APIRoute.Logout);
       toast.success('Вы успешно вышли!');
       dropTokens();
     } catch (err) {
-      let message = 'Неизвестная ошибка auth/logout';
+      let message = 'Неизвестная ошибка user/logout';
 
       if (isAxiosError(err)) {
         message = err.response?.data.message;
@@ -73,7 +73,7 @@ export const refreshTokensAction = createAsyncThunk<
   UserResponse,
   undefined,
   AsyncThunkConfig
->('auth/refresh', async (_arg, { extra: api }) => {
+>('user/refresh', async (_arg, { extra: api }) => {
   const { data } = await api.post<UserResponse>(APIRoute.Refresh);
   saveTokens(data.access_token, data.refresh_token);
   return data;
@@ -83,7 +83,7 @@ export const checkUserAction = createAsyncThunk<
   UserResponse,
   undefined,
   AsyncThunkConfig
->('auth/check', async (_arg, { extra: api }) => {
+>('user/check', async (_arg, { extra: api }) => {
   const { data } = await api.post<UserResponse>(APIRoute.Check);
   saveTokens(data.access_token, data.refresh_token);
   return data;
@@ -93,7 +93,7 @@ export const updateUserAction = createAsyncThunk<
   UserResponse | undefined,
   UpdateUserDto,
   AsyncThunkConfig
->('auth/update', async (updateUserDto, { extra: api }) => {
+>('user/update', async (updateUserDto, { extra: api }) => {
   const { data } = await api.patch<UserResponse>(
     APIRoute.UpdateUser,
     updateUserDto,
@@ -102,7 +102,7 @@ export const updateUserAction = createAsyncThunk<
     toast.success('Вы успешно изменили профиль!');
     return data;
   } catch (err) {
-    let message = 'Неизвестная ошибка auth/update';
+    let message = 'Неизвестная ошибка user/update';
     if (isAxiosError(err)) {
       message = err.response?.data.message;
     }
@@ -114,7 +114,7 @@ export const uploadAvatarAction = createAsyncThunk<
   UserResponse,
   FormData,
   AsyncThunkConfig
->('auth/avatar', async (avatar, { dispatch, extra: api }) => {
+>('user/avatar', async (avatar, { dispatch, extra: api }) => {
   const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
   console.log(data);
   return data;
@@ -124,7 +124,7 @@ export const uploadCertificateAction = createAsyncThunk<
   UserResponse,
   FormData,
   AsyncThunkConfig
->('auth/certificate', async (avatar, { dispatch, extra: api }) => {
+>('user/certificate', async (avatar, { dispatch, extra: api }) => {
   const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
   return data;
 });
@@ -133,7 +133,7 @@ export const deleteCertificateAction = createAsyncThunk<
   UserResponse,
   string,
   AsyncThunkConfig
->('auth/certificate', async (avatar, { dispatch, extra: api }) => {
+>('user/certificate', async (avatar, { dispatch, extra: api }) => {
   const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
   return data;
 });

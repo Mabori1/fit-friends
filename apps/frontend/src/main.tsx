@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { checkUserAction } from './redux/authSlice/apiAuthActions';
+import { checkUserAction } from './redux/userSlice/apiUserActions';
 import { getToken } from './services/tokens';
 
 const root = ReactDOM.createRoot(

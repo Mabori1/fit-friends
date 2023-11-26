@@ -3,7 +3,7 @@ import BackgroundLogo from '../../components/background-logo/background-logo';
 import FormRegister from '../../components/form-register/form-register';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../redux/store';
-import { getIsAuth, getIsTrainer } from '../../redux/authSlice/selectors';
+import { getIsAuth, getIsTrainer } from '../../redux/userSlice/selectors';
 
 function RegisterPage() {
   const isAuth = useAppSelector(getIsAuth);

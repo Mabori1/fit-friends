@@ -23,8 +23,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { registerUserAction } from '../../redux/authSlice/apiAuthActions';
-import { getIsAuth, getRole } from '../../redux/authSlice/selectors';
+import { registerUserAction } from '../../redux/userSlice/apiUserActions';
+import { getIsAuth, getRole } from '../../redux/userSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
 

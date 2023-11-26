@@ -33,13 +33,13 @@ import {
   MAX_CERTIFICATES_COUNT_PER_PAGE,
 } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getUser } from '../../redux/authSlice/selectors';
+import { getUser } from '../../redux/userSlice/selectors';
 import {
   deleteCertificateAction,
   updateUserAction,
   uploadAvatarAction,
   uploadCertificateAction,
-} from '../../redux/authSlice/apiAuthActions';
+} from '../../redux/userSlice/apiUserActions';
 import CertificateItem from '../../components/certificate-item/certificate-item';
 
 function TrainerRoomPage() {

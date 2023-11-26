@@ -3,16 +3,16 @@ import { AuthStatus, NameSpace } from '../../const';
 import { State } from '../store';
 
 export const getAuthStatus = (state: State): AuthStatus =>
-  state[NameSpace.AuthSlice].authStatus;
+  state[NameSpace.UserSlice].authStatus;
 
 export const getIsAuth = (state: State): boolean =>
-  state[NameSpace.AuthSlice].authStatus === AuthStatus.Auth;
+  state[NameSpace.UserSlice].authStatus === AuthStatus.Auth;
 
 export const getIsTrainer = (state: State): boolean =>
-  state[NameSpace.AuthSlice].user?.role === UserRole.Trainer;
+  state[NameSpace.UserSlice].user?.role === UserRole.Trainer;
 
 export const getRole = (state: State): string =>
-  state[NameSpace.AuthSlice].user?.role ?? UserRole.Client;
+  state[NameSpace.UserSlice].user?.role ?? UserRole.Client;
 
 export const getUser = (state: State): IUser | undefined =>
-  state[NameSpace.AuthSlice].user;
+  state[NameSpace.UserSlice].user;

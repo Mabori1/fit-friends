@@ -25,7 +25,6 @@ export enum AppRoute {
 }
 
 export enum NameSpace {
-  AuthSlice = 'AUTH_SLICE',
   UserSlice = 'USER_SLICE',
   AppSlice = 'APP_SLICE',
   TrainingSlice = 'TRAINING_SLICE',

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../redux/store';
-import { getIsTrainer } from '../../redux/authSlice/selectors';
+import { getIsTrainer } from '../../redux/userSlice/selectors';
 
 function HeaderNav(): JSX.Element {
   const isTrainer = useAppSelector(getIsTrainer);

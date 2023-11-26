@@ -14,7 +14,7 @@ import {
 import { upFirstWord } from '../../helper/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '../../redux/store';
-import { updateUserAction } from '../../redux/authSlice/apiAuthActions';
+import { updateUserAction } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
 
 const formSchema = z.object({

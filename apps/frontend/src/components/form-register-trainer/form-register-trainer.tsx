@@ -15,7 +15,7 @@ import {
   TrainerMeritLength,
 } from '@fit-friends/types';
 import { useAppDispatch } from '../../redux/store';
-import { updateUserAction } from '../../redux/authSlice/apiAuthActions';
+import { updateUserAction } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 

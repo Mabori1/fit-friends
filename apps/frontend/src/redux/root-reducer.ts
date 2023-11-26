@@ -1,7 +1,7 @@
 import { NameSpace } from '../const';
 import { combineReducers } from 'redux';
-import { authSlice } from './authSlice/authSlice';
+import { userSlice } from './userSlice/userSlice';
 
 export const rootReducer = combineReducers({
-  [NameSpace.AuthSlice]: authSlice.reducer,
+  [NameSpace.UserSlice]: userSlice.reducer,
 });
