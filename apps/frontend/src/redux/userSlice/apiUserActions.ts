@@ -8,7 +8,8 @@ import { AsyncThunkConfig } from '../../types/asyncThunkConfig';
 import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/updateUserDto';
-import { NotifyRdo } from '../../types/notifyRdo';
+import { UploadedFileRdo } from '../../types/uploadedFilesRdo';
+import { INotify } from '@fit-friends/types';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -112,38 +113,39 @@ export const updateUserAction = createAsyncThunk<
 });
 
 export const uploadAvatarAction = createAsyncThunk<
-  UserResponse,
+  UploadedFileRdo,
   FormData,
   AsyncThunkConfig
->('user/avatar', async (avatar, { extra: api }) => {
-  const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
+>('user/uploadAvatar', async (avatar, { extra: api }) => {
+  const { data } = await api.post<UploadedFileRdo>(APIRoute.Avatar, avatar);
   return data;
 });
 
 export const uploadCertificateAction = createAsyncThunk<
-  UserResponse,
+  UploadedFileRdo,
   FormData,
   AsyncThunkConfig
->('user/certificate', async (avatar, { extra: api }) => {
-  const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
+>('user/uploadCertificate', async (certificat, { extra: api }) => {
+  const { data } = await api.post<UploadedFileRdo>(APIRoute.Certificate, certificat);
   return data;
 });
 
 export const deleteCertificateAction = createAsyncThunk<
-  UserResponse,
+  undefined,
   string,
   AsyncThunkConfig
->('user/certificate', async (avatar, { extra: api }) => {
-  const { data } = await api.post<UserResponse>(APIRoute.Avatar, avatar);
+>('user/deleteCertificate', async (certificateUrl, { extra: api }) => {
+  const { data } = await api
+  .delete<undefined>(`${APIRoute.DeleteCertificate}/?certificateUrl=${certificateUrl}`);
   return data;
 });
 
 export const fetchNotifyAction = createAsyncThunk<
-  NotifyRdo[],
+  INotify[],
   undefined,
   AsyncThunkConfig
 >('user/getNotify', async (_arg, { extra: api }) => {
-  const { data } = await api.get<NotifyRdo[]>(APIRoute.Notify);
+  const { data } = await api.get<INotify[]>(APIRoute.Notify);
   return data;
 });
 

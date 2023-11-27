@@ -3,7 +3,7 @@ import { IEntity, INotify } from '@fit-friends/types';
 export class NotifyEntity implements IEntity<NotifyEntity>, INotify {
   public targetUserEmail: string;
   public text: string;
-  public createdAt?: Date;
+  public createdAt: Date;
 
   constructor(notify: INotify) {
     this.fillEntity(notify);

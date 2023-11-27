@@ -20,3 +20,9 @@ GET http://localhost:4000/static/2023/11/3c705edf-d1d2-4475-bce7-7e4ce2ce6f18.pn
 
 
 ###
+
+# Delete certificate by url
+DELETE http://localhost:4000/files/delete/certificate?certificateUrl=static/2023/11/3c705edf-d1d2-4475-bce7-7e4ce2ce6f18.png HTTP/1.1
+
+
+###

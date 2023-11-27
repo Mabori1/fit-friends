@@ -72,7 +72,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "client": {"caloryLosingPlanDaily": 1500}
+  "client": {"caloryLosingPlanDaily": 2500}
 }
 ###
 

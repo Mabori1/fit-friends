@@ -1,6 +1,10 @@
+import { Certificate } from "crypto";
+
 export const BASE_RESPONSE_URL = 'http//localhost:4000/api';
 export const BASE_SERVER_URL = 'http//localhost:4000';
 export const SERVER_API_URL = 'http//localhost:4000/api';
+
+export const DAYS_IN_A_WEEK = 7;
 
 export enum AppRoute {
   Intro = '/',
@@ -47,8 +51,8 @@ export enum APIRoute {
   Notify = '/notify',
   Friends = '/users/friends',
   Avatar = 'files/upload/img',
-  Certificate = '/users/certificate',
-  DeleteCertificate = '/users/certificate/delete',
+  Certificate = 'files/upload/pdf',
+  DeleteCertificate = 'files/delete/certificate',
   AddFriend = '/users/friends/add',
   RemoveFriend = '/users/friends/remove',
   Trainings = '/trainings',

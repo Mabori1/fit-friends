@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getNotificationDate } from '../../helper/utils';
-import { getNotify } from '../../redux/userSlice/selectors';
+import { getIsTrainer, getNotify } from '../../redux/userSlice/selectors';
 import {
   deleteNotifyAction,
   fetchNotifyAction,
@@ -20,6 +20,7 @@ import {
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
 
+  const isTrainer = useAppSelector(getIsTrainer);
   const location = useLocation();
   const pathName = location.pathname;
 
@@ -69,7 +70,7 @@ function Header(): JSX.Element {
                     : ''
                 }
               `}
-                to={AppRoute.Intro}
+                to={isTrainer ? AppRoute.TrainerRoom : AppRoute.ClientRoom}
                 aria-label="Личный кабинет"
               >
                 <svg width="16" height="18" aria-hidden="true">

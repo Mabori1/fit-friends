@@ -15,7 +15,7 @@ import {
   TrainerMeritLength,
 } from '@fit-friends/types';
 import { useAppDispatch } from '../../redux/store';
-import { updateUserAction } from '../../redux/userSlice/apiUserActions';
+import { updateUserAction, uploadCertificateAction } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
@@ -66,14 +66,22 @@ function FormRegisgerTrainer() {
     const updateData = {
       level: data.level,
       typesOfTraining: data.typesOfTraining,
-      trainer: {
+      Trainer: {
         merits: data.merits,
         isPersonalTraining: data.isPersonalTraining,
-        certificate: certificateName,
+        certificate: [],
       },
     };
-    dispatch(updateUserAction(updateData));
+
+    dispatch(updateUserAction(updateData)).then(() => {
+    if (certificate) {
+      const formData = new FormData();
+      formData.append('file', certificate);
+        dispatch(uploadCertificateAction(formData))
+    }
+    });
     reset();
+
     navigate(AppRoute.TrainerRoom);
   };
 

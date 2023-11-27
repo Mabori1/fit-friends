@@ -47,6 +47,8 @@ function TrainerRoomPage() {
   const user = useAppSelector(getUser);
   const certificates = user?.trainer?.certificate ?? [''];
 
+console.log(user);
+
   const [isLocationSelectOpened, setIsLocationSelectOpened] = useState(false);
   const [isGenderSelectOpened, setIsGenderSelectOpened] = useState(false);
   const [isLevelSelectOpened, setIsLevelSelectOpened] = useState(false);
@@ -207,7 +209,7 @@ function TrainerRoomPage() {
     if (isFormValid && gender && location && level) {
       await dispatch(
         updateUserAction({
-          name: userName,
+          naTe: userName,
           gender,
           location,
           level,
@@ -550,11 +552,11 @@ function TrainerRoomPage() {
                               className="visually-hidden"
                               type="checkbox"
                               name="specialisation"
-                              value={itemType.toLowerCase()}
+                              value={itemType}
                               checked={typesOfTraining.includes(itemType)}
                             />
                             <span className="btn-checkbox__btn">
-                              {itemType[1]
+                              {itemType
                                 .split('')
                                 .map((item, index) =>
                                   index === 0 ? item.toUpperCase() : item,

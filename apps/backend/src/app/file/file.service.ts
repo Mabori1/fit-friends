@@ -82,4 +82,12 @@ export class FileService {
 
     return existFile;
   }
+
+  public async deleteCertificate(url: string) {
+    const existFile = await this.fileRepository.findByUrl(url);
+    if (!existFile) {
+      throw new NotFoundException(`File not found.`);
+    }
+    await this.fileRepository.destroy(existFile.id);
+  }
 }

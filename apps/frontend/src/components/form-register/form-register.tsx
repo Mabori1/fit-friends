@@ -23,13 +23,15 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { registerUserAction } from '../../redux/userSlice/apiUserActions';
+import {
+  registerUserAction,
+  uploadAvatarAction,
+} from '../../redux/userSlice/apiUserActions';
 import { getIsAuth, getRole } from '../../redux/userSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
 
 const formSchema = z.object({
-  avatar: z.object({}),
   name: z
     .string()
     .min(UserNameLength.Min, 'Имя слишком короткое')
@@ -71,16 +73,6 @@ function FormRegister() {
   const isAuth = useAppSelector(getIsAuth);
   const role = useAppSelector(getRole);
 
-  const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    dispatch(
-      registerUserAction({
-        ...data,
-        avatar,
-      }),
-    );
-    reset();
-  };
-
   useEffect(() => {
     if (isAuth) {
       switch (role) {
@@ -100,7 +92,10 @@ function FormRegister() {
 
   const [isSelectOpened, setIsSelectOpened] = useState(false);
   const [avatar, setAvatar] = useState('');
-  const [avatarError, setAvatarError] = useState('');
+  const [fileAvatar, setFileAvatar] = useState<File | null>(null);
+  const [avatarError, setAvatarError] = useState(
+    'Загрузка аватара обязательна',
+  );
 
   const handleAvatarFileInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const file = evt.currentTarget.files && evt.currentTarget.files[0];
@@ -111,6 +106,7 @@ function FormRegister() {
 
     if (matches && file) {
       setAvatar(URL.createObjectURL(file));
+      setFileAvatar(file);
 
       setAvatarError('');
     } else if (!matches && file) {
@@ -126,6 +122,19 @@ function FormRegister() {
     }
   };
 
+  const onSubmit: SubmitHandler<FormSchema> = (data) => {
+    dispatch(registerUserAction(data)).then(() => {
+
+    if (fileAvatar) {
+      const formData = new FormData();
+      formData.append('file', fileAvatar);
+        dispatch(uploadAvatarAction(formData))
+    }
+    });
+    reset();
+
+  };
+
   return (
     <form method="post" onSubmit={handleSubmit(onSubmit)}>
       <div className="sign-up">
@@ -133,14 +142,13 @@ function FormRegister() {
           <div className="input-load-avatar">
             <label>
               <input
-                {...register('avatar')}
                 onChange={handleAvatarFileInputChange}
                 disabled={isSubmitting}
                 className="visually-hidden"
                 type="file"
                 name="avatar"
                 accept="image/png, image/jpeg"
-                aria-invalid={errors.avatar ? 'true' : 'false'}
+                aria-invalid={avatarError ? 'true' : 'false'}
               />
               <span className="input-load-avatar__btn">
                 {avatar && (
@@ -162,12 +170,11 @@ function FormRegister() {
             <span className="sign-up__text">
               JPG, PNG, оптимальный размер 100&times;100&nbsp;px
             </span>
-            {errors.avatar && (
+            {avatarError && (
               <span role="alert" className="error">
-                {errors.avatar?.message}
+                {avatarError}
               </span>
             )}
-            <span className="error">{avatarError}</span>
           </div>
         </div>
         <div className="sign-up__data">

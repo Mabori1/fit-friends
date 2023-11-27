@@ -1,11 +1,14 @@
 import {
   Controller,
+  Query,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
   Param,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -21,6 +24,8 @@ import { FileService } from './file.service';
 import { fillObject } from '@fit-friends/core';
 import { UploadedFileRdo } from './rdo/uploaded-file.rdo';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { DeleteCertificateQuery } from './query/delete-certificate.query';
 
 @ApiTags('files')
 @Controller('files')
@@ -30,6 +35,7 @@ export class FileController {
     private readonly configService: ConfigService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('/upload/video')
   @UseInterceptors(FileInterceptor('file'))
   public async uploadVideoFile(@UploadedFile() file: Express.Multer.File) {
@@ -49,6 +55,7 @@ export class FileController {
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/upload/img')
   @UseInterceptors(FileInterceptor('file'))
   public async uploadImageFile(@UploadedFile() file: Express.Multer.File) {
@@ -74,6 +81,7 @@ export class FileController {
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/upload/pdf')
   @UseInterceptors(FileInterceptor('file'))
   public async uploadPDFile(@UploadedFile() file: Express.Multer.File) {
@@ -101,6 +109,7 @@ export class FileController {
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id') id: number) {
     const existFile = await this.fileService.getFileById(id);
@@ -108,5 +117,12 @@ export class FileController {
       existFile.path
     }`;
     return fillObject(UploadedFileRdo, Object.assign(existFile, { path }));
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/delete/certificate')
+  public async deleteCertificate(@Query() query: DeleteCertificateQuery) {
+    await this.fileService.deleteCertificate(query.certificateUrl);
+    return query.certificateUrl;
   }
 }

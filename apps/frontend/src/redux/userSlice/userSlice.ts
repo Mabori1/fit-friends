@@ -9,6 +9,8 @@ import {
   logoutAction,
   updateUserAction,
   uploadAvatarAction,
+  uploadCertificateAction,
+  deleteCertificateAction,
   fetchNotifyAction,
   deleteNotifyAction,
 } from './apiUserActions';
@@ -71,10 +73,22 @@ export const userSlice = createSlice({
         state.user = action.payload?.userInfo;
       })
       .addCase(uploadAvatarAction.fulfilled, (state, action) => {
-        state.user = action.payload?.userInfo.avatar;
+        if (state.user) {
+          state.user['avatar'] = action.payload?.path;
+        }
+      })
+      .addCase(uploadCertificateAction.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user['certificate'] = action.payload?.path;
+        }
       })
       .addCase(fetchNotifyAction.fulfilled, (state, action) => {
         state.notices = action.payload;
+      })
+      .addCase(deleteCertificateAction.fulfilled, (state, action) => {
+        state.user['certificate'] = state.user?.certificate.filter(
+          (certificat) => certificat !== action.payload,
+        );
       })
       .addCase(deleteNotifyAction.fulfilled, (state, action) => {
         state.notices = state.notices.filter(
