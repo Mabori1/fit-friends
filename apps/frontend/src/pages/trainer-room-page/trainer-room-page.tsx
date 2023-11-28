@@ -33,7 +33,7 @@ import {
   MAX_CERTIFICATES_COUNT_PER_PAGE,
 } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getIsAuth, getUser } from '../../redux/userSlice/selectors';
+import { getAvatar, getIsAuth, getUser } from '../../redux/userSlice/selectors';
 import {
   deleteCertificateAction,
   updateUserAction,
@@ -50,6 +50,7 @@ function TrainerRoomPage() {
   const user = useAppSelector(getUser);
   const certificates = user?.trainer?.certificate ?? [''];
   const isAuth = useAppSelector(getIsAuth);
+  const avatarPath = useAppSelector(getAvatar);
 
   const [isLocationSelectOpened, setIsLocationSelectOpened] = useState(false);
   const [isGenderSelectOpened, setIsGenderSelectOpened] = useState(false);
@@ -228,9 +229,13 @@ function TrainerRoomPage() {
           if (avatarFile) {
             const formData = new FormData();
             formData.append('file', avatarFile);
-            dispatch(uploadAvatarAction(formData)).catch(() => {
-              toast.error('Аватар не загружен');
-            });
+            dispatch(uploadAvatarAction(formData))
+              .catch(() => {
+                toast.error('Аватар не загружен');
+              })
+              .then(() => {
+                dispatch(updateUserAction({ avatar: avatarPath }));
+              });
           }
         })
         .catch(() => {

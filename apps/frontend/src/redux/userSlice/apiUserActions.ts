@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/updateUserDto';
 import { UploadedFileRdo } from '../../types/uploadedFilesRdo';
 import { INotify } from '@fit-friends/types';
-import { useAppDispatch } from '../store';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -119,9 +118,6 @@ export const uploadAvatarAction = createAsyncThunk<
   AsyncThunkConfig
 >('user/uploadAvatar', async (avatar, { extra: api }) => {
   const { data } = await api.post<UploadedFileRdo>(APIRoute.Avatar, avatar);
-
-  const dispatch = useAppDispatch();
-  dispatch(updateUserAction({ avatar: data.path }));
 
   return data;
 });

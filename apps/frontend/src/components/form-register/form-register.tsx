@@ -25,11 +25,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
   registerUserAction,
+  updateUserAction,
   uploadAvatarAction,
 } from '../../redux/userSlice/apiUserActions';
-import { getIsAuth, getRole } from '../../redux/userSlice/selectors';
+import { getAvatar, getIsAuth, getRole } from '../../redux/userSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
+import { CreateUserDto } from '../../types/createUserDto';
+import { toast } from 'react-toastify';
 import { isFulfilled } from '@reduxjs/toolkit';
 
 const formSchema = z.object({
@@ -61,6 +64,9 @@ type FormSchema = z.infer<typeof formSchema>;
 function FormRegister() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const avatarPath = useAppSelector(getAvatar);
+  const isAuth = useAppSelector(getIsAuth);
+  const role = useAppSelector(getRole);
 
   const {
     register,
@@ -70,9 +76,6 @@ function FormRegister() {
     watch,
     formState: { isDirty, isSubmitting, errors },
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
-
-  const isAuth = useAppSelector(getIsAuth);
-  const role = useAppSelector(getRole);
 
   useEffect(() => {
     if (isAuth) {
@@ -94,7 +97,7 @@ function FormRegister() {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
   const [avatar, setAvatar] = useState('');
   const [fileAvatar, setFileAvatar] = useState<File | null>(null);
-  const [avatarError, setAvatarError] = useState('');
+  const [avatarError, setAvatarError] = useState('Обязательное поле');
 
   const handleAvatarFileInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const file = evt.currentTarget.files && evt.currentTarget.files[0];
@@ -121,8 +124,9 @@ function FormRegister() {
     }
   };
 
-  const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    let newData = {};
+  const onSubmit: SubmitHandler<FormSchema> = async (data) => {
+    let newData: CreateUserDto;
+
     if (data.role === UserRole.Client) {
       newData = {
         ...data,
@@ -143,22 +147,30 @@ function FormRegister() {
         },
       };
     }
-    dispatch(registerUserAction(newData))
-      .then(isFulfilled)
-      .then(() => {
-        if (fileAvatar) {
-          const formData = new FormData();
-          formData.append('file', fileAvatar);
-          dispatch(uploadAvatarAction(formData));
-        }
-        reset();
-        if (data.role === UserRole.Client) {
-          navigate(AppRoute.RegisterClient);
-        } else {
-          navigate(AppRoute.RegisterTrainer);
-        }
-      });
+
+    const dataRegister = await dispatch(registerUserAction(newData));
+    if (fileAvatar && dataRegister.meta.requestStatus === 'fulfilled') {
+      const formData = new FormData();
+      formData.append('file', fileAvatar);
+      dispatch(uploadAvatarAction(formData))
+        .then(isFulfilled)
+        .catch((error) => {
+          toast.error(error);
+        });
+      reset();
+      if (data.role === UserRole.Client) {
+        navigate(AppRoute.RegisterClient);
+      } else {
+        navigate(AppRoute.RegisterTrainer);
+      }
+    }
   };
+
+  useEffect(() => {
+    if (avatarPath) {
+      dispatch(updateUserAction({ avatar: avatarPath }));
+    }
+  }, [avatarPath, dispatch]);
 
   return (
     <form method="post" onSubmit={handleSubmit(onSubmit)}>

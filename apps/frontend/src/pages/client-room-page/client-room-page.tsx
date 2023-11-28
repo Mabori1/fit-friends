@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Header from '../../components/header/header';
 import {
@@ -9,7 +9,7 @@ import {
 } from '../../const';
 import { nanoid } from 'nanoid';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getAvater, getIsAuth, getUser } from '../../redux/userSlice/selectors';
+import { getAvatar, getIsAuth, getUser } from '../../redux/userSlice/selectors';
 import {
   TrainingTypesCount,
   UserDescriptionLength,
@@ -44,7 +44,7 @@ function ClientRoomPage(): JSX.Element {
   const serverUrl = 'http://localhost:4000';
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
-  const storeAvatar = useAppSelector(getAvater);
+  const storeAvatar = useAppSelector(getAvatar);
   const isAuth = useAppSelector(getIsAuth);
   const navigate = useNavigate();
 

@@ -10,10 +10,12 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import {
+  IRequestWithTokenPayload,
   ImageTypes,
   MAX_AVATAR_FILE_SIZE,
   TOO_BIG_FILE,
@@ -26,6 +28,7 @@ import { UploadedFileRdo } from './rdo/uploaded-file.rdo';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { DeleteCertificateQuery } from './query/delete-certificate.query';
+import { UserService } from '../user/user.service';
 
 @ApiTags('files')
 @Controller('files')
@@ -33,6 +36,7 @@ export class FileController {
   constructor(
     private readonly fileService: FileService,
     private readonly configService: ConfigService,
+    private readonly userService: UserService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -58,7 +62,10 @@ export class FileController {
   @UseGuards(JwtAuthGuard)
   @Post('/upload/img')
   @UseInterceptors(FileInterceptor('file'))
-  public async uploadImageFile(@UploadedFile() file: Express.Multer.File) {
+  public async uploadImageFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
     const fileType = file.originalname.slice(
       file.originalname.lastIndexOf('.') + 1,
     );
@@ -78,6 +85,10 @@ export class FileController {
     const path = `${this.configService.get<string>('application.serveRoot')}${
       newFile.path
     }`;
+
+    await this.userService.updateUser(payload.sub, {
+      avatar: path,
+    });
 
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
   }
@@ -107,6 +118,7 @@ export class FileController {
     const path = `${this.configService.get('application.serveRoot')}${
       newFile.path
     }`;
+
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
   }
 

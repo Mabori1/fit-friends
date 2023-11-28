@@ -17,7 +17,7 @@ export const getRole = (state: State): string =>
 export const getUser = (state: State): IUser | undefined =>
   state[NameSpace.UserSlice].user;
 
-export const getAvater = (state: State): string | undefined =>
+export const getAvatar = (state: State): string | undefined =>
   state[NameSpace.UserSlice].user?.avatar;
 
 export const getCertificate = (state: State): string[] | undefined =>
