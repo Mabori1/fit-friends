@@ -33,8 +33,9 @@ import {
   MAX_CERTIFICATES_COUNT_PER_PAGE,
 } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getAvatar, getIsAuth, getUser } from '../../redux/userSlice/selectors';
+import { getIsAuth, getUser } from '../../redux/userSlice/selectors';
 import {
+  checkUserAction,
   deleteCertificateAction,
   updateUserAction,
   uploadAvatarAction,
@@ -50,7 +51,7 @@ function TrainerRoomPage() {
   const user = useAppSelector(getUser);
   const certificates = user?.trainer?.certificate ?? [''];
   const isAuth = useAppSelector(getIsAuth);
-  const avatarPath = useAppSelector(getAvatar);
+  const serverUrl = 'http://localhost:4000';
 
   const [isLocationSelectOpened, setIsLocationSelectOpened] = useState(false);
   const [isGenderSelectOpened, setIsGenderSelectOpened] = useState(false);
@@ -229,13 +230,9 @@ function TrainerRoomPage() {
           if (avatarFile) {
             const formData = new FormData();
             formData.append('file', avatarFile);
-            dispatch(uploadAvatarAction(formData))
-              .catch(() => {
-                toast.error('Аватар не загружен');
-              })
-              .then(() => {
-                dispatch(updateUserAction({ avatar: avatarPath }));
-              });
+            dispatch(uploadAvatarAction(formData)).catch(() => {
+              toast.error('Аватар не загружен');
+            });
           }
         })
         .catch(() => {
@@ -319,6 +316,19 @@ function TrainerRoomPage() {
   }
 
   useEffect(() => {
+    if (user) {
+      setUserName(user.name);
+      setDescription(user.description ?? '');
+      setTypesOfTraining(user.typesOfTraining ?? []);
+      setLocation(user.location);
+      setGender(user.gender);
+      setLevel(user.level ?? 'новичок');
+    } else {
+      dispatch(checkUserAction());
+    }
+  }, [dispatch, user]);
+
+  useEffect(() => {
     if (!isAuth) {
       navigate(AppRoute.Intro);
     }
@@ -354,8 +364,8 @@ function TrainerRoomPage() {
                       />
                       <span className="input-load-avatar__avatar">
                         <img
-                          src={`${BASE_SERVER_URL}/${user?.avatar}`}
-                          srcSet={`${BASE_SERVER_URL}/${user?.avatar} 2x`}
+                          src={`${serverUrl}${user?.avatar}`}
+                          srcSet={`${serverUrl}${user?.avatar} 2x`}
                           width="98"
                           height="98"
                           alt="user"
@@ -517,6 +527,7 @@ function TrainerRoomPage() {
                           onChange={() =>
                             setIsPersonalTraining((prevState) => !prevState)
                           }
+                          disabled={!isContentEditable}
                           type="checkbox"
                           name="ready-for-training"
                           checked={isPersonalTraining}
