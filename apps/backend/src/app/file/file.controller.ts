@@ -78,6 +78,7 @@ export class FileController {
     const path = `${this.configService.get<string>('application.serveRoot')}${
       newFile.path
     }`;
+
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));
   }
 

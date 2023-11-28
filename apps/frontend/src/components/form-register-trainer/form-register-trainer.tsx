@@ -15,9 +15,14 @@ import {
   TrainerMeritLength,
 } from '@fit-friends/types';
 import { useAppDispatch } from '../../redux/store';
-import { updateUserAction, uploadCertificateAction } from '../../redux/userSlice/apiUserActions';
+import {
+  updateUserAction,
+  uploadCertificateAction,
+} from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { isFulfilled } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 const formSchema = z.object({
   typesOfTraining: z
@@ -66,23 +71,27 @@ function FormRegisgerTrainer() {
     const updateData = {
       level: data.level,
       typesOfTraining: data.typesOfTraining,
-      Trainer: {
+      trainer: {
         merits: data.merits,
         isPersonalTraining: data.isPersonalTraining,
         certificate: [],
       },
     };
 
-    dispatch(updateUserAction(updateData)).then(() => {
-    if (certificate) {
-      const formData = new FormData();
-      formData.append('file', certificate);
-        dispatch(uploadCertificateAction(formData))
-    }
-    });
-    reset();
-
-    navigate(AppRoute.TrainerRoom);
+    dispatch(updateUserAction(updateData))
+      .then(isFulfilled)
+      .then(() => {
+        if (certificate) {
+          const formData = new FormData();
+          formData.append('file', certificate);
+          dispatch(uploadCertificateAction(formData));
+        }
+        reset();
+        navigate(AppRoute.TrainerRoom);
+      })
+      .catch(() => {
+        toast.error('Что-то пошло не так');
+      });
   };
 
   const handleCertificateFileInputChange = (

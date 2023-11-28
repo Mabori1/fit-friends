@@ -4,12 +4,16 @@ import { UpdateUserDto } from '../auth/dto/update-user.dto';
 import { UserQuery } from './query/user.query';
 import { UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
 
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly prisma: PrismaService,
+  ) {}
 
   public async getUser(id: number) {
     const user = await this.userRepository.findById(id).catch((err) => {

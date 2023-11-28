@@ -28,7 +28,7 @@ export interface IUser {
 }
 
 export interface IClient {
-  clientId?: number;
+  id?: number;
   userId?: number;
   timeOfTraining?: string;
   caloryLosingPlanTotal?: number;
@@ -37,7 +37,7 @@ export interface IClient {
 }
 
 export interface ITrainer {
-  trainerId?: number;
+  id?: number;
   userId?: number;
   certificate?: string[];
   merits?: string;

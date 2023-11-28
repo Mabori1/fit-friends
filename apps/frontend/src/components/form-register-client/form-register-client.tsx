@@ -16,6 +16,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '../../redux/store';
 import { updateUserAction } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
+import { UpdateUserDto } from '../../types/updateUserDto';
+import { toast } from 'react-toastify';
+import { isFulfilled } from '@reduxjs/toolkit';
 
 const formSchema = z.object({
   typesOfTraining: z
@@ -49,19 +52,24 @@ function FormRegisgerClient() {
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    console.log(data);
-    const updateData = {
+    const updateData: UpdateUserDto = {
       level: data.level,
       typesOfTraining: data.typesOfTraining,
-      Client: {
+      client: {
         timeOfTraining: data.timeOfTraining,
         caloryLosingPlanTotal: data.caloryLosingPlanTotal,
         caloryLosingPlanDaily: data.caloryLosingPlanDaily,
       },
     };
-    dispatch(updateUserAction(updateData));
-    reset();
-    navigate(AppRoute.ClientRoom);
+    dispatch(updateUserAction(updateData))
+      .then(isFulfilled)
+      .then(() => {
+        reset();
+        navigate(AppRoute.ClientRoom);
+      })
+      .catch(() => {
+        toast.error('Что-то пошло не так');
+      });
   };
 
   return (

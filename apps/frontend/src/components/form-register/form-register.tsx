@@ -30,6 +30,7 @@ import {
 import { getIsAuth, getRole } from '../../redux/userSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
+import { isFulfilled } from '@reduxjs/toolkit';
 
 const formSchema = z.object({
   name: z
@@ -77,10 +78,10 @@ function FormRegister() {
     if (isAuth) {
       switch (role) {
         case UserRole.Trainer:
-          navigate(AppRoute.RegisterTrainer);
+          navigate(AppRoute.TrainerRoom);
           break;
         case UserRole.Client:
-          navigate(AppRoute.RegisterClient);
+          navigate(AppRoute.ClientRoom);
           break;
       }
     }
@@ -93,9 +94,7 @@ function FormRegister() {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
   const [avatar, setAvatar] = useState('');
   const [fileAvatar, setFileAvatar] = useState<File | null>(null);
-  const [avatarError, setAvatarError] = useState(
-    'Загрузка аватара обязательна',
-  );
+  const [avatarError, setAvatarError] = useState('');
 
   const handleAvatarFileInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const file = evt.currentTarget.files && evt.currentTarget.files[0];
@@ -123,16 +122,42 @@ function FormRegister() {
   };
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    dispatch(registerUserAction(data)).then(() => {
-
-    if (fileAvatar) {
-      const formData = new FormData();
-      formData.append('file', fileAvatar);
-        dispatch(uploadAvatarAction(formData))
+    let newData = {};
+    if (data.role === UserRole.Client) {
+      newData = {
+        ...data,
+        client: {
+          timeOfTraining: '',
+          caloryLosingPlanTotal: 0,
+          caloryLosingPlanDaily: 0,
+          isReady: false,
+        },
+      };
+    } else {
+      newData = {
+        ...data,
+        trainer: {
+          isPersonalTraining: false,
+          certificate: [],
+          merits: '',
+        },
+      };
     }
-    });
-    reset();
-
+    dispatch(registerUserAction(newData))
+      .then(isFulfilled)
+      .then(() => {
+        if (fileAvatar) {
+          const formData = new FormData();
+          formData.append('file', fileAvatar);
+          dispatch(uploadAvatarAction(formData));
+        }
+        reset();
+        if (data.role === UserRole.Client) {
+          navigate(AppRoute.RegisterClient);
+        } else {
+          navigate(AppRoute.RegisterTrainer);
+        }
+      });
   };
 
   return (
@@ -148,7 +173,6 @@ function FormRegister() {
                 type="file"
                 name="avatar"
                 accept="image/png, image/jpeg"
-                aria-invalid={avatarError ? 'true' : 'false'}
               />
               <span className="input-load-avatar__btn">
                 {avatar && (

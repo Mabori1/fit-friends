@@ -14,6 +14,7 @@ import {
   fetchNotifyAction,
   deleteNotifyAction,
 } from './apiUserActions';
+import { useAppDispatch } from '../store';
 
 type UserSlice = {
   authStatus: AuthStatus;
@@ -76,19 +77,34 @@ export const userSlice = createSlice({
         if (state.user) {
           state.user['avatar'] = action.payload?.path;
         }
+        const dispatch = useAppDispatch();
+        dispatch(
+          updateUserAction({
+            avatar: state.user?.avatar,
+          }),
+        );
       })
       .addCase(uploadCertificateAction.fulfilled, (state, action) => {
-        if (state.user) {
-          state.user['certificate'] = action.payload?.path;
+        if (state.user?.trainer?.certificate) {
+          state.user.trainer.certificate.push(action.payload.path);
         }
+        const dispatch = useAppDispatch();
+        dispatch(
+          updateUserAction({
+            trainer: { certificate: state.user?.trainer?.certificate },
+          }),
+        );
       })
       .addCase(fetchNotifyAction.fulfilled, (state, action) => {
         state.notices = action.payload;
       })
       .addCase(deleteCertificateAction.fulfilled, (state, action) => {
-        state.user['certificate'] = state.user?.certificate.filter(
-          (certificat) => certificat !== action.payload,
-        );
+        if (state.user?.trainer?.certificate) {
+          state.user.trainer.certificate =
+            state.user.trainer.certificate.filter(
+              (certificat) => certificat !== action.payload,
+            );
+        }
       })
       .addCase(deleteNotifyAction.fulfilled, (state, action) => {
         state.notices = state.notices.filter(

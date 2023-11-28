@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/updateUserDto';
 import { UploadedFileRdo } from '../../types/uploadedFilesRdo';
 import { INotify } from '@fit-friends/types';
+import { useAppDispatch } from '../store';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -118,6 +119,10 @@ export const uploadAvatarAction = createAsyncThunk<
   AsyncThunkConfig
 >('user/uploadAvatar', async (avatar, { extra: api }) => {
   const { data } = await api.post<UploadedFileRdo>(APIRoute.Avatar, avatar);
+
+  const dispatch = useAppDispatch();
+  dispatch(updateUserAction({ avatar: data.path }));
+
   return data;
 });
 
@@ -126,7 +131,10 @@ export const uploadCertificateAction = createAsyncThunk<
   FormData,
   AsyncThunkConfig
 >('user/uploadCertificate', async (certificat, { extra: api }) => {
-  const { data } = await api.post<UploadedFileRdo>(APIRoute.Certificate, certificat);
+  const { data } = await api.post<UploadedFileRdo>(
+    APIRoute.Certificate,
+    certificat,
+  );
   return data;
 });
 
@@ -135,8 +143,9 @@ export const deleteCertificateAction = createAsyncThunk<
   string,
   AsyncThunkConfig
 >('user/deleteCertificate', async (certificateUrl, { extra: api }) => {
-  const { data } = await api
-  .delete<undefined>(`${APIRoute.DeleteCertificate}/?certificateUrl=${certificateUrl}`);
+  const { data } = await api.delete<undefined>(
+    `${APIRoute.DeleteCertificate}/?certificateUrl=${certificateUrl}`,
+  );
   return data;
 });
 

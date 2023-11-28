@@ -163,6 +163,7 @@ export class UserRepository
       },
     });
   }
+
   public async find(
     limit: number,
     filter: IUserFilter,

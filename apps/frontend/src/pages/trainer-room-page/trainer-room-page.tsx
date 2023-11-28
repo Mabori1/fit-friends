@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../../components/header/header';
 import {
   ArrowCheck,
@@ -33,7 +33,7 @@ import {
   MAX_CERTIFICATES_COUNT_PER_PAGE,
 } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getUser } from '../../redux/userSlice/selectors';
+import { getIsAuth, getUser } from '../../redux/userSlice/selectors';
 import {
   deleteCertificateAction,
   updateUserAction,
@@ -41,13 +41,15 @@ import {
   uploadCertificateAction,
 } from '../../redux/userSlice/apiUserActions';
 import CertificateItem from '../../components/certificate-item/certificate-item';
+import { isFulfilled } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 function TrainerRoomPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const user = useAppSelector(getUser);
   const certificates = user?.trainer?.certificate ?? [''];
-
-console.log(user);
+  const isAuth = useAppSelector(getIsAuth);
 
   const [isLocationSelectOpened, setIsLocationSelectOpened] = useState(false);
   const [isGenderSelectOpened, setIsGenderSelectOpened] = useState(false);
@@ -97,6 +99,7 @@ console.log(user);
 
   function handleSubmitButtonClick(event: FormEvent<HTMLButtonElement>): void {
     event.preventDefault();
+    sendFormData();
     setIsContentEditable(false);
   }
   function handleEditButtonClick(event: FormEvent<HTMLButtonElement>): void {
@@ -209,7 +212,7 @@ console.log(user);
     if (isFormValid && gender && location && level) {
       await dispatch(
         updateUserAction({
-          naTe: userName,
+          name: userName,
           gender,
           location,
           level,
@@ -219,13 +222,20 @@ console.log(user);
             isPersonalTraining,
           },
         }),
-      );
-
-      if (avatarFile) {
-        const formData = new FormData();
-        formData.append('file', avatarFile);
-        dispatch(uploadAvatarAction(formData));
-      }
+      )
+        .then(isFulfilled)
+        .then(() => {
+          if (avatarFile) {
+            const formData = new FormData();
+            formData.append('file', avatarFile);
+            dispatch(uploadAvatarAction(formData)).catch(() => {
+              toast.error('Аватар не загружен');
+            });
+          }
+        })
+        .catch(() => {
+          toast.error('Что-то пошло не так');
+        });
     }
   };
 
@@ -303,6 +313,14 @@ console.log(user);
     setIsLevelSelectOpened((prevState) => !prevState);
   }
 
+  useEffect(() => {
+    if (!isAuth) {
+      navigate(AppRoute.Intro);
+    }
+  }, [isAuth, navigate]);
+
+  console.log(user?.avatar);
+  console.log(isAuth);
   return (
     <>
       <Header />

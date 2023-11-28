@@ -1,5 +1,3 @@
-import { Certificate } from "crypto";
-
 export const BASE_RESPONSE_URL = 'http//localhost:4000/api';
 export const BASE_SERVER_URL = 'http//localhost:4000';
 export const SERVER_API_URL = 'http//localhost:4000/api';

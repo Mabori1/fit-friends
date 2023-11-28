@@ -4,11 +4,13 @@ import { FileService } from './file.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigService } from '@nestjs/config';
 import { FileRepository } from './file.repository';
+import { UserModule } from '../user/user.module';
 
 const SERVE_ROOT = '/static';
 
 @Module({
   imports: [
+    UserModule,
     ServeStaticModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {

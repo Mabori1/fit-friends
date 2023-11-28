@@ -5,12 +5,11 @@ import {
   AVATAR_FILE_TYPES,
   AVATAR_MAX_SIZE,
   AppRoute,
-  BASE_SERVER_URL,
   DAYS_IN_A_WEEK,
 } from '../../const';
 import { nanoid } from 'nanoid';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getUser } from '../../redux/userSlice/selectors';
+import { getAvater, getIsAuth, getUser } from '../../redux/userSlice/selectors';
 import {
   TrainingTypesCount,
   UserDescriptionLength,
@@ -23,6 +22,7 @@ import {
 import {
   updateUserAction,
   uploadAvatarAction,
+  checkUserAction,
 } from '../../redux/userSlice/apiUserActions';
 import MyProgress from '../../components/my-progress/my-progress';
 import {
@@ -37,11 +37,17 @@ import {
   IconTrash,
   IconWeight,
 } from '../../helper/svg-const';
+import { isFulfilled } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 function ClientRoomPage(): JSX.Element {
+  const serverUrl = 'http://localhost:4000';
   const dispatch = useAppDispatch();
-
   const user = useAppSelector(getUser);
+  const storeAvatar = useAppSelector(getAvater);
+  const isAuth = useAppSelector(getIsAuth);
+  const navigate = useNavigate();
+
   const userDailyCaloriesCount = user?.client?.caloryLosingPlanDaily ?? 0;
   const planForWeekCaloriesCount = userDailyCaloriesCount * DAYS_IN_A_WEEK ?? 0;
 
@@ -182,7 +188,7 @@ function ClientRoomPage(): JSX.Element {
     } else if (!matches && file) {
       setAvatarError('Загрузите сюда файлы формата PDF, JPG или PNG');
     } else {
-      setAvatarError('Добавьте подтверждающий документ');
+      setAvatarError('Загрузка аватара обязательна');
     }
 
     if (file?.size && file?.size > AVATAR_MAX_SIZE) {
@@ -192,7 +198,7 @@ function ClientRoomPage(): JSX.Element {
     }
   };
 
-  const dispatchFormData = async () => {
+  const sendFormData = async () => {
     if (isFormValid && gender && location && level) {
       await dispatch(
         updateUserAction({
@@ -206,13 +212,20 @@ function ClientRoomPage(): JSX.Element {
             isReady,
           },
         }),
-      );
-
-      if (avatarFile) {
-        const formData = new FormData();
-        formData.append('file', avatarFile);
-        dispatch(uploadAvatarAction(formData));
-      }
+      )
+        .then(isFulfilled)
+        .then(() => {
+          if (avatarFile) {
+            const formData = new FormData();
+            formData.append('file', avatarFile);
+            dispatch(uploadAvatarAction(formData)).catch(() => {
+              toast.error('Аватар не загружен');
+            });
+          }
+        })
+        .catch(() => {
+          toast.error('Что-то пошло не так');
+        });
     }
   };
 
@@ -223,10 +236,36 @@ function ClientRoomPage(): JSX.Element {
 
   const handleSubmitButtonClick = (evt: FormEvent<HTMLButtonElement>) => {
     evt.preventDefault();
-    dispatchFormData();
+    sendFormData();
     setIsContentEditable(false);
   };
 
+  useEffect(() => {
+    dispatch(updateUserAction({ avatar: storeAvatar }));
+  }, [dispatch, storeAvatar]);
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user.name);
+      setDescription(user.description);
+      setTypesOfTraining(user.typesOfTraining ?? []);
+      setLocation(user.location);
+      setGender(user.gender);
+      setLevel(user.level);
+      setIsReady(user.client?.isReady ?? false);
+    } else {
+      dispatch(checkUserAction());
+    }
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    if (!isAuth) {
+      navigate(AppRoute.Intro);
+    }
+  }, [isAuth, navigate]);
+
+  console.log(user?.avatar);
+  console.log(isAuth);
   return (
     <>
       <Header />
@@ -245,12 +284,12 @@ function ClientRoomPage(): JSX.Element {
                         type="file"
                         name="user-photo-1"
                         accept="image/png, image/jpeg"
-                        disabled={isContentEditable}
+                        disabled={!isContentEditable}
                       />
                       <span className="input-load-avatar__avatar">
                         <img
-                          src={`${BASE_SERVER_URL}/${user?.avatar}`}
-                          srcSet={`${BASE_SERVER_URL}/${user?.avatar} 2x`}
+                          src={`${serverUrl}${user?.avatar}`}
+                          srcSet={`${serverUrl}${user?.avatar} 2x`}
                           width="98"
                           height="98"
                           alt="user"
@@ -412,6 +451,7 @@ function ClientRoomPage(): JSX.Element {
                           onChange={() => setIsReady((prevState) => !prevState)}
                           type="checkbox"
                           name="ready-for-training"
+                          disabled={!isContentEditable}
                           checked={isReady}
                         />
                         <span className="custom-toggle__icon">
