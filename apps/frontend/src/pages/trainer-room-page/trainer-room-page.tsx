@@ -28,9 +28,9 @@ import {
   AVATAR_FILE_TYPES,
   AVATAR_MAX_SIZE,
   AppRoute,
-  BASE_SERVER_URL,
   CERTIFICATE_FILE_TYPES,
   MAX_CERTIFICATES_COUNT_PER_PAGE,
+  FILE_URL,
 } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getIsAuth, getUser } from '../../redux/userSlice/selectors';
@@ -51,7 +51,6 @@ function TrainerRoomPage() {
   const user = useAppSelector(getUser);
   const certificates = user?.trainer?.certificate ?? [''];
   const isAuth = useAppSelector(getIsAuth);
-  const serverUrl = 'http://localhost:4000';
 
   const [isLocationSelectOpened, setIsLocationSelectOpened] = useState(false);
   const [isGenderSelectOpened, setIsGenderSelectOpened] = useState(false);
@@ -323,6 +322,7 @@ function TrainerRoomPage() {
       setLocation(user.location);
       setGender(user.gender);
       setLevel(user.level ?? 'новичок');
+      setIsPersonalTraining(user.trainer?.isPersonalTraining ?? false);
     } else {
       dispatch(checkUserAction());
     }
@@ -334,8 +334,7 @@ function TrainerRoomPage() {
     }
   }, [isAuth, navigate]);
 
-  console.log(user?.avatar);
-  console.log(isAuth);
+  console.log(user);
   return (
     <>
       <Header />
@@ -364,8 +363,8 @@ function TrainerRoomPage() {
                       />
                       <span className="input-load-avatar__avatar">
                         <img
-                          src={`${serverUrl}${user?.avatar}`}
-                          srcSet={`${serverUrl}${user?.avatar} 2x`}
+                          src={`${FILE_URL}${user?.avatar}`}
+                          srcSet={`${FILE_URL}${user?.avatar} 2x`}
                           width="98"
                           height="98"
                           alt="user"

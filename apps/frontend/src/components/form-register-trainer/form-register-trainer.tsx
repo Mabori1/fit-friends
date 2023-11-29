@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import {
@@ -58,7 +59,7 @@ function FormRegisgerTrainer() {
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
   const [certificate, setCertificate] = useState<File | null>(null);
-  const [imageInputUsed, setImageInputUsed] = useState(false);
+  const [certificateInputUsed, setCertificateInputUsed] = useState(false);
   const [certificateError, setCertificateError] = useState(
     'Должен быть хотя бы один документ',
   );
@@ -67,7 +68,7 @@ function FormRegisgerTrainer() {
   ]);
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    if (!certificateError && imageInputUsed) {
+    if (!certificateError && certificateInputUsed) {
       const updateData = {
         level: data.level,
         typesOfTraining: data.typesOfTraining,
@@ -84,7 +85,15 @@ function FormRegisgerTrainer() {
           if (certificate) {
             const formData = new FormData();
             formData.append('file', certificate);
-            dispatch(uploadCertificateAction(formData));
+            dispatch(uploadCertificateAction(formData)).then((data: any) => {
+              dispatch(
+                updateUserAction({
+                  trainer: {
+                    certificate: [data.payload?.path],
+                  },
+                }),
+              );
+            });
           }
           reset();
           navigate(AppRoute.TrainerRoom);
@@ -93,7 +102,7 @@ function FormRegisgerTrainer() {
           toast.error('Что-то пошло не так');
         });
     }
-    setImageInputUsed(true);
+    setCertificateInputUsed(true);
   };
 
   const handleCertificateFileInputChange = (
@@ -115,7 +124,7 @@ function FormRegisgerTrainer() {
     } else {
       setCertificateError('Добавьте подтверждающий документ');
     }
-    setImageInputUsed(true);
+    setCertificateInputUsed(true);
   };
 
   return (
@@ -199,7 +208,7 @@ function FormRegisgerTrainer() {
                       <div className="drag-and-drop questionnaire-coach__drag-and-drop">
                         <label
                           className={`${
-                            imageInputUsed && certificateError
+                            certificateInputUsed && certificateError
                               ? 'custom-input--error'
                               : ''
                           }`}

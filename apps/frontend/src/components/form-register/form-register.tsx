@@ -180,7 +180,11 @@ function FormRegister() {
   return (
     <form method="post" onSubmit={handleSubmit(onSubmit)}>
       <div className="sign-up">
-        <div className="sign-up__load-photo">
+        <div
+          className={`sign-up__load-photo ${
+            avatarInputUsed && avatarError ? 'custom-input--error' : ''
+          }`}
+        >
           <div className="input-load-avatar">
             <label>
               <input

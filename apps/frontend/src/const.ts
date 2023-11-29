@@ -1,5 +1,5 @@
 export const BASE_RESPONSE_URL = 'http//localhost:4000/api';
-export const BASE_SERVER_URL = 'http//localhost:4000';
+export const FILE_URL = 'http//localhost:4000';
 export const SERVER_API_URL = 'http//localhost:4000/api';
 
 export const DAYS_IN_A_WEEK = 7;
