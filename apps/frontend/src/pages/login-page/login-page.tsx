@@ -26,7 +26,6 @@ function LoginPage(): JSX.Element {
 
   const isAuth = useAppSelector(getIsAuth);
   const isTrainer = useAppSelector(getIsTrainer);
-  console.log(isAuth);
 
   useEffect(() => {
     if (isTrainer && isAuth) {

@@ -30,7 +30,18 @@ const initialState: UserSlice = {
 export const userSlice = createSlice({
   name: NameSpace.UserSlice,
   initialState,
-  reducers: {},
+  reducers: {
+    deleteCertificateStateAction: (state, action) => {
+      console.log('action.payload', action.payload);
+
+      state.user = {
+        ...state.user,
+        certificates: state.user?.certificates?.filter(
+          (certificate) => certificate !== action.payload,
+        ),
+      };
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(registerUserAction.fulfilled, (state, action) => {
@@ -86,6 +97,7 @@ export const userSlice = createSlice({
         state.notices = action.payload;
       })
       .addCase(deleteCertificateAction.fulfilled, (state, action) => {
+        console.log(action);
         if (state.user?.trainer?.certificate) {
           state.user.trainer.certificate =
             state.user.trainer.certificate.filter(
@@ -100,3 +112,5 @@ export const userSlice = createSlice({
       });
   },
 });
+
+export const { deleteCertificateStateAction } = userSlice.actions;

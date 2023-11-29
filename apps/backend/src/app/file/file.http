@@ -1,5 +1,23 @@
+@baseUrl = http://localhost:4000/api
+@token = {{login.response.body.$.access_token}}
+@refreshToken = {{login.response.body.$.refresh_token}}
+
+# Login user by email and password
+# @name login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "3ma@ma.ru",
+  "password": "222222"
+}
+###
+
+
+
 # Upload some file
 POST http://localhost:4000/api/files/upload/img HTTP/1.1
+Authorization: Bearer {{token}}
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
@@ -11,18 +29,21 @@ Content-Type: image/png
 ###
 
 # Get file bi Id
-GET http://localhost:4000/api/files/28 HTTP/1.1
+GET http://localhost:4000/api/files/154 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 
-# Get file by ID
-GET http://localhost:4000/static/2023/11/3c705edf-d1d2-4475-bce7-7e4ce2ce6f18.png HTTP/1.1
+# Get file by path
+GET http://localhost:4000/static/2023/11/7c8e42b7-73e2-4239-80e9-be247d940fb7.png HTTP/1.1
+Authorization: Bearer {{token}}
 
 
 ###
 
 # Delete certificate by url
-DELETE http://localhost:4000/files/delete/certificate?certificateUrl=static/2023/11/3c705edf-d1d2-4475-bce7-7e4ce2ce6f18.png HTTP/1.1
+DELETE http://localhost:4000/files/delete/?certificateUrl=static/2023/11/3c705edf-d1d2-4475-bce7-7e4ce2ce6f18.png HTTP/1.1
+Authorization: Bearer {{token}}
 
 
 ###

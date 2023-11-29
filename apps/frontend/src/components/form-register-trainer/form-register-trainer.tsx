@@ -10,12 +10,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowCheck, IconImport } from '../../helper/svg-const';
 import BackgroundLogo from '../background-logo/background-logo';
 import { upFirstWord } from '../../helper/utils';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   MAXIMUM_TRAINING_TYPES_CHOICE,
   TrainerMeritLength,
 } from '@fit-friends/types';
-import { useAppDispatch } from '../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
   updateUserAction,
   uploadCertificateAction,
@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../constants';
 import { isFulfilled } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import { getUser } from '../../redux/userSlice/selectors';
 
 const formSchema = z.object({
   typesOfTraining: z
@@ -49,6 +50,13 @@ type FormSchema = z.infer<typeof formSchema>;
 function FormRegisgerTrainer() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = useAppSelector(getUser);
+
+  useEffect(() => {
+    if (!user?.name) {
+      navigate(AppRoute.Register);
+    }
+  }, [user, navigate]);
 
   const {
     register,

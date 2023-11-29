@@ -30,7 +30,6 @@ import {
   AppRoute,
   CERTIFICATE_FILE_TYPES,
   MAX_CERTIFICATES_COUNT_PER_PAGE,
-  FILE_URL,
 } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getIsAuth, getUser } from '../../redux/userSlice/selectors';
@@ -47,7 +46,6 @@ import { toast } from 'react-toastify';
 import 'dotenv';
 
 function TrainerRoomPage() {
-  console.log(import.meta.env.VITE_SERVER);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(getUser);
@@ -64,6 +62,7 @@ function TrainerRoomPage() {
   const [isCertificatesEditable, setIsCertificatesEditable] = useState(false);
   const [editableCertificateItem, setEditableCertificateItem] = useState('');
   const [isContentEditable, setIsContentEditable] = useState(false);
+  const [isUpdateCertificate, setIsUpdateCertificate] = useState(false);
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [userName, setUserName] = useState(user?.name ?? '');
@@ -85,6 +84,14 @@ function TrainerRoomPage() {
     certificate: '',
     typesOfTraining: '',
   });
+
+  useEffect(() => {
+    if (isUpdateCertificate && certificates) {
+      dispatch(updateUserAction({ trainer: { certificate: certificates } }));
+      setIsUpdateCertificate(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [certificates]);
 
   useEffect(() => {
     if (
@@ -180,6 +187,7 @@ function TrainerRoomPage() {
         certificate: 'Загрузите сюда файлы формата PDF, JPG или PNG',
       });
     }
+    setIsUpdateCertificate(true);
   };
 
   function handleLeftArrowButtonClick(): void {
@@ -336,7 +344,6 @@ function TrainerRoomPage() {
     }
   }, [isAuth, navigate]);
 
-  console.log(user);
   return (
     <>
       <Header />
@@ -365,8 +372,12 @@ function TrainerRoomPage() {
                       />
                       <span className="input-load-avatar__avatar">
                         <img
-                          src={`${FILE_URL}${user?.avatar}`}
-                          srcSet={`${FILE_URL}${user?.avatar} 2x`}
+                          src={`${
+                            import.meta.env.VITE_SERVER_URL_FILES
+                          }${user?.avatar}`}
+                          srcSet={`${
+                            import.meta.env.VITE_SERVER_URL_FILES
+                          }${user?.avatar} 2x`}
                           width="98"
                           height="98"
                           alt="user"

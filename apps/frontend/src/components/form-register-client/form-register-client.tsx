@@ -13,12 +13,14 @@ import {
 } from '@fit-friends/types';
 import { upFirstWord } from '../../helper/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAppDispatch } from '../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { updateUserAction } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
 import { UpdateUserDto } from '../../types/updateUserDto';
 import { toast } from 'react-toastify';
 import { isFulfilled } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
+import { getUser } from '../../redux/userSlice/selectors';
 
 const formSchema = z.object({
   typesOfTraining: z
@@ -42,6 +44,14 @@ type FormSchema = z.infer<typeof formSchema>;
 function FormRegisgerClient() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const user = useAppSelector(getUser);
+
+  useEffect(() => {
+    if (!user?.name) {
+      navigate(AppRoute.Register);
+    }
+  }, [user, navigate]);
 
   const {
     register,

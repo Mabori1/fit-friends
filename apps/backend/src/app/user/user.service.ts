@@ -59,4 +59,30 @@ export class UserService {
       return await this.userRepository.update(id, userEntity);
     }
   }
+
+  public async deleteCertificate(userId: number, path: string) {
+    const user = await this.userRepository.findById(userId).catch((err) => {
+      this.logger.error(err);
+      throw new NotFoundException('User not found');
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const oldCertificates = user.trainer.certificate;
+    const newCertificates = oldCertificates.filter((el) => el !== path);
+    await this.prisma.user.update({
+      where: {
+        userId,
+      },
+      data: {
+        trainer: {
+          update: {
+            certificate: newCertificates,
+          },
+        },
+      },
+    });
+  }
 }

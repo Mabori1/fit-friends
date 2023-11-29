@@ -39,9 +39,9 @@ import {
 } from '../../helper/svg-const';
 import { isFulfilled } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import 'dotenv';
 
 function ClientRoomPage(): JSX.Element {
-  const serverUrl = 'http://localhost:4000';
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
   const storeAvatar = useAppSelector(getAvatar);
@@ -288,8 +288,10 @@ function ClientRoomPage(): JSX.Element {
                       />
                       <span className="input-load-avatar__avatar">
                         <img
-                          src={`${serverUrl}${user?.avatar}`}
-                          srcSet={`${serverUrl}${user?.avatar} 2x`}
+                          src={`#{import.meta.env.VITE_SERVER_URL_FILES}${user?.avatar}`}
+                          srcSet={`${
+                            import.meta.env.VITE_SERVER_URL_FILES
+                          }${user?.avatar} 2x`}
                           width="98"
                           height="98"
                           alt="user"

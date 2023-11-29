@@ -134,8 +134,11 @@ export class FileController {
 
   @UseGuards(JwtAuthGuard)
   @Delete('/delete/certificate')
-  public async deleteCertificate(@Query() query: DeleteCertificateQuery) {
-    await this.fileService.deleteCertificate(query.certificateUrl);
+  public async deleteCertificate(
+    @Query() query: DeleteCertificateQuery,
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    await this.fileService.deleteCertificate(query.certificateUrl, payload.sub);
     return query.certificateUrl;
   }
 }

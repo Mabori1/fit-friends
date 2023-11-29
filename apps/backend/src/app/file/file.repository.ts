@@ -31,7 +31,7 @@ export class FileRepository
     return await this.prisma.file.findFirst({ where: { hashName } });
   }
 
-  public async findByUrl(path: string): Promise<IFile> {
+  public async findByPath(path: string): Promise<IFile> {
     return await this.prisma.file.findFirst({ where: { path } });
   }
 }

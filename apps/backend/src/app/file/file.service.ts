@@ -8,6 +8,8 @@ import * as crypto from 'node:crypto';
 import { extension } from 'mime-types';
 import { FileEntity } from './file.entity';
 import { FileRepository } from './file.repository';
+import { UserService } from '../user/user.service';
+import * as fs from 'fs';
 
 type WritedFile = {
   hashName: string;
@@ -21,6 +23,7 @@ export class FileService {
   constructor(
     private readonly fileRepository: FileRepository,
     private readonly configService: ConfigService,
+    private readonly userService: UserService,
   ) {}
 
   public async writeFile(file: Express.Multer.File): Promise<WritedFile> {
@@ -74,7 +77,11 @@ export class FileService {
   }
 
   public async getFileByHasName(hashName: string) {
-    const existFile = await this.fileRepository.findByHashName(hashName);
+    const existFile = await this.fileRepository
+      .findByHashName(hashName)
+      .catch(() => {
+        throw new NotFoundException(`File with ${hashName} not found.`);
+      });
 
     if (!existFile) {
       throw new NotFoundException(`File with ${hashName} not found.`);
@@ -83,11 +90,37 @@ export class FileService {
     return existFile;
   }
 
-  public async deleteCertificate(url: string) {
-    const existFile = await this.fileRepository.findByUrl(url);
+  public async deleteCertificate(path: string, userId: number) {
+    const newPath = path.replace(
+      `${this.configService.get('application.serveRoot')}`,
+      '',
+    );
+
+    const existFile = await this.fileRepository
+      .findByPath(newPath)
+      .catch(() => {
+        throw new NotFoundException(`File not found.`);
+      });
+
     if (!existFile) {
       throw new NotFoundException(`File not found.`);
     }
-    await this.fileRepository.destroy(existFile.id);
+
+    await this.userService.deleteCertificate(userId, path).then(() => {
+      const pathFile = `${this.configService.get(
+        'application.uploadDirectory',
+      )}${existFile.path}`;
+
+      if (fs.existsSync(pathFile)) {
+        fs.unlink(pathFile, (err) => {
+          if (err) {
+            console.error(err);
+            return err;
+          }
+        });
+      }
+    });
+
+    return await this.fileRepository.destroy(existFile.id);
   }
 }
