@@ -98,6 +98,7 @@ function FormRegister() {
   const [avatar, setAvatar] = useState('');
   const [fileAvatar, setFileAvatar] = useState<File | null>(null);
   const [avatarError, setAvatarError] = useState('Обязательное поле');
+  const [avatarInputUsed, setAvatarInputUsed] = useState(false);
 
   const handleAvatarFileInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const file = evt.currentTarget.files && evt.currentTarget.files[0];
@@ -122,48 +123,52 @@ function FormRegister() {
         `Максимальный размер файла ${AVATAR_MAX_SIZE * 1e-6} Мбайт`,
       );
     }
+    setAvatarInputUsed(true);
   };
 
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
-    let newData: CreateUserDto;
+    if (avatarInputUsed && !avatarError) {
+      let newData: CreateUserDto;
 
-    if (data.role === UserRole.Client) {
-      newData = {
-        ...data,
-        client: {
-          timeOfTraining: '',
-          caloryLosingPlanTotal: 0,
-          caloryLosingPlanDaily: 0,
-          isReady: false,
-        },
-      };
-    } else {
-      newData = {
-        ...data,
-        trainer: {
-          isPersonalTraining: false,
-          certificate: [],
-          merits: '',
-        },
-      };
-    }
-
-    const dataRegister = await dispatch(registerUserAction(newData));
-    if (fileAvatar && dataRegister.meta.requestStatus === 'fulfilled') {
-      const formData = new FormData();
-      formData.append('file', fileAvatar);
-      dispatch(uploadAvatarAction(formData))
-        .then(isFulfilled)
-        .catch((error) => {
-          toast.error(error);
-        });
-      reset();
       if (data.role === UserRole.Client) {
-        navigate(AppRoute.RegisterClient);
+        newData = {
+          ...data,
+          client: {
+            timeOfTraining: '',
+            caloryLosingPlanTotal: 0,
+            caloryLosingPlanDaily: 0,
+            isReady: false,
+          },
+        };
       } else {
-        navigate(AppRoute.RegisterTrainer);
+        newData = {
+          ...data,
+          trainer: {
+            isPersonalTraining: false,
+            certificate: [],
+            merits: '',
+          },
+        };
+      }
+
+      const dataRegister = await dispatch(registerUserAction(newData));
+      if (fileAvatar && dataRegister.meta.requestStatus === 'fulfilled') {
+        const formData = new FormData();
+        formData.append('file', fileAvatar);
+        dispatch(uploadAvatarAction(formData))
+          .then(isFulfilled)
+          .catch((error) => {
+            toast.error(error);
+          });
+        reset();
+        if (data.role === UserRole.Client) {
+          navigate(AppRoute.RegisterClient);
+        } else {
+          navigate(AppRoute.RegisterTrainer);
+        }
       }
     }
+    setAvatarInputUsed(true);
   };
 
   useEffect(() => {
@@ -206,11 +211,9 @@ function FormRegister() {
             <span className="sign-up__text">
               JPG, PNG, оптимальный размер 100&times;100&nbsp;px
             </span>
-            {avatarError && (
-              <span role="alert" className="error">
-                {avatarError}
-              </span>
-            )}
+            <span className="custom-input__error">
+              {avatarInputUsed && avatarError}
+            </span>
           </div>
         </div>
         <div className="sign-up__data">

@@ -60,38 +60,40 @@ function FormRegisgerTrainer() {
   const [certificate, setCertificate] = useState<File | null>(null);
   const [imageInputUsed, setImageInputUsed] = useState(false);
   const [certificateError, setCertificateError] = useState(
-    'Добавьте подтверждающий документ',
+    'Должен быть хотя бы один документ',
   );
   const [certificateName, setCertificateName] = useState([
     'Загрузите сюда файлы формата PDF, JPG или PNG',
   ]);
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    setImageInputUsed(true);
-    const updateData = {
-      level: data.level,
-      typesOfTraining: data.typesOfTraining,
-      trainer: {
-        merits: data.merits,
-        isPersonalTraining: data.isPersonalTraining,
-        certificate: [],
-      },
-    };
+    if (!certificateError && imageInputUsed) {
+      const updateData = {
+        level: data.level,
+        typesOfTraining: data.typesOfTraining,
+        trainer: {
+          merits: data.merits,
+          isPersonalTraining: data.isPersonalTraining,
+          certificate: [],
+        },
+      };
 
-    dispatch(updateUserAction(updateData))
-      .then(isFulfilled)
-      .then(() => {
-        if (certificate) {
-          const formData = new FormData();
-          formData.append('file', certificate);
-          dispatch(uploadCertificateAction(formData));
-        }
-        reset();
-        navigate(AppRoute.TrainerRoom);
-      })
-      .catch(() => {
-        toast.error('Что-то пошло не так');
-      });
+      dispatch(updateUserAction(updateData))
+        .then(isFulfilled)
+        .then(() => {
+          if (certificate) {
+            const formData = new FormData();
+            formData.append('file', certificate);
+            dispatch(uploadCertificateAction(formData));
+          }
+          reset();
+          navigate(AppRoute.TrainerRoom);
+        })
+        .catch(() => {
+          toast.error('Что-то пошло не так');
+        });
+    }
+    setImageInputUsed(true);
   };
 
   const handleCertificateFileInputChange = (
@@ -113,6 +115,7 @@ function FormRegisgerTrainer() {
     } else {
       setCertificateError('Добавьте подтверждающий документ');
     }
+    setImageInputUsed(true);
   };
 
   return (
