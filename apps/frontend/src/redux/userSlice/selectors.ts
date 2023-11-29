@@ -1,5 +1,5 @@
 import { INotify, IUser, UserRole } from '@fit-friends/types';
-import { AuthStatus, NameSpace } from '../../const';
+import { AuthStatus, NameSpace } from '../../constants';
 import { State } from '../store';
 
 export const getAuthStatus = (state: State): AuthStatus =>

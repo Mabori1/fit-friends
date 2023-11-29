@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getNotificationDate } from '../../helper/utils';
 import { getIsTrainer, getNotify } from '../../redux/userSlice/selectors';

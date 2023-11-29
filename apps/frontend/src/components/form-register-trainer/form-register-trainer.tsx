@@ -5,7 +5,7 @@ import {
   LEVEL_TRAINING_ZOD,
   TYPE_TRAINING_ZOD,
   CERTIFICATE_FILE_TYPES,
-} from '../../const';
+} from '../../constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowCheck, IconImport } from '../../helper/svg-const';
 import BackgroundLogo from '../background-logo/background-logo';
@@ -21,7 +21,7 @@ import {
   uploadCertificateAction,
 } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../constants';
 import { isFulfilled } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 

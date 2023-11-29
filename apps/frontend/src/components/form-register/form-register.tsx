@@ -18,7 +18,7 @@ import {
   AVATAR_FILE_TYPES,
   AVATAR_MAX_SIZE,
   AppRoute,
-} from '../../const';
+} from '../../constants';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';

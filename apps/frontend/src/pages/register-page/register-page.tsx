@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import BackgroundLogo from '../../components/background-logo/background-logo';
 import FormRegister from '../../components/form-register/form-register';
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../constants';
 import { useAppSelector } from '../../redux/store';
 import { getIsAuth, getIsTrainer } from '../../redux/userSlice/selectors';
 

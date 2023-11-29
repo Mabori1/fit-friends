@@ -1,4 +1,4 @@
-import { SERVER_API_URL } from '../../const';
+import { SERVER_API_URL } from '../../constants';
 import { Document, Page, pdfjs } from 'react-pdf';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;

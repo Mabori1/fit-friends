@@ -31,7 +31,7 @@ import {
   CERTIFICATE_FILE_TYPES,
   MAX_CERTIFICATES_COUNT_PER_PAGE,
   FILE_URL,
-} from '../../const';
+} from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getIsAuth, getUser } from '../../redux/userSlice/selectors';
 import {
@@ -44,8 +44,10 @@ import {
 import CertificateItem from '../../components/certificate-item/certificate-item';
 import { isFulfilled } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import 'dotenv';
 
 function TrainerRoomPage() {
+  console.log(import.meta.env.VITE_SERVER);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(getUser);

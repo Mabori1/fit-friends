@@ -5,7 +5,7 @@ import {
   DURATION_TRAINING_ZOD,
   LEVEL_TRAINING_ZOD,
   TYPE_TRAINING_ZOD,
-} from '../../const';
+} from '../../constants';
 import {
   CaloriesOfDay,
   CaloriesOfTotal,

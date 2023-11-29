@@ -6,7 +6,7 @@ import {
   AVATAR_MAX_SIZE,
   AppRoute,
   DAYS_IN_A_WEEK,
-} from '../../const';
+} from '../../constants';
 import { nanoid } from 'nanoid';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getAvatar, getIsAuth, getUser } from '../../redux/userSlice/selectors';

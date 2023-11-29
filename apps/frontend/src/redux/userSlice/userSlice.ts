@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { INotify, IUser } from '@fit-friends/types';
-import { AuthStatus, NameSpace } from '../../const';
+import { AuthStatus, NameSpace } from '../../constants';
 import {
   registerUserAction,
   loginUserAction,

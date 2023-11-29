@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { AppRoute } from './const';
+import { AppRoute } from './constants';
 import IntroPage from './pages/intro-page/intro-page';
 import LoginPage from './pages/login-page/login-page';
 import RegisterPage from './pages/register-page/register-page';

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { NameSpace } from '../../const';
+import { NameSpace } from '../../constants';
 import { FeedbackRdo } from '../../types/feedback.rdo';
 import { TrainingRdo } from '../../types/training.rdo';
 import { UserRdo } from '../../types/user.rdo';

@@ -1,4 +1,4 @@
-import { NameSpace } from '../const';
+import { NameSpace } from '../constants';
 import { combineReducers } from 'redux';
 import { userSlice } from './userSlice/userSlice';
 

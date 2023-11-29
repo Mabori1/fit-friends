@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { UserResponse } from '../../types/userResponse';
-import { APIRoute } from '../../const';
+import { APIRoute } from '../../constants';
 import { CreateUserDto } from '../../types/createUserDto';
 import { dropTokens, saveTokens } from '../../services/tokens';
 import { LoginUserDto } from '../../types/loginUserDto';
