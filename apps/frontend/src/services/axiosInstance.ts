@@ -7,9 +7,10 @@ import {
   saveTokens,
 } from './tokens';
 import { jwtDecode } from 'jwt-decode';
+import 'dotenv';
 
 const REQUEST_TIMEOUT = 200;
-const BASE_URL = 'http://localhost:4000/api';
+const BASE_URL = `${import.meta.env.VITE_SERVER_URL}`;
 
 const token = getAccessToken();
 

@@ -58,6 +58,13 @@ export enum APIRoute {
   Orders = '/orders/trainings',
 }
 
+export enum SliceStatus {
+  Idle = 'IDLE',
+  Loading = 'LOADING',
+  Rejected = 'REJECTED',
+  Fulfilled = 'FULFILLED',
+}
+
 export const LOCATIONS_ZOD = [
   'Пионерская',
   'Петроградская',

@@ -24,7 +24,7 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <App />
-        <ToastContainer limit={1} />
+        <ToastContainer limit={3} />
       </BrowserRouter>
     </Provider>
   </StrictMode>,

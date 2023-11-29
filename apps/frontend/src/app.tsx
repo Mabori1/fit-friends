@@ -8,6 +8,7 @@ import TrainerRoomPage from './pages/trainer-room-page/trainer-room-page';
 import FromRegisterTrainer from './components/form-register-trainer/form-register-trainer';
 import FromRegisterClient from './components/form-register-client/form-register-client';
 import ClientRoomPage from './pages/client-room-page/client-room-page';
+import ErrorPage from './pages/error-page/error-page';
 
 export function App() {
   return (
@@ -27,6 +28,7 @@ export function App() {
       <Route path={AppRoute.ClientRoom} element={<ClientRoomPage />} />
 
       <Route path={AppRoute.Main} element={<MainPage />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }

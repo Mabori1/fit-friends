@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { INotify, IUser } from '@fit-friends/types';
-import { AuthStatus, NameSpace } from '../../constants';
+import { AuthStatus, NameSpace, SliceStatus } from '../../constants';
 import {
   registerUserAction,
   loginUserAction,
@@ -17,12 +17,14 @@ import {
 
 type UserSlice = {
   authStatus: AuthStatus;
+  sliceStatus: SliceStatus;
   user: IUser | undefined;
   notices: INotify[] | [];
 };
 
 const initialState: UserSlice = {
   authStatus: AuthStatus.Unknown,
+  sliceStatus: SliceStatus.Idle,
   user: undefined,
   notices: [],
 };
@@ -30,40 +32,50 @@ const initialState: UserSlice = {
 export const userSlice = createSlice({
   name: NameSpace.UserSlice,
   initialState,
-  reducers: {
-    deleteCertificateStateAction: (state, action) => {
-      console.log('action.payload', action.payload);
-
-      state.user = {
-        ...state.user,
-        certificates: state.user?.certificates?.filter(
-          (certificate) => certificate !== action.payload,
-        ),
-      };
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(registerUserAction.pending, (state) => {
+        state.sliceStatus = SliceStatus.Loading;
+      })
       .addCase(registerUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
         state.user = action.payload?.userInfo;
+        state.sliceStatus = SliceStatus.Fulfilled;
       })
       .addCase(registerUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(loginUserAction.pending, (state) => {
+        state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(loginUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.user = action.payload?.userInfo;
       })
       .addCase(loginUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(refreshTokensAction.pending, (state) => {
+        state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(refreshTokensAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.user = action.payload.userInfo;
       })
       .addCase(refreshTokensAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(checkUserAction.pending, (state) => {
+        state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(checkUserAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
@@ -71,46 +83,89 @@ export const userSlice = createSlice({
       })
       .addCase(checkUserAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Rejected;
       })
-      .addCase(logoutAction.rejected, (state) => {
+      .addCase(logoutAction.pending, (state) => {
         state.authStatus = AuthStatus.NoAuth;
-        state.user = undefined;
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(logoutAction.fulfilled, (state) => {
         state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.user = undefined;
+      })
+      .addCase(logoutAction.rejected, (state) => {
+        state.authStatus = AuthStatus.NoAuth;
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(updateUserAction.pending, (state) => {
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(updateUserAction.fulfilled, (state, action) => {
         state.user = action.payload?.userInfo;
+      })
+      .addCase(updateUserAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(uploadAvatarAction.pending, (state) => {
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(uploadAvatarAction.fulfilled, (state, action) => {
         if (state.user) {
           state.user['avatar'] = action.payload?.path;
         }
+        state.sliceStatus = SliceStatus.Fulfilled;
+      })
+      .addCase(uploadAvatarAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(uploadCertificateAction.pending, (state) => {
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(uploadCertificateAction.fulfilled, (state, action) => {
         if (state.user?.trainer?.certificate) {
           state.user.trainer.certificate.push(action.payload.path);
         }
+        state.sliceStatus = SliceStatus.Fulfilled;
+      })
+      .addCase(uploadCertificateAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(fetchNotifyAction.pending, (state) => {
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(fetchNotifyAction.fulfilled, (state, action) => {
         state.notices = action.payload;
       })
+      .addCase(fetchNotifyAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(deleteCertificateAction.pending, (state) => {
+        state.sliceStatus = SliceStatus.Loading;
+      })
       .addCase(deleteCertificateAction.fulfilled, (state, action) => {
-        console.log(action);
         if (state.user?.trainer?.certificate) {
           state.user.trainer.certificate =
             state.user.trainer.certificate.filter(
               (certificat) => certificat !== action.payload,
             );
         }
+        state.sliceStatus = SliceStatus.Fulfilled;
+      })
+      .addCase(deleteCertificateAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(deleteNotifyAction.pending, (state) => {
+        state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(deleteNotifyAction.fulfilled, (state, action) => {
         state.notices = state.notices.filter(
           (nofity) => nofity.id !== action.payload,
         );
+        state.sliceStatus = SliceStatus.Fulfilled;
+      })
+      .addCase(deleteNotifyAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
       });
   },
 });
-
-export const { deleteCertificateStateAction } = userSlice.actions;
