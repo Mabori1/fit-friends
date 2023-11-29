@@ -210,6 +210,13 @@ select {
   /* 1 */
   text-transform: none;
 }
+.loading-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  margin-top: 200px;
+}
 
 /**
 * Correct the inability to style clickable types in iOS and Safari.

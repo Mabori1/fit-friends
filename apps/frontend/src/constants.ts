@@ -5,7 +5,8 @@ export const SERVER_API_URL = 'http//localhost:4000/api';
 export const DAYS_IN_A_WEEK = 7;
 
 export enum AppRoute {
-  Intro = '/',
+  Root = '/',
+  Intro = '/intro',
   Login = '/login',
   Main = '/main',
   TrainerRoom = '/trainer-room',
