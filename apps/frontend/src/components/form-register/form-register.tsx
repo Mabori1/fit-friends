@@ -31,9 +31,8 @@ import {
 import { getAvatar, getIsAuth, getRole } from '../../redux/userSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
-import { CreateUserDto } from '../../types/createUserDto';
+import { CreateUserDto } from '../../types/create-user.dto';
 import { toast } from 'react-toastify';
-import { isFulfilled } from '@reduxjs/toolkit';
 
 const formSchema = z.object({
   name: z
@@ -152,14 +151,13 @@ function FormRegister() {
       }
 
       const dataRegister = await dispatch(registerUserAction(newData));
+
       if (fileAvatar && dataRegister.meta.requestStatus === 'fulfilled') {
         const formData = new FormData();
         formData.append('file', fileAvatar);
-        dispatch(uploadAvatarAction(formData))
-          .then(isFulfilled)
-          .catch((error) => {
-            toast.error(error);
-          });
+        await dispatch(uploadAvatarAction(formData)).catch((error) => {
+          toast.error(error);
+        });
         reset();
         if (data.role === UserRole.Client) {
           navigate(AppRoute.RegisterClient);

@@ -1,3 +1,5 @@
+import { TrainingQuery } from '../types/training.query';
+
 export function upFirstWord(str: string) {
   if (!str) return str;
 
@@ -28,4 +30,36 @@ export const getNotificationDate = (date: string) => {
   const notificationDate = `${day} ${month}, ${time ? time[0] : ''}`;
 
   return notificationDate;
+};
+
+export const createQueryString = (queryArgs?: TrainingQuery) => {
+  if (!queryArgs) {
+    return '';
+  }
+
+  const queryParams = [
+    `${queryArgs.limit ? `limit=${queryArgs.limit}` : ''}`,
+    `${queryArgs.page ? `page=${queryArgs.page}` : ''}`,
+    `${queryArgs.priceMin ? `minPrice=${queryArgs.priceMin}` : ''}`,
+    `${queryArgs.priceMax ? `maxPrice=${queryArgs.priceMax}` : ''}`,
+    `${
+      queryArgs.caloriesMin ? `minCaloriesCount=${queryArgs.caloriesMin}` : ''
+    }`,
+    `${queryArgs.caloriesMax ?? `maxCaloriesCount=${queryArgs.caloriesMax}`}`,
+    `${queryArgs.ratingMin ? `minRating=${queryArgs.ratingMin}` : ''}`,
+    `${queryArgs.ratingMax ? `maxRating=${queryArgs.ratingMax}` : ''}`,
+    `${queryArgs.durations ? `duration=${queryArgs.durations}` : ''}`,
+    `${queryArgs.types ? `trainingType=${queryArgs.types}` : ''}`,
+    `${queryArgs.priceSort ? `location=${queryArgs.priceSort}` : ''}`,
+    `${queryArgs.sortDirection ? `features=${queryArgs.sortDirection}` : ''}`,
+  ];
+
+  const isNotEmptyString =
+    queryParams.filter((param) => param !== '').join('') !== '';
+
+  const queryString = isNotEmptyString
+    ? `?${queryParams.filter((param) => param !== '').join('&')}`
+    : '';
+
+  return queryString;
 };

@@ -16,7 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { updateUserAction } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
-import { UpdateUserDto } from '../../types/updateUserDto';
+import { UpdateUserDto } from '../../types/update-user.dto';
 import { toast } from 'react-toastify';
 import { isFulfilled } from '@reduxjs/toolkit';
 import { useEffect } from 'react';

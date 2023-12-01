@@ -1,3 +1,5 @@
+import { UserTypesTraining } from '@fit-friends/types';
+
 export const BASE_RESPONSE_URL = 'http//localhost:4000/api';
 export const FILE_URL = 'http//localhost:4000';
 export const SERVER_API_URL = 'http//localhost:4000/api';
@@ -16,7 +18,7 @@ export enum AppRoute {
   RegisterTrainer = '/register-trainer',
   RegisterClient = '/register-client',
   CreateTraining = '/create-training',
-  MyTrainings = '/my-trainings',
+  TrainerTrainings = '/trainer-trainings',
   MyOrders = '/my-orders',
   FriendsList = '/friends-list',
   TrainingCard = '/training-card',
@@ -49,12 +51,15 @@ export enum APIRoute {
   Users = '/users',
   Notify = '/notify',
   Friends = '/users/friends',
-  Avatar = 'files/upload/img',
+  UploadAvatar = 'files/upload/img',
+  UploadVideo = 'files/upload/video',
   Certificate = 'files/upload/pdf',
   DeleteCertificate = 'files/delete/certificate',
   AddFriend = '/users/friends/add',
   RemoveFriend = '/users/friends/remove',
-  Trainings = '/trainings',
+  CreateTraining = 'trainer/create',
+  UpdateTraining = 'trainer/update/',
+  FetchTrainings = 'trainer/feed',
   RecommendedTrainings = '/trainings/recommended',
   Orders = '/orders/trainings',
 }
@@ -77,6 +82,18 @@ export const LOCATIONS_ZOD = [
 export const MAX_CERTIFICATES_COUNT_PER_PAGE = 3;
 
 export const CERTIFICATE_FILE_TYPES = ['jpg', 'pdf', 'png'];
+export const VIDEO_FILE_TYPES = ['mov', 'avi', 'mp4'];
+
+export const TrainingTypeImageMap = {
+  [UserTypesTraining.Yoga]: 'img/content/thumbnails/training-01.jpg',
+  [UserTypesTraining.Running]: 'img/content/thumbnails/training-06.jpg',
+  [UserTypesTraining.Boxing]: 'img/content/thumbnails/training-03.jpg',
+  [UserTypesTraining.Stretching]: 'img/content/thumbnails/training-12.jpg',
+  [UserTypesTraining.Crossfit]: 'img/content/thumbnails/training-02.jpg',
+  [UserTypesTraining.Aerobics]: 'img/content/thumbnails/training-07.jpg',
+  [UserTypesTraining.Pilates]: 'img/content/thumbnails/training-09.jpg',
+  [UserTypesTraining.Power]: 'img/content/thumbnails/training-10.jpg',
+};
 
 export const TYPE_TRAINING_ZOD = [
   'йога',

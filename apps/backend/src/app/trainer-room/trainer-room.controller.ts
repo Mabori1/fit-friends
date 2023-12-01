@@ -40,6 +40,7 @@ export class TrainerRoomController {
     @Body() dto: CreateTrainingDto,
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {
+    console.log(dto);
     const newTraining = await this.trainerRoomService.createTraning(
       payload,
       dto,

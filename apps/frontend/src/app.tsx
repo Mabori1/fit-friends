@@ -13,12 +13,12 @@ import {
   getIsTrainer,
   getIsUserLoading,
 } from './redux/userSlice/selectors';
-import LoadingPage from './pages/loading-page/loading-page';
 import PrivateRoute from './components/private-route/private-route';
 import { RoleRoutePage } from './pages/role-route/role-route';
 import FormRegisterTrainer from './components/form-register-trainer/form-register-trainer';
 import FormRegisterClient from './components/form-register-client/form-register-client';
 import CreateTrainingPage from './pages/create-training-page/create-training-page';
+import TrainerTrainingsPage from './pages/trainer-trainings-page/trainer-trainings-page';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -93,6 +93,18 @@ export function App() {
           <PrivateRoute isAuth={isAuth}>
             {isTrainer ? (
               <CreateTrainingPage />
+            ) : (
+              <Navigate to={AppRoute.Root} />
+            )}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={AppRoute.TrainerTrainings}
+        element={
+          <PrivateRoute isAuth={isAuth}>
+            {isTrainer ? (
+              <TrainerTrainingsPage />
             ) : (
               <Navigate to={AppRoute.Root} />
             )}

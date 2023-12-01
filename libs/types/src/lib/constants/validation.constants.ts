@@ -60,6 +60,11 @@ export enum CaloriesOfTotal {
   Max = 5000,
 }
 
+export enum TrainingPrice {
+  Min = 0,
+  Max = 5000,
+}
+
 export enum CaloriesOfDay {
   Min = 1000,
   Max = 5000,

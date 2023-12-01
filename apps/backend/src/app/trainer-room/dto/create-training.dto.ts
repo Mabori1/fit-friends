@@ -11,20 +11,18 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEnum,
   IsNumber,
-  IsPositive,
   IsString,
   Max,
-  MaxLength,
   Min,
   MinLength,
+  MaxLength,
 } from 'class-validator';
 
 export default class CreateTrainingDto {
   @ApiProperty({
-    description: 'Training  title',
-    example: 'Йога Аэнгара ежедневно',
+    description: 'Training title',
+    example: 'Йога Аэнгара',
   })
-  @IsString()
   @MinLength(TrainingTitleLength.Min)
   @MaxLength(TrainingTitleLength.Max)
   public title: string;
@@ -57,7 +55,6 @@ export default class CreateTrainingDto {
     description: 'Price of training',
     example: '100',
   })
-  @IsPositive()
   @IsNumber()
   @Min(0)
   public price: number;

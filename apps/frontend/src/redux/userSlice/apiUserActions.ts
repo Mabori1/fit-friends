@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { UserResponse } from '../../types/userResponse';
 import { APIRoute } from '../../constants';
-import { CreateUserDto } from '../../types/createUserDto';
+import { CreateUserDto } from '../../types/create-user.dto';
 import { dropTokens, saveTokens } from '../../services/tokens';
-import { LoginUserDto } from '../../types/loginUserDto';
-import { AsyncThunkConfig } from '../../types/asyncThunkConfig';
+import { LoginUserDto } from '../../types/login-user.dto';
+import { AsyncThunkConfig } from '../../types/async-thunk-config';
 import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import { UpdateUserDto } from '../../types/updateUserDto';
-import { UploadedFileRdo } from '../../types/uploadedFilesRdo';
+import { UpdateUserDto } from '../../types/update-user.dto';
+import { UploadedFileRdo } from '../../types/uploaded-files.rdo';
 import { INotify } from '@fit-friends/types';
 
 export const registerUserAction = createAsyncThunk<
@@ -117,7 +117,10 @@ export const uploadAvatarAction = createAsyncThunk<
   FormData,
   AsyncThunkConfig
 >('user/uploadAvatar', async (avatar, { extra: api }) => {
-  const { data } = await api.post<UploadedFileRdo>(APIRoute.Avatar, avatar);
+  const { data } = await api.post<UploadedFileRdo>(
+    APIRoute.UploadAvatar,
+    avatar,
+  );
 
   return data;
 });

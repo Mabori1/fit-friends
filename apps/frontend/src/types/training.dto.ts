@@ -5,8 +5,7 @@ import {
   UserTypesTraining,
 } from '@fit-friends/types';
 
-export class TrainingRdo {
-  public id!: number;
+export class TrainingDdo {
   public title!: string;
   public backgroundPicture!: string;
   public levelOfUser!: UserLevel;
@@ -17,7 +16,5 @@ export class TrainingRdo {
   public description!: string;
   public video!: string;
   public price!: number;
-  public rating!: number;
-  public trainerId!: number;
   public isPromo!: boolean;
 }
