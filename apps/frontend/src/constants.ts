@@ -21,7 +21,7 @@ export enum AppRoute {
   RegisterClient = '/register-client',
   CreateTraining = '/create-training',
   TrainerTrainings = '/trainer-trainings',
-  MyOrders = '/my-orders',
+  TrainerOrders = '/trainer-orders',
   FriendsList = '/friends-list',
   TrainingCard = '/training-card',
   TrainingCatalog = '/training-catalog',

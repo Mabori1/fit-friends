@@ -19,6 +19,7 @@ import FormRegisterTrainer from './components/form-register-trainer/form-registe
 import FormRegisterClient from './components/form-register-client/form-register-client';
 import CreateTrainingPage from './pages/create-training-page/create-training-page';
 import TrainerTrainingsPage from './pages/trainer-trainings-page/trainer-trainings-page';
+import TrainerOrdersPage from './pages/trainer-orders/trainer-orders-page';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -105,6 +106,18 @@ export function App() {
           <PrivateRoute isAuth={isAuth}>
             {isTrainer ? (
               <TrainerTrainingsPage />
+            ) : (
+              <Navigate to={AppRoute.Root} />
+            )}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={AppRoute.TrainerOrders}
+        element={
+          <PrivateRoute isAuth={isAuth}>
+            {isTrainer ? (
+              <TrainerOrdersPage />
             ) : (
               <Navigate to={AppRoute.Root} />
             )}
