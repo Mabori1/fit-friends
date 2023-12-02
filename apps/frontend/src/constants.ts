@@ -58,7 +58,7 @@ export enum APIRoute {
   AddFriend = '/users/friends/add',
   RemoveFriend = '/users/friends/remove',
   CreateTraining = 'trainer/create',
-  UpdateTraining = 'trainer/update/',
+  UpdateTraining = 'trainer/update',
   FetchTrainings = 'trainer/feed',
   RecommendedTrainings = '/trainings/recommended',
   Orders = '/orders/trainings',

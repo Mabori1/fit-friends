@@ -3,7 +3,8 @@ export const AUTH_USER_PASSWORD_WRONG = 'User password or email is wrong';
 export const AUTH_USER_EXISTS = 'User with this email exists';
 export const SALT_ROUNDS = 10;
 export const AUTH_USER_EMAIL_NOT_VALID = 'The email is not valid';
-export const AUTH_USER_DATE_BIRTH_NOT_VALID = 'The user date birth is not valid';
+export const AUTH_USER_DATE_BIRTH_NOT_VALID =
+  'The user date birth is not valid';
 export const AUTH_NOT_FOR_AUTH_USER = 'Only for new user';
 export const AUTH_USER_ONLY_CLIENT_PERMIT = 'Only users permisions';
 export const AUTH_USER_ONLY_TRAINERS_PERMIT = 'Only treiners permisions';
@@ -13,7 +14,7 @@ export const TOO_BIG_FILE = 'Too big file';
 export const WRONG_FILE_TYPE = 'Wrong file type';
 
 export const ImageTypes: string[] = ['jpg', 'jpeg', 'png'];
-export const VideoTypes: string[] = ['.mov', '.avi', '.mp4'];
+export const VideoTypes: string[] = ['mov', 'avi', 'mp4'];
 
 export enum DefaultUsersQuery {
   maxLimit = 50,
@@ -29,8 +30,10 @@ export const UsersErrorMessage = {
   PasswordNotValid: 'Password min length is 6, max is 12 symbols',
   NameNotValid: 'The user name not valid',
   NameLengthNotValid: 'Name min length is 1, max length is 15 symbols',
-  MeritsLengthNotValid: 'Trainer merits min length is 10, max length is 140 symbols',
-  DescriptionLengthNotValid: 'Client description min length is 10, max length is 140 symbols',
+  MeritsLengthNotValid:
+    'Trainer merits min length is 10, max length is 140 symbols',
+  DescriptionLengthNotValid:
+    'Client description min length is 10, max length is 140 symbols',
   NameMinLengthNotValid: 'Min length for the name is 1 symbol',
   NameMaxLengthNotValid: 'Max length for the name is 15 symbols',
   BirthDateNotValid: 'The user date birth is not valid',
