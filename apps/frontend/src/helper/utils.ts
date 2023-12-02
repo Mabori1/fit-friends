@@ -63,3 +63,24 @@ export const createQueryString = (queryArgs?: TrainingQuery) => {
 
   return queryString;
 };
+
+export const debounce = <T>(callback: (arg: T) => void, delay: number) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (arg: T) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback(arg), delay);
+  };
+};
+
+export const saveTrainingId = (trainingId: number): void => {
+  localStorage.setItem('fitfriends-trainingId', trainingId);
+};
+
+export const getTrainingId = (): number => {
+  const trainingId = localStorage.getItem('fitfriends-trainingId');
+  return trainingId ?? '';
+};
+
+export const dropTrainingId = (): void => {
+  localStorage.removeItem('fitfriends-trainingId');
+};

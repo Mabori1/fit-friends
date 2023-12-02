@@ -6,6 +6,7 @@ import { TrainingQuery } from '../../types/training.query';
 import { createQueryString } from '../../helper/utils';
 import { UploadedFileRdo } from '../../types/uploaded-files.rdo';
 import { TrainingDdo } from '../../types/training.dto';
+import { UserRdo } from '../../types/user.rdo';
 
 interface UpdateVideoPath {
   id: number;
@@ -56,5 +57,14 @@ export const updateTrainingAction = createAsyncThunk<
     `${APIRoute.UpdateTraining}/${id}`,
     newVideo,
   );
+  return data;
+});
+
+export const fetchUserInfoAction = createAsyncThunk<
+  UserRdo,
+  number,
+  AsyncThunkConfig
+>('trainer/userInfo', async (userId, { extra: api }) => {
+  const { data } = await api.get<UserRdo>(`${APIRoute.Users}/${userId}`);
   return data;
 });

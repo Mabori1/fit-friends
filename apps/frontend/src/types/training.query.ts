@@ -1,8 +1,4 @@
-import {
-  DefaultTraining,
-  TrainingDuration,
-  UserTypesTraining,
-} from '@fit-friends/types';
+import { DefaultTraining, UserTypesTraining } from '@fit-friends/types';
 
 export class TrainingQuery {
   public limit?: number = DefaultTraining.Limit;
@@ -17,5 +13,5 @@ export class TrainingQuery {
   public ratingMax?: number;
   public types?: UserTypesTraining[];
   public trainerId?: string;
-  public durations?: TrainingDuration[];
+  public durations?: string;
 }

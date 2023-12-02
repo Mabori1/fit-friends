@@ -3,6 +3,8 @@ import { UserTypesTraining } from '@fit-friends/types';
 export const BASE_RESPONSE_URL = 'http//localhost:4000/api';
 export const FILE_URL = 'http//localhost:4000';
 export const SERVER_API_URL = 'http//localhost:4000/api';
+export const MAX_TRAININGS_COUNT_PER_PAGE = 12;
+export const FILTER_QUERY_DELAY = 1000;
 
 export const DAYS_IN_A_WEEK = 7;
 

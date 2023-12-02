@@ -10,7 +10,7 @@ type TrainingData = {
   training: TrainingRdo | null;
   trainings: TrainingRdo[];
   orders: OrderRdo[];
-  allExistingTrainings: TrainingRdo[];
+  allTrainings: TrainingRdo[];
   filteredTrainingCatalog: TrainingRdo[];
   trainingCatalog: TrainingRdo[];
   recommendedTrainings: TrainingRdo[];
@@ -23,7 +23,7 @@ const initialState: TrainingData = {
   training: null,
   trainings: [],
   orders: [],
-  allExistingTrainings: [],
+  allTrainings: [],
   filteredTrainingCatalog: [],
   trainingCatalog: [],
   recommendedTrainings: [],
@@ -35,10 +35,16 @@ const initialState: TrainingData = {
 export const trainingSlice = createSlice({
   name: NameSpace.TrainingSlice,
   initialState,
-  reducers: {},
+  reducers: {
+    setTraining: (state, action) => {
+      state.training = action.payload as TrainingRdo;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(fetchTrainingsAction.fulfilled, (state, action) => {
       state.trainings = action.payload;
     });
   },
 });
+
+export const { setTraining } = trainingSlice.actions;
