@@ -14,7 +14,6 @@ import {
   getIsUserLoading,
 } from './redux/userSlice/selectors';
 import PrivateRoute from './components/private-route/private-route';
-import { RoleRoutePage } from './pages/role-route/role-route';
 import FormRegisterTrainer from './components/form-register-trainer/form-register-trainer';
 import FormRegisterClient from './components/form-register-client/form-register-client';
 import CreateTrainingPage from './pages/create-training-page/create-training-page';
@@ -27,6 +26,8 @@ export function App() {
   const isAuth = useAppSelector(getIsAuth);
   const isTrainer = useAppSelector(getIsTrainer);
 
+  console.log(isTrainer);
+
   if (isLoading) {
     //  return <LoadingPage />;
   }
@@ -37,7 +38,7 @@ export function App() {
         path={AppRoute.Root}
         element={
           <PrivateRoute isAuth={isAuth}>
-            <RoleRoutePage isTrainer={isTrainer} />
+            {!isTrainer ? <MainPage /> : <TrainerRoomPage />}
           </PrivateRoute>
         }
       />
@@ -55,16 +56,17 @@ export function App() {
       <Route
         path={AppRoute.RegisterTrainer}
         element={
-          !isAuth ? <Navigate to={AppRoute.Root} /> : <FormRegisterTrainer />
+          !isAuth ? <Navigate to={AppRoute.Intro} /> : <FormRegisterTrainer />
         }
       />
 
       <Route
         path={AppRoute.RegisterClient}
         element={
-          !isAuth ? <Navigate to={AppRoute.Root} /> : <FormRegisterClient />
+          !isAuth ? <Navigate to={AppRoute.Intro} /> : <FormRegisterClient />
         }
       />
+
       <Route
         path={AppRoute.Login}
         element={isAuth ? <Navigate to={AppRoute.Root} /> : <LoginPage />}

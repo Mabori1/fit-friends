@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Header from '../../components/header/header';
 import {
@@ -9,7 +9,7 @@ import {
 } from '../../constants';
 import { nanoid } from 'nanoid';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getAvatar, getIsAuth, getUser } from '../../redux/userSlice/selectors';
+import { getUser } from '../../redux/userSlice/selectors';
 import {
   TrainingTypesCount,
   UserDescriptionLength,
@@ -44,9 +44,6 @@ import 'dotenv';
 function ClientRoomPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
-  const storeAvatar = useAppSelector(getAvatar);
-  const isAuth = useAppSelector(getIsAuth);
-  const navigate = useNavigate();
 
   const userDailyCaloriesCount = user?.client?.caloryLosingPlanDaily ?? 0;
   const planForWeekCaloriesCount = userDailyCaloriesCount * DAYS_IN_A_WEEK ?? 0;
@@ -218,9 +215,11 @@ function ClientRoomPage(): JSX.Element {
           if (avatarFile) {
             const formData = new FormData();
             formData.append('file', avatarFile);
-            dispatch(uploadAvatarAction(formData)).catch(() => {
-              toast.error('Аватар не загружен');
-            });
+            const data = dispatch(uploadAvatarAction(formData));
+            if (uploadAvatarAction.fulfilled.match(data)) {
+              dispatch(updateUserAction({ avatar: data.payload.path }));
+              toast.success('Аватар успешно обновлен');
+            }
           }
         })
         .catch(() => {
@@ -241,10 +240,6 @@ function ClientRoomPage(): JSX.Element {
   };
 
   useEffect(() => {
-    dispatch(updateUserAction({ avatar: storeAvatar }));
-  }, [dispatch, storeAvatar]);
-
-  useEffect(() => {
     if (user) {
       setUserName(user.name);
       setDescription(user.description);
@@ -258,14 +253,6 @@ function ClientRoomPage(): JSX.Element {
     }
   }, [dispatch, user]);
 
-  useEffect(() => {
-    if (!isAuth) {
-      navigate(AppRoute.Intro);
-    }
-  }, [isAuth, navigate]);
-
-  console.log(user?.avatar);
-  console.log(isAuth);
   return (
     <>
       <Header />
@@ -288,7 +275,9 @@ function ClientRoomPage(): JSX.Element {
                       />
                       <span className="input-load-avatar__avatar">
                         <img
-                          src={`#{import.meta.env.VITE_SERVER_URL_FILES}${user?.avatar}`}
+                          src={`${
+                            import.meta.env.VITE_SERVER_URL_FILES
+                          }${user?.avatar}`}
                           srcSet={`${
                             import.meta.env.VITE_SERVER_URL_FILES
                           }${user?.avatar} 2x`}

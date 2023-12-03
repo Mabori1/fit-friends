@@ -89,6 +89,7 @@ export class TrainingRepository
       ratingMin,
       ratingMax,
       durations,
+      level,
     },
     trainerId: number,
   ): Promise<ITraining[] | null> {
@@ -100,6 +101,7 @@ export class TrainingRepository
           { caloriesQtt: { gte: caloriesMin, lte: caloriesMax } },
           { rating: { gte: ratingMin, lte: ratingMax } },
           { duration: { in: durations } },
+          { levelOfUser: level },
         ],
       },
 

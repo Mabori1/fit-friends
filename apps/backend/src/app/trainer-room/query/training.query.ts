@@ -16,6 +16,7 @@ import {
   Rating,
   TrainingDuration,
   UserTypesTraining,
+  UserLevel,
 } from '@fit-friends/types';
 
 export class TrainingQuery {
@@ -97,4 +98,8 @@ export class TrainingQuery {
   @Transform(({ value }) => value.split(',').map((item: string) => item))
   @IsOptional()
   public durations: TrainingDuration[];
+
+  @IsEnum(UserLevel)
+  @IsOptional()
+  public level: UserLevel;
 }

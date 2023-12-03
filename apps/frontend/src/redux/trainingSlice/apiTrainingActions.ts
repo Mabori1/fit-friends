@@ -68,3 +68,15 @@ export const fetchUserInfoAction = createAsyncThunk<
   const { data } = await api.get<UserRdo>(`${APIRoute.Users}/${userId}`);
   return data;
 });
+
+export const fetchRecommendedTrainingsAction = createAsyncThunk<
+  TrainingRdo[],
+  TrainingQuery,
+  AsyncThunkConfig
+>('client/fetchRecommendedTrainingsAction', async (query, { extra: api }) => {
+  const queryString = createQueryString(query);
+  const { data } = await api.get<TrainingRdo[]>(
+    `${APIRoute.FetchTrainings}${queryString}`,
+  );
+  return data;
+});

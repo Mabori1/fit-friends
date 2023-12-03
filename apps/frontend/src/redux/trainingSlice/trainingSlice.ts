@@ -4,7 +4,11 @@ import { FeedbackRdo } from '../../types/feedback.rdo';
 import { TrainingRdo } from '../../types/training.rdo';
 import { UserRdo } from '../../types/user.rdo';
 import { OrderRdo } from '../../types/order.rdo';
-import { fetchTrainingsAction } from './apiTrainingActions';
+import {
+  fetchRecommendedTrainingsAction,
+  fetchTrainingsAction,
+  fetchUserInfoAction,
+} from './apiTrainingActions';
 
 type TrainingData = {
   training: TrainingRdo | null;
@@ -44,6 +48,22 @@ export const trainingSlice = createSlice({
     builder.addCase(fetchTrainingsAction.fulfilled, (state, action) => {
       state.trainings = action.payload;
     });
+    builder
+      .addCase(fetchTrainingsAction.rejected, (state) => {
+        state.trainings = [];
+      })
+      .addCase(fetchRecommendedTrainingsAction.fulfilled, (state, action) => {
+        state.recommendedTrainings = action.payload;
+      })
+      .addCase(fetchUserInfoAction.fulfilled, (state, action) => {
+        state.userInfo = action.payload;
+      })
+      .addCase(fetchUserInfoAction.rejected, (state) => {
+        state.userInfo = null;
+      })
+      .addCase(fetchRecommendedTrainingsAction.rejected, (state) => {
+        state.recommendedTrainings = [];
+      });
   },
 });
 

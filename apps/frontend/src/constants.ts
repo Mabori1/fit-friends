@@ -7,6 +7,10 @@ export const MAX_TRAININGS_COUNT_PER_PAGE = 12;
 export const FILTER_QUERY_DELAY = 1000;
 export const MAX_DIFF_IN_MILLISECONDS = 900000;
 export const MAX_FRIENDS_COUNT_PER_PAGE = 9;
+export const MIN_CALORIES_COUNT_COEFFICIENT = 0.8;
+export const MAX_CALORIES_COUNT_COEFFICIENT = 1.2;
+export const MAX_SLIDER_TRAININGS_COUNT = 9;
+export const MAX_SLIDER_TRAININGS_PER_PAGE = 3;
 
 export const DAYS_IN_A_WEEK = 7;
 
@@ -67,7 +71,6 @@ export enum APIRoute {
   CreateTraining = 'trainer/create',
   UpdateTraining = 'trainer/update',
   FetchTrainings = 'trainer/feed',
-  RecommendedTrainings = '/trainings/recommended',
   Orders = '/orders/trainings',
 }
 

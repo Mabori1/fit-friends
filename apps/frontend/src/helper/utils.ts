@@ -50,6 +50,7 @@ export const createQueryString = (queryArgs?: TrainingQuery) => {
     `${queryArgs.ratingMax ? `maxRating=${queryArgs.ratingMax}` : ''}`,
     `${queryArgs.durations ? `duration=${queryArgs.durations}` : ''}`,
     `${queryArgs.types ? `trainingType=${queryArgs.types}` : ''}`,
+    `${queryArgs.level ? `level=${queryArgs.level}` : ''}`,
     `${queryArgs.priceSort ? `location=${queryArgs.priceSort}` : ''}`,
     `${queryArgs.sortDirection ? `features=${queryArgs.sortDirection}` : ''}`,
   ];
@@ -72,11 +73,11 @@ export const debounce = <T>(callback: (arg: T) => void, delay: number) => {
   };
 };
 
-export const saveTrainingId = (trainingId: number): void => {
+export const saveTrainingId = (trainingId: string): void => {
   localStorage.setItem('fitfriends-trainingId', trainingId);
 };
 
-export const getTrainingId = (): number => {
+export const getTrainingId = (): string => {
   const trainingId = localStorage.getItem('fitfriends-trainingId');
   return trainingId ?? '';
 };
