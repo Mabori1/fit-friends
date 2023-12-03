@@ -49,7 +49,7 @@ export class PersonalOrderController {
   })
   @UseGuards(JwtAuthGuard)
   @Patch('/')
-  public async aprovePersonalOrder(
+  public async approvePersonalOrder(
     @Query() query: PersonalOrderStatusQuery,
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {

@@ -20,6 +20,7 @@ import FormRegisterClient from './components/form-register-client/form-register-
 import CreateTrainingPage from './pages/create-training-page/create-training-page';
 import TrainerTrainingsPage from './pages/trainer-trainings-page/trainer-trainings-page';
 import TrainerOrdersPage from './pages/trainer-orders/trainer-orders-page';
+import FriendsListPage from './pages/friends-list-page/fiiends-list-page';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -40,30 +41,35 @@ export function App() {
           </PrivateRoute>
         }
       />
+
       <Route
         path={AppRoute.Intro}
         element={isAuth ? <Navigate to={AppRoute.Root} /> : <IntroPage />}
       />
+
       <Route
         path={AppRoute.Register}
         element={isAuth ? <Navigate to={AppRoute.Root} /> : <RegisterPage />}
       />
+
       <Route
         path={AppRoute.RegisterTrainer}
         element={
-          isAuth ? <Navigate to={AppRoute.Root} /> : <FormRegisterTrainer />
+          !isAuth ? <Navigate to={AppRoute.Root} /> : <FormRegisterTrainer />
         }
       />
+
       <Route
         path={AppRoute.RegisterClient}
         element={
-          isAuth ? <Navigate to={AppRoute.Root} /> : <FormRegisterClient />
+          !isAuth ? <Navigate to={AppRoute.Root} /> : <FormRegisterClient />
         }
       />
       <Route
         path={AppRoute.Login}
         element={isAuth ? <Navigate to={AppRoute.Root} /> : <LoginPage />}
       />
+
       <Route
         path={AppRoute.Main}
         element={
@@ -72,6 +78,7 @@ export function App() {
           </PrivateRoute>
         }
       />
+
       <Route
         path={AppRoute.TrainerRoom}
         element={
@@ -80,6 +87,7 @@ export function App() {
           </PrivateRoute>
         }
       />
+
       <Route
         path={AppRoute.ClientRoom}
         element={
@@ -88,6 +96,7 @@ export function App() {
           </PrivateRoute>
         }
       />
+
       <Route
         path={AppRoute.CreateTraining}
         element={
@@ -100,6 +109,7 @@ export function App() {
           </PrivateRoute>
         }
       />
+
       <Route
         path={AppRoute.TrainerTrainings}
         element={
@@ -112,6 +122,7 @@ export function App() {
           </PrivateRoute>
         }
       />
+
       <Route
         path={AppRoute.TrainerOrders}
         element={
@@ -124,6 +135,16 @@ export function App() {
           </PrivateRoute>
         }
       />
+
+      <Route
+        path={AppRoute.Friends}
+        element={
+          <PrivateRoute isAuth={isAuth}>
+            <FriendsListPage />
+          </PrivateRoute>
+        }
+      />
+
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

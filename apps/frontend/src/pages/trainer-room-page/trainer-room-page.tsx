@@ -768,7 +768,7 @@ function TrainerRoomPage() {
                   <div className="personal-account-coach__navigation">
                     <Link
                       className="thumbnail-link thumbnail-link--theme-light"
-                      to={AppRoute.MyTrainings}
+                      to={AppRoute.TrainerTrainings}
                     >
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">
@@ -794,7 +794,7 @@ function TrainerRoomPage() {
                     </Link>
                     <Link
                       className="thumbnail-link thumbnail-link--theme-light"
-                      to={AppRoute.FriendsList}
+                      to={AppRoute.Friends}
                     >
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">
@@ -805,7 +805,7 @@ function TrainerRoomPage() {
                     </Link>
                     <Link
                       className="thumbnail-link thumbnail-link--theme-light"
-                      to={AppRoute.MyOrders}
+                      to={AppRoute.TrainerOrders}
                     >
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">

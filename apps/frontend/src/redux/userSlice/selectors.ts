@@ -1,6 +1,7 @@
 import { INotify, IUser, UserRole } from '@fit-friends/types';
 import { AuthStatus, NameSpace, SliceStatus } from '../../constants';
 import { State } from '../store';
+import { UserRequestRdo } from '../../types/user-request.rdo';
 
 export const getAuthStatus = (state: State): AuthStatus =>
   state[NameSpace.UserSlice].authStatus;
@@ -28,3 +29,11 @@ export const getCertificate = (state: State): string[] | undefined =>
 
 export const getNotify = (state: State): INotify[] | undefined =>
   state[NameSpace.UserSlice].notices;
+
+export const getFriends = (state: State): IUser[] =>
+  state[NameSpace.UserSlice].friends;
+
+export const getIncomingRequests = (state: State): UserRequestRdo[] =>
+  state[NameSpace.UserSlice].incomingRequests;
+export const getOutgoingRequests = (state: State): UserRequestRdo[] =>
+  state[NameSpace.UserSlice].outgoingRequests;

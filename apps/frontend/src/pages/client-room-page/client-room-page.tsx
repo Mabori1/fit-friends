@@ -742,7 +742,7 @@ function ClientRoomPage(): JSX.Element {
                   <div className="personal-account-user__additional-info">
                     <Link
                       className="thumbnail-link thumbnail-link--theme-light"
-                      to={AppRoute.FriendsList}
+                      to={AppRoute.Friends}
                     >
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">
@@ -764,7 +764,7 @@ function ClientRoomPage(): JSX.Element {
                     </Link>
                     <Link
                       className="thumbnail-link thumbnail-link--theme-light personal-account-user__shop"
-                      to={AppRoute.MyOrders}
+                      to={AppRoute.ClientOrders}
                     >
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">

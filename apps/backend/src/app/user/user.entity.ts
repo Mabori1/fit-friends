@@ -22,6 +22,7 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
   public description?: string;
   public location: string;
   public createdAt?: Date;
+  public updatedAt?: Date;
   public level?: string;
   public typesOfTraining?: string[];
   public client?: IClient | null;
@@ -51,6 +52,7 @@ export class UserEntity implements IEntity<UserEntity>, IUser {
     this.description = user.description || '';
     this.location = user.location;
     this.createdAt = user.createdAt || new Date();
+    this.updatedAt = user.updatedAt || new Date();
     this.level = user.level || '';
     this.typesOfTraining = user.typesOfTraining || [];
     this.client = user.client;

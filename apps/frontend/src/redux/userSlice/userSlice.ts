@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { INotify, IUser } from '@fit-friends/types';
+import {
+  IBalance,
+  INotify,
+  IOrder,
+  IPersonalOrder,
+  IUser,
+} from '@fit-friends/types';
 import { AuthStatus, NameSpace, SliceStatus } from '../../constants';
 import {
   registerUserAction,
@@ -13,20 +19,34 @@ import {
   deleteCertificateAction,
   fetchNotifyAction,
   deleteNotifyAction,
+  fetchFriendsAction,
 } from './apiUserActions';
+import { UserRequestRdo } from '../../types/user-request.rdo';
 
 type UserSlice = {
   authStatus: AuthStatus;
   sliceStatus: SliceStatus;
   user: IUser | undefined;
+  friends: IUser[];
   notices: INotify[] | [];
+  orders?: IOrder[];
+  personalOrders?: IPersonalOrder[];
+  balance?: IBalance[];
+  incomingRequests: UserRequestRdo[];
+  outgoingRequests: UserRequestRdo[];
 };
 
 const initialState: UserSlice = {
   authStatus: AuthStatus.Unknown,
   sliceStatus: SliceStatus.Idle,
   user: undefined,
+  friends: [],
   notices: [],
+  orders: [],
+  personalOrders: [],
+  balance: [],
+  incomingRequests: [],
+  outgoingRequests: [],
 };
 
 export const userSlice = createSlice({
@@ -166,6 +186,9 @@ export const userSlice = createSlice({
       })
       .addCase(deleteNotifyAction.rejected, (state) => {
         state.sliceStatus = SliceStatus.Rejected;
+      })
+      .addCase(fetchFriendsAction.fulfilled, (state, action) => {
+        state.friends = action.payload;
       });
   },
 });

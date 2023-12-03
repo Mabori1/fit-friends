@@ -5,24 +5,27 @@ export const FILE_URL = 'http//localhost:4000';
 export const SERVER_API_URL = 'http//localhost:4000/api';
 export const MAX_TRAININGS_COUNT_PER_PAGE = 12;
 export const FILTER_QUERY_DELAY = 1000;
+export const MAX_DIFF_IN_MILLISECONDS = 900000;
+export const MAX_FRIENDS_COUNT_PER_PAGE = 9;
 
 export const DAYS_IN_A_WEEK = 7;
 
 export enum AppRoute {
   Root = '/',
   Intro = '/intro',
-  Login = '/login',
-  Main = '/main',
-  TrainerRoom = '/trainer-room',
-  ClientRoom = '/client-room',
   Info = '/info',
   Register = '/register',
+  Login = '/login',
+  Main = '/main',
+  Friends = '/friends-list',
+  TrainerRoom = '/trainer-room',
+  ClientRoom = '/client-room',
   RegisterTrainer = '/register-trainer',
   RegisterClient = '/register-client',
   CreateTraining = '/create-training',
   TrainerTrainings = '/trainer-trainings',
   TrainerOrders = '/trainer-orders',
-  FriendsList = '/friends-list',
+  ClientOrders = '/client-orders',
   TrainingCard = '/training-card',
   TrainingCatalog = '/training-catalog',
   UsersCatalog = '/users-catalog',
@@ -52,7 +55,9 @@ export enum APIRoute {
   UpdateUser = '/users/update',
   Users = '/users',
   Notify = '/notify',
-  Friends = '/users/friends',
+  TrainerFriends = '/trainer/friends',
+  InPersonalTraining = '/personal-order/incoming',
+  OutPersonalTraining = '/personal-order',
   UploadAvatar = 'files/upload/img',
   UploadVideo = 'files/upload/video',
   Certificate = 'files/upload/pdf',

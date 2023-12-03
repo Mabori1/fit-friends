@@ -18,6 +18,7 @@ export class UserRdo {
   public description!: string;
   public location!: string;
   public createdAt!: Date;
+  public updatedAt!: Date;
   public level!: string;
   public typesOfTraining!: UserTypesTraining[];
   public alerts!: IAlert[];

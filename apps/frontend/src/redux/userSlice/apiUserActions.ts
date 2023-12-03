@@ -9,7 +9,10 @@ import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/update-user.dto';
 import { UploadedFileRdo } from '../../types/uploaded-files.rdo';
-import { INotify } from '@fit-friends/types';
+import { INotify, OrderStatus } from '@fit-friends/types';
+import { UserRdo } from '../../types/user.rdo';
+import { UserRequestRdo } from '../../types/user-request.rdo';
+import { UserRequestType } from '../../types/user-request-type.enum';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -165,3 +168,70 @@ export const deleteNotifyAction = createAsyncThunk<
   const { data } = await api.delete(`${APIRoute.Notify}/${id}`);
   return data;
 });
+
+export const fetchFriendsAction = createAsyncThunk<
+  UserRdo[],
+  undefined,
+  AsyncThunkConfig
+>('user/fetchFriends', async (_arg, { extra: api }) => {
+  const { data } = await api.get<UserRdo[]>(APIRoute.TrainerFriends);
+  return data;
+});
+
+export const fetchIncomingUserRequestsForTraining = createAsyncThunk<
+  UserRequestRdo[],
+  undefined,
+  AsyncThunkConfig
+>('fetchIncomingUserRequestsForTraining', async (_arg, { extra: api }) => {
+  const { data } = await api.get<UserRequestRdo[]>(APIRoute.InPersonalTraining);
+  return data;
+});
+
+export const fetchOutgoingUserRequestsForTraining = createAsyncThunk<
+  UserRequestRdo[],
+  undefined,
+  AsyncThunkConfig
+>('fetchOutgoingUserRequestsForTraining', async (_arg, { extra: api }) => {
+  const { data } = await api.get<UserRequestRdo[]>(APIRoute.Check);
+  return data;
+});
+
+type TrainingRequestDto = {
+  type: UserRequestType.Training;
+  userId?: number;
+};
+export const sendTrainingRequestAction = createAsyncThunk<
+  UserRequestRdo,
+  TrainingRequestDto,
+  AsyncThunkConfig
+>('sendTrainingRequestAction', async (trainingRequest, { extra: api }) => {
+  const { data } = await api.post<UserRequestRdo>(
+    `${APIRoute.InPersonalTraining}`,
+    trainingRequest,
+  );
+  return data;
+});
+
+type ChangeRequestStatusDto = {
+  trainingRequestStatus: OrderStatus;
+  requestId: number;
+};
+
+export const changePersonalOrderStatusAction = createAsyncThunk<
+  UserRequestRdo,
+  ChangeRequestStatusDto,
+  AsyncThunkConfig
+>(
+  'user/changePersonalOrderStatusAction',
+  async (changeRequestStatusDto, { extra: api }) => {
+    const requestId = changeRequestStatusDto.requestId;
+    const updateUserRequestDto = {
+      status: changeRequestStatusDto.trainingRequestStatus,
+    };
+    const { data } = await api.patch<UserRequestRdo>(
+      `${APIRoute.Orders}/${requestId}`,
+      updateUserRequestDto,
+    );
+    return data;
+  },
+);

@@ -1,13 +1,9 @@
 import TrainerRoomPage from '../trainer-room-page/trainer-room-page';
-import ClientRoomPage from '../client-room-page/client-room-page';
+import MainPage from '../main-page/main-page';
 
 type RoleRouteProps = {
   isTrainer: boolean;
 };
 export const RoleRoutePage = (isTrainer: RoleRouteProps) => {
-  if (isTrainer) {
-    return <TrainerRoomPage />;
-  } else {
-    return <ClientRoomPage />;
-  }
+  return isTrainer ? <TrainerRoomPage /> : <MainPage />;
 };
