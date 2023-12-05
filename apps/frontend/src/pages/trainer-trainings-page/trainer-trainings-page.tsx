@@ -6,6 +6,7 @@ import { AppRoute, MAX_TRAININGS_COUNT_PER_PAGE } from '../../constants';
 import { getTrainings } from '../../redux/trainingSlice/selectors';
 import { useAppSelector } from '../../redux/store';
 import TrainingThumbnail from '../../components/training-thumbnail/training-thumbnail';
+import { ArrowLeft } from '../../helper/svg-const';
 
 function TrainerTrainingsPage(): JSX.Element {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ function TrainerTrainingsPage(): JSX.Element {
                     type="button"
                   >
                     <svg width="14" height="10" aria-hidden="true">
-                      <use xlinkHref="#arrow-left"></use>
+                      <ArrowLeft />
                     </svg>
                     <span>Назад</span>
                   </button>

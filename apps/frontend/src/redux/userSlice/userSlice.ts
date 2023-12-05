@@ -20,14 +20,17 @@ import {
   fetchNotifyAction,
   deleteNotifyAction,
   fetchFriendsAction,
+  fetchUsersCatalogAction,
 } from './apiUserActions';
 import { UserRequestRdo } from '../../types/user-request.rdo';
+import { UserRdo } from '../../types/user.rdo';
 
 type UserSlice = {
   authStatus: AuthStatus;
   sliceStatus: SliceStatus;
   user: IUser | undefined;
-  friends: IUser[];
+  users: UserRdo[];
+  friends: UserRdo[];
   notices: INotify[] | [];
   orders?: IOrder[];
   personalOrders?: IPersonalOrder[];
@@ -40,6 +43,7 @@ const initialState: UserSlice = {
   authStatus: AuthStatus.Unknown,
   sliceStatus: SliceStatus.Idle,
   user: undefined,
+  users: [],
   friends: [],
   notices: [],
   orders: [],
@@ -189,6 +193,12 @@ export const userSlice = createSlice({
       })
       .addCase(fetchFriendsAction.fulfilled, (state, action) => {
         state.friends = action.payload;
+      })
+      .addCase(fetchUsersCatalogAction.fulfilled, (state, action) => {
+        state.users = action.payload;
+      })
+      .addCase(fetchUsersCatalogAction.rejected, (state) => {
+        state.users = [];
       });
   },
 });

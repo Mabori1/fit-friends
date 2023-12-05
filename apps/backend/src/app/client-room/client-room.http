@@ -3,23 +3,24 @@
 
 # Login user by email and password
 # @name login
+
 POST {{baseUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "mabori2@gmail.com",
-  "password": "12345a"
+  "email": "41ma@ma.ru",
+  "password": "222222"
 }
 ###
 
 
 # Add friend to user
-POST {{baseUrl}}/client/friend/1 HTTP/1.1
+POST {{baseUrl}}/client/friend/174 HTTP/1.1
 Authorization: Bearer {{token}}
 ###
 
 # Delete friend from user
-DELETE {{baseUrl}}/client/friend/150 HTTP/1.1
+DELETE {{baseUrl}}/client/friend/174 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ###

@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEnum,
   IsIn,
   IsInt,
@@ -101,5 +102,9 @@ export class TrainingQuery {
 
   @IsEnum(UserLevel)
   @IsOptional()
-  public level: UserLevel;
+  public levelOfUser: UserLevel;
+
+  @IsBoolean()
+  @IsOptional()
+  public isPromo: boolean;
 }

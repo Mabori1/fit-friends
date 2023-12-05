@@ -1,7 +1,7 @@
 import { UserRequestRdo } from '../../types/user-request.rdo';
 import { useAppDispatch } from '../../redux/store';
 import { UserRequestType } from '../../types/user-request-type.enum';
-import { IUser, OrderStatus } from '@fit-friends/types';
+import { OrderStatus } from '@fit-friends/types';
 import { MAX_DIFF_IN_MILLISECONDS } from '../../constants';
 import {
   changePersonalOrderStatusAction,
@@ -9,9 +9,12 @@ import {
   fetchOutgoingUserRequestsForTraining,
   sendTrainingRequestAction,
 } from '../../redux/userSlice/apiUserActions';
+import { UserRdo } from '../../types/user.rdo';
+import { IconLocation } from '../../helper/svg-const';
+import { IconInvite } from '../../helper/svg-const';
 
 type FriendsListItemProps = {
-  friend: IUser;
+  friend: UserRdo;
   request: UserRequestRdo | undefined;
   isTrainer: boolean;
 };
@@ -123,7 +126,7 @@ function FriendsListItem({
             <h2 className="thumbnail-friend__name">{friend.name}</h2>
             <div className="thumbnail-friend__location">
               <svg width="14" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-location"></use>
+                <IconLocation />
               </svg>
               <address className="thumbnail-friend__location-address">
                 {friend.location}
@@ -151,13 +154,8 @@ function FriendsListItem({
                   type="button"
                   disabled={!!request}
                 >
-                  <svg
-                    width="43"
-                    height="46"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <use xlinkHref="#icon-invite"></use>
+                  <svg>
+                    <IconInvite />
                   </svg>
                   <span className="visually-hidden">
                     Пригласить друга на совместную тренировку

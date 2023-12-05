@@ -10,3 +10,6 @@ export const getAllTrainings = (state: State): TrainingRdo[] =>
 
 export const getRecommendedTrainings = (state: State): TrainingRdo[] =>
   state[NameSpace.TrainingSlice].recommendedTrainings;
+
+export const getTrainingCatalog = (state: State): TrainingRdo[] =>
+  state[NameSpace.TrainingSlice].trainingsCatalog;

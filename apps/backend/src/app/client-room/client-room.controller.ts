@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -22,6 +23,7 @@ import { OrderRdo } from '../order/rdo/order.rdo';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { SubscriberRdo } from './rdo/subscriber.rdo';
 import { TrainingRdo } from '../trainer-room/rdo/training.rdo';
+import { TrainingQuery } from '../trainer-room/query/training.query';
 
 @ApiTags('client-room')
 @Controller('client')
@@ -67,6 +69,20 @@ export class ClientRoomController {
   public async getfriends(@Req() { user: payload }: IRequestWithTokenPayload) {
     const users = await this.clientRoomService.showFriends(payload.sub);
     return fillObject(FriendRdo, users);
+  }
+
+  @ApiResponse({
+    type: TrainingRdo,
+    status: HttpStatus.OK,
+    description: 'Find training recomended for user',
+  })
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @Get('/recomended')
+  public async fileRecomended(@Query() query: TrainingQuery) {
+    const trainings =
+      await this.clientRoomService.getTrainingsRecomended(query);
+
+    return fillObject(TrainingRdo, trainings);
   }
 
   @ApiResponse({
@@ -144,21 +160,6 @@ export class ClientRoomController {
       dto,
     );
     return fillObject(OrderRdo, newOrder);
-  }
-
-  @ApiResponse({
-    type: TrainingRdo,
-    status: HttpStatus.OK,
-    description: 'The user recomendation training list successfully created',
-  })
-  @UseGuards(JwtAuthGuard, RoleClientGuard)
-  @Get('recomendations')
-  public async getRecomendationTraining(
-    @Req() { user: payload }: IRequestWithTokenPayload,
-  ) {
-    const trainings =
-      await this.clientRoomService.createRecomandationList(payload);
-    return fillObject(TrainingRdo, trainings);
   }
 
   @UseGuards(JwtAuthGuard, RoleClientGuard)

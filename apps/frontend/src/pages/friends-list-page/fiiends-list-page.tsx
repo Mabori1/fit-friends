@@ -20,7 +20,8 @@ import {
   fetchOutgoingUserRequestsForTraining,
 } from '../../redux/userSlice/apiUserActions';
 import FriendsListItem from '../../components/friends-list-item/friend-list.item';
-import { IUser } from '@fit-friends/types';
+import { ArrowCheck, ArrowLeft } from '../../helper/svg-const';
+import { UserRdo } from '../../types/user.rdo';
 
 function FriendsListPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -36,7 +37,7 @@ function FriendsListPage(): JSX.Element {
 
   const [onlineFilterChecked, setOnlineFilterChecked] = useState(false);
 
-  const filterOfflineUsers = (user: IUser) => {
+  const filterOfflineUsers = (user: UserRdo) => {
     const timeNow = Number(new Date());
     const lastTimeUpdated = Number(new Date(user.updatedAt ?? timeNow));
     const timeDiff = Math.abs(timeNow - lastTimeUpdated);
@@ -97,7 +98,7 @@ function FriendsListPage(): JSX.Element {
                 type="button"
               >
                 <svg width="14" height="10" aria-hidden="true">
-                  <use xlinkHref="#arrow-left"></use>
+                  <ArrowLeft />
                 </svg>
                 <span>Назад</span>
               </button>
@@ -116,7 +117,7 @@ function FriendsListPage(): JSX.Element {
                     />
                     <span className="custom-toggle__icon">
                       <svg width="9" height="6" aria-hidden="true">
-                        <use xlinkHref="#arrow-check"></use>
+                        <ArrowCheck />
                       </svg>
                     </span>
                     <span className="custom-toggle__label">Только онлайн</span>

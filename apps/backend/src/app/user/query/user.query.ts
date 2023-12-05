@@ -8,6 +8,7 @@ import {
 import { Transform } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsIn,
   IsNumber,
@@ -44,20 +45,25 @@ export class UserQuery {
   @IsString()
   @IsEnum(UserLocation, { each: true })
   @Transform(({ value }) => value.split(',').map((item: string) => item))
-  public locations: string[];
+  public locations?: string[];
 
   @IsOptional()
   @IsString()
   @IsEnum(UserRole, { each: true })
-  public role: string;
+  public role?: string;
 
   @IsOptional()
   @IsEnum(UserLevel, { each: true })
-  public level: string;
+  public level?: string;
 
   @IsOptional()
   @IsArray()
   @IsEnum(UserTypesTraining, { each: true })
   @Transform(({ value }) => value.split(',').map((item: string) => item))
-  public typesOfTraining: string[];
+  public typesOfTraining?: string[];
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true')
+  public isReady?: boolean;
 }

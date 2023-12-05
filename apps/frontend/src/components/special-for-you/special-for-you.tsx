@@ -36,8 +36,12 @@ function SpecialForYou(): JSX.Element {
           types: userTrainingTypes.join(','),
           durations: userDuration,
           level: userTrainingLevel,
-          caloriesMin: userDailyCaloriesCount * MIN_CALORIES_COUNT_COEFFICIENT,
-          caloriesMax: userDailyCaloriesCount * MAX_CALORIES_COUNT_COEFFICIENT,
+          caloriesMin: +(
+            userDailyCaloriesCount * MIN_CALORIES_COUNT_COEFFICIENT
+          ).toFixed(0),
+          caloriesMax: +(
+            userDailyCaloriesCount * MAX_CALORIES_COUNT_COEFFICIENT
+          ).toFixed(0),
           limit: MAX_SLIDER_TRAININGS_COUNT,
         }),
       );

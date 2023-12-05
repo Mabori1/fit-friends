@@ -19,10 +19,10 @@ export const VideoTypes: string[] = ['mov', 'avi', 'mp4'];
 export enum DefaultUsersQuery {
   maxLimit = 50,
   minLimit = 1,
-  sortDesc = -1,
-  sortAsc = 1,
+  sortDesc = 'desc',
+  sortAsc = 'asc',
   Limit = 50,
-  Desc = -1,
+  Desc = 'desc',
 }
 
 export const UsersErrorMessage = {

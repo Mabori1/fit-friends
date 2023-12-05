@@ -1,4 +1,5 @@
 import { TrainingQuery } from '../types/training.query';
+import { UserQuery } from '../types/user.query';
 
 export function upFirstWord(str: string) {
   if (!str) return str;
@@ -31,8 +32,7 @@ export const getNotificationDate = (date: string) => {
 
   return notificationDate;
 };
-
-export const createQueryString = (queryArgs?: TrainingQuery) => {
+export const createQueryString = (queryArgs?: TrainingQuery & UserQuery) => {
   if (!queryArgs) {
     return '';
   }
@@ -40,19 +40,30 @@ export const createQueryString = (queryArgs?: TrainingQuery) => {
   const queryParams = [
     `${queryArgs.limit ? `limit=${queryArgs.limit}` : ''}`,
     `${queryArgs.page ? `page=${queryArgs.page}` : ''}`,
-    `${queryArgs.priceMin ? `minPrice=${queryArgs.priceMin}` : ''}`,
-    `${queryArgs.priceMax ? `maxPrice=${queryArgs.priceMax}` : ''}`,
-    `${
-      queryArgs.caloriesMin ? `minCaloriesCount=${queryArgs.caloriesMin}` : ''
-    }`,
-    `${queryArgs.caloriesMax ?? `maxCaloriesCount=${queryArgs.caloriesMax}`}`,
-    `${queryArgs.ratingMin ? `minRating=${queryArgs.ratingMin}` : ''}`,
-    `${queryArgs.ratingMax ? `maxRating=${queryArgs.ratingMax}` : ''}`,
-    `${queryArgs.durations ? `duration=${queryArgs.durations}` : ''}`,
-    `${queryArgs.types ? `trainingType=${queryArgs.types}` : ''}`,
+    `${queryArgs.priceMin ? `priceMin=${queryArgs.priceMin}` : ''}`,
+    `${queryArgs.priceMax ? `priceMax=${queryArgs.priceMax}` : ''}`,
+    `${queryArgs.caloriesMin ? `caloriesMin=${queryArgs.caloriesMin}` : ''}`,
+    `${queryArgs.caloriesMax ? `caloriesMax=${queryArgs.caloriesMax}` : ''}`,
+    `${queryArgs.ratingMin ? `ratingMin=${queryArgs.ratingMin}` : ''}`,
+    `${queryArgs.ratingMax ? `ratingMax=${queryArgs.ratingMax}` : ''}`,
+    `${queryArgs.durations ? `durations=${queryArgs.durations}` : ''}`,
+    `${queryArgs.types ? `types=${queryArgs.types}` : ''}`,
+    `${queryArgs.levelOfUser ? `levelOfUser=${queryArgs.levelOfUser}` : ''}`,
     `${queryArgs.level ? `level=${queryArgs.level}` : ''}`,
-    `${queryArgs.priceSort ? `location=${queryArgs.priceSort}` : ''}`,
-    `${queryArgs.sortDirection ? `features=${queryArgs.sortDirection}` : ''}`,
+    `${queryArgs.priceSort ? `priceSort=${queryArgs.priceSort}` : ''}`,
+    `${queryArgs.ratingSort ? `ratingSort=${queryArgs.ratingSort}` : ''}`,
+    `${
+      queryArgs.sortDirection ? `sortDirection=${queryArgs.sortDirection}` : ''
+    }`,
+    `${queryArgs.isPromo ? `isPromo=${queryArgs.isPromo}` : ''}`,
+    `${queryArgs.locations ? `locations=${queryArgs.locations}` : ''}`,
+    `${queryArgs.role ? `role=${queryArgs.role}` : ''}`,
+    `${queryArgs.isReady !== undefined ? `isReady=${queryArgs.isReady}` : ''}`,
+    `${
+      queryArgs.typesOfTraining
+        ? `typesOfTraining=${queryArgs.typesOfTraining}`
+        : ''
+    }`,
   ];
 
   const isNotEmptyString =

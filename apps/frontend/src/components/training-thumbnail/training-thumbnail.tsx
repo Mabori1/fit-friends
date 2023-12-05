@@ -20,7 +20,7 @@ function TrainingThumbnail({ training }: TrainingThumbnailProps): JSX.Element {
 
   const handleToTrainingCardPageLinkClick = () => {
     dispatch(setTraining(training));
-    saveTrainingId(training.id);
+    saveTrainingId(training.id.toString());
     dispatch(fetchUserInfoAction(training.trainerId));
     window.scrollTo(0, 0);
   };

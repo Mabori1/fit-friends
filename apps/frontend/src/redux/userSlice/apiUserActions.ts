@@ -9,10 +9,12 @@ import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/update-user.dto';
 import { UploadedFileRdo } from '../../types/uploaded-files.rdo';
-import { INotify, OrderStatus } from '@fit-friends/types';
+import { IFriend, INotify, OrderStatus } from '@fit-friends/types';
 import { UserRdo } from '../../types/user.rdo';
 import { UserRequestRdo } from '../../types/user-request.rdo';
 import { UserRequestType } from '../../types/user-request-type.enum';
+import { createQueryString } from '../../helper/utils';
+import { UserQuery } from '../../types/user.query';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -170,11 +172,11 @@ export const deleteNotifyAction = createAsyncThunk<
 });
 
 export const fetchFriendsAction = createAsyncThunk<
-  UserRdo[],
+  IFriend[],
   undefined,
   AsyncThunkConfig
 >('user/fetchFriends', async (_arg, { extra: api }) => {
-  const { data } = await api.get<UserRdo[]>(APIRoute.TrainerFriends);
+  const { data } = await api.get<IFriend[]>(APIRoute.TrainerFriends);
   return data;
 });
 
@@ -235,3 +237,31 @@ export const changePersonalOrderStatusAction = createAsyncThunk<
     return data;
   },
 );
+
+export const fetchUsersCatalogAction = createAsyncThunk<
+  UserRdo[],
+  UserQuery,
+  AsyncThunkConfig
+>('user/fetchUsersCatalogAction', async (query, { extra: api }) => {
+  const queryString = createQueryString(query);
+  const { data } = await api.get<UserRdo[]>(`${APIRoute.Users}${queryString}`);
+  return data;
+});
+
+export const fetchAddFriendAction = createAsyncThunk<
+  IFriend,
+  number,
+  AsyncThunkConfig
+>('user/fetchAddFriendAction', async (friendId, { extra: api }) => {
+  const { data } = await api.post<IFriend>(`${APIRoute.Users}${friendId}`);
+  return data;
+});
+
+export const fetchRemoveFriendAction = createAsyncThunk<
+  undefined,
+  number,
+  AsyncThunkConfig
+>('user/fetchRemoveFriendAction', async (friendId, { extra: api }) => {
+  const { data } = await api.delete<undefined>(`${APIRoute.Users}${friendId}`);
+  return data;
+});

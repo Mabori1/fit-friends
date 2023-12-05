@@ -118,10 +118,6 @@ export class TrainerRoomService {
     return trainings;
   }
 
-  async remove(id: number) {
-    return await this.trainingRepository.destroy(id);
-  }
-
   public async getTrainingsByTrainerId(trainerId: number) {
     return await this.trainingRepository.findFromTrainer(trainerId);
   }

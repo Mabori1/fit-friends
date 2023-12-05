@@ -7,6 +7,7 @@ import { OrderRdo } from '../../types/order.rdo';
 import {
   fetchRecommendedTrainingsAction,
   fetchTrainingsAction,
+  fetchTrainingsCatalogAction,
   fetchUserInfoAction,
 } from './apiTrainingActions';
 
@@ -16,7 +17,7 @@ type TrainingData = {
   orders: OrderRdo[];
   allTrainings: TrainingRdo[];
   filteredTrainingCatalog: TrainingRdo[];
-  trainingCatalog: TrainingRdo[];
+  trainingsCatalog: TrainingRdo[];
   recommendedTrainings: TrainingRdo[];
   userTrainings: TrainingRdo[];
   userInfo: UserRdo | null;
@@ -29,7 +30,7 @@ const initialState: TrainingData = {
   orders: [],
   allTrainings: [],
   filteredTrainingCatalog: [],
-  trainingCatalog: [],
+  trainingsCatalog: [],
   recommendedTrainings: [],
   userTrainings: [],
   userInfo: null,
@@ -52,17 +53,23 @@ export const trainingSlice = createSlice({
       .addCase(fetchTrainingsAction.rejected, (state) => {
         state.trainings = [];
       })
+      .addCase(fetchTrainingsCatalogAction.fulfilled, (state, action) => {
+        state.trainingsCatalog = action.payload;
+      })
+      .addCase(fetchTrainingsCatalogAction.rejected, (state) => {
+        state.trainingsCatalog = [];
+      })
       .addCase(fetchRecommendedTrainingsAction.fulfilled, (state, action) => {
         state.recommendedTrainings = action.payload;
+      })
+      .addCase(fetchRecommendedTrainingsAction.rejected, (state) => {
+        state.recommendedTrainings = [];
       })
       .addCase(fetchUserInfoAction.fulfilled, (state, action) => {
         state.userInfo = action.payload;
       })
       .addCase(fetchUserInfoAction.rejected, (state) => {
         state.userInfo = null;
-      })
-      .addCase(fetchRecommendedTrainingsAction.rejected, (state) => {
-        state.recommendedTrainings = [];
       });
   },
 });

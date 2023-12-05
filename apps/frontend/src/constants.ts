@@ -11,6 +11,10 @@ export const MIN_CALORIES_COUNT_COEFFICIENT = 0.8;
 export const MAX_CALORIES_COUNT_COEFFICIENT = 1.2;
 export const MAX_SLIDER_TRAININGS_COUNT = 9;
 export const MAX_SLIDER_TRAININGS_PER_PAGE = 3;
+export const DISCOUNT_PERCENTAGE = 10;
+export const MAX_SLIDER_POPULAR_TRAININGS_PER_PAGE = 4;
+export const MAX_SLIDER_USERS_COUNT = 8;
+export const MAX_SLIDER_USERS_COUNT_PER_PAGE = 4;
 
 export const DAYS_IN_A_WEEK = 7;
 
@@ -57,7 +61,7 @@ export enum APIRoute {
   Logout = '/auth/logout',
   Refresh = '/auth/refresh',
   UpdateUser = '/users/update',
-  Users = '/users',
+  Users = '/users/feed',
   Notify = '/notify',
   TrainerFriends = '/trainer/friends',
   InPersonalTraining = '/personal-order/incoming',
@@ -66,12 +70,18 @@ export enum APIRoute {
   UploadVideo = 'files/upload/video',
   Certificate = 'files/upload/pdf',
   DeleteCertificate = 'files/delete/certificate',
-  AddFriend = '/users/friends/add',
-  RemoveFriend = '/users/friends/remove',
+  AddRemoveFriend = 'client/friend',
   CreateTraining = 'trainer/create',
   UpdateTraining = 'trainer/update',
   FetchTrainings = 'trainer/feed',
+  FetchRecomended = 'client/recomended',
+  TrainingCatalog = 'trainer/training-catalog',
   Orders = '/orders/trainings',
+}
+
+export enum SortDirection {
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 export enum SliceStatus {

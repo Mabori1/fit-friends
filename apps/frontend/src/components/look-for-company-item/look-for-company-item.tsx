@@ -1,22 +1,27 @@
 import { Link } from 'react-router-dom';
+import { UserRdo } from '../../types/user.rdo';
+import { AppRoute } from '../../constants';
 import { IconCrown, IconLocation } from '../../helper/svg-const';
 
-function LookForCompanyCard() {
+type LookForCompanyItemProps = {
+  user: UserRdo;
+};
+
+function LookForCompanyItem({ user }: LookForCompanyItemProps): JSX.Element {
   return (
-    <li className="look-for-company__item">
+    <li className="look-for-company__item" data-testid="look-for-company-item">
       <div className="thumbnail-user thumbnail-user--role-user thumbnail-user--dark">
         <div className="thumbnail-user__image">
           <picture>
-            <source
-              type="image/webp"
-              srcSet="img/content/thumbnails/user-07.webp, img/content/thumbnails/user-07@2x.webp 2x"
-            />
             <img
-              src="img/content/thumbnails/user-07.jpg"
-              srcSet="img/content/thumbnails/user-07@2x.jpg 2x"
+              src={
+                user && user.avatar
+                  ? `${import.meta.env.VITE_SERVER_URL_FILES}${user.avatar}`
+                  : ''
+              }
               width="82"
               height="82"
-              alt=""
+              alt="avatar"
             />
           </picture>
         </div>
@@ -26,26 +31,29 @@ function LookForCompanyCard() {
           </svg>
         </div>
         <div className="thumbnail-user__header">
-          <h3 className="thumbnail-user__name">Яна</h3>
+          <h3 className="thumbnail-user__name">{user.name}</h3>
           <div className="thumbnail-user__location">
             <svg width="14" height="16" aria-hidden="true">
               <IconLocation />
             </svg>
             <address className="thumbnail-user__location-address">
-              Крестовский остров
+              {user.location}
             </address>
           </div>
         </div>
         <ul className="thumbnail-user__hashtags-list">
-          <li className="thumbnail-user__hashtags-item">
-            <div className="hashtag thumbnail-user__hashtag">
-              <span>#пилатес</span>
-            </div>
-          </li>
+          {user.typesOfTraining.map((type) => (
+            <li key={type} className="thumbnail-user__hashtags-item">
+              <div className="hashtag thumbnail-user__hashtag">
+                <span>{`#${type}`}</span>
+              </div>
+            </li>
+          ))}
         </ul>
         <Link
+          onClick={() => window.scrollTo(0, 0)}
           className="btn btn--outlined btn--dark-bg btn--medium thumbnail-user__button"
-          to="#"
+          to={`${AppRoute.UserCard}/${user.userId}`}
         >
           Подробнее
         </Link>
@@ -54,4 +62,4 @@ function LookForCompanyCard() {
   );
 }
 
-export default LookForCompanyCard;
+export default LookForCompanyItem;

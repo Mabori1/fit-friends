@@ -18,6 +18,7 @@ import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { NotifyService } from '../notify/notify.service';
 import { SubscriberRepository } from '../subscriber/subscriber.repository';
 import { SubscriberEntity } from '../subscriber/subscriber.entity';
+import { TrainingQuery } from '../trainer-room/query/training.query';
 
 @Injectable()
 export class ClientRoomService {
@@ -54,7 +55,9 @@ export class ClientRoomService {
     );
 
     if (friend.userId === userId || userId === friendId || existsFriend) {
-      throw new ConflictException("You're doing something unacceptable");
+      throw new ConflictException(
+        'Друг уже существует или вы пытаетесь добавить самого себя',
+      );
     }
 
     const isConfirmed = friend.role === payload.role ? true : false;
@@ -65,6 +68,7 @@ export class ClientRoomService {
     });
 
     const newFriend = await this.friendRepository.create(userFriendEntity);
+    console.log(newFriend);
 
     await this.notifyService.addFriend({
       targetEmail: friend.email,
@@ -217,24 +221,23 @@ export class ClientRoomService {
     return await this.orderRepository.create(orderEntity);
   }
 
-  public async createRecomandationList(payload: ITokenPayload) {
-    const client = await this.userRepository
-      .findById(payload.sub)
+  public async getTrainingsRecomended(query: TrainingQuery) {
+    const trainings = await this.trainingRepository
+      .findRecomended(query)
       .catch((err) => {
         this.logger.error(err);
-        throw new NotFoundException('User not found');
+        throw new NotFoundException('Training not found');
       });
 
-    if (!client) {
-      throw new NotFoundException('User not found');
+    if (!trainings) {
+      throw new NotFoundException('Trainings not found');
     }
 
-    return await this.trainingRepository.findRecomend({
-      typesOfTraining: client.typesOfTraining,
-      caloriesQtt: client.client.caloryLosingPlanTotal,
-      duration: client.client.timeOfTraining,
-      levelOfUser: client.level,
-    });
+    return trainings;
+  }
+
+  async remove(id: number) {
+    return await this.trainingRepository.destroy(id);
   }
 
   public async subscribe(dto: CreateSubscriberDto) {

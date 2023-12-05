@@ -5,4 +5,5 @@ export type AsyncThunkConfig = {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
+  rejectValue: string;
 };

@@ -171,13 +171,21 @@ export class UserRepository
   ): Promise<IUser[]> | null {
     return this.prisma.user.findMany({
       where: {
-        role: { contains: filter.role },
+        AND: [
+          { role: { contains: filter.role } },
 
-        location: { in: filter.locations },
+          { location: { in: filter.locations } },
 
-        level: { contains: filter.level },
+          { level: { contains: filter.level } },
 
-        typesOfTraining: { hasSome: filter.typesOfTraining },
+          { typesOfTraining: { hasSome: filter.typesOfTraining } },
+
+          {
+            client: {
+              isReady: filter.isReady,
+            },
+          },
+        ],
       },
 
       take: limit,
