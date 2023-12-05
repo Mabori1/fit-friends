@@ -1,7 +1,7 @@
-import { IUser } from '@fit-friends/types';
+import { UserRdo } from './user.rdo';
 
 export class UserResponse {
-  public userInfo!: IUser;
+  public userInfo!: UserRdo;
   public access_token!: string;
   public refresh_token!: string;
 }

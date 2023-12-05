@@ -137,11 +137,11 @@ export class ClientRoomController {
   })
   @UseGuards(JwtAuthGuard, RoleClientGuard)
   @Delete('training/:id')
-  public async buyTraining(
-    @Param('id') id: number,
+  public async deleteTraining(
+    @Param('id') trainingId: number,
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {
-    return await this.clientRoomService.spendTraining(payload.sub, id);
+    return await this.clientRoomService.spendTraining(payload.sub, trainingId);
   }
 
   @ApiResponse({

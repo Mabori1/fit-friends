@@ -20,6 +20,8 @@ import CreateTrainingPage from './pages/create-training-page/create-training-pag
 import TrainerTrainingsPage from './pages/trainer-trainings-page/trainer-trainings-page';
 import TrainerOrdersPage from './pages/trainer-orders/trainer-orders-page';
 import FriendsListPage from './pages/friends-list-page/fiiends-list-page';
+import TrainingCatalog from './pages/training-catalog/training-catalog';
+import TrainingCard from './pages/training-card/training-card';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -146,7 +148,22 @@ export function App() {
           </PrivateRoute>
         }
       />
-
+      <Route
+        path={AppRoute.TrainingCard}
+        element={
+          <PrivateRoute isAuth={isAuth}>
+            <TrainingCard isTrainer={isTrainer} />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={AppRoute.TrainingCatalog}
+        element={
+          <PrivateRoute isAuth={isAuth}>
+            {!isTrainer ? <TrainingCatalog /> : <Navigate to={AppRoute.Root} />}
+          </PrivateRoute>
+        }
+      />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

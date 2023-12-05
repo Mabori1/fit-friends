@@ -4,7 +4,7 @@ export class FeedbackRdo {
   public trainingId!: number;
   public rating!: number;
   public text!: string;
-  public createdAt!: Date;
   public userName!: string;
-  public userAvatarPath!: string;
+  public userAvatar!: string;
+  public createdAt!: Date;
 }

@@ -7,10 +7,23 @@ import { createQueryString } from '../../helper/utils';
 import { UploadedFileRdo } from '../../types/uploaded-files.rdo';
 import { TrainingDdo } from '../../types/training.dto';
 import { UserRdo } from '../../types/user.rdo';
+import { FeedbackRdo } from '../../types/feedback.rdo';
+import { FeedbackDto } from '../../types/feedback.dto';
 
-interface UpdateVideoPath {
+interface UpdateTrainingDto {
   id: number;
-  video: string;
+  title?: string;
+  backgroundPicture?: string;
+  levelOfUser?: UserLevel;
+  typeOfTraining?: UserTypesTraining;
+  duration?: TrainingDuration;
+  gender?: GenderOfTraining;
+  caloriesQtt?: number;
+  description?: string;
+  video?: string;
+  price?: number;
+  trainerId?: number;
+  isPromo?: boolean;
 }
 
 export const createTrainingAction = createAsyncThunk<
@@ -49,13 +62,13 @@ export const uploadVideoAction = createAsyncThunk<
 
 export const updateTrainingAction = createAsyncThunk<
   TrainingRdo,
-  UpdateVideoPath,
+  UpdateTrainingDto,
   AsyncThunkConfig
 >('trainer/updateTrainingVideoPath', async (updateDto, { extra: api }) => {
-  const { id, ...newVideo } = updateDto;
+  const { id, ...newDto } = updateDto;
   const { data } = await api.patch<TrainingRdo>(
     `${APIRoute.UpdateTraining}/${id}`,
-    newVideo,
+    newDto,
   );
   return data;
 });
@@ -89,6 +102,40 @@ export const fetchTrainingsCatalogAction = createAsyncThunk<
   const queryString = createQueryString(query);
   const { data } = await api.get<TrainingRdo[]>(
     `${APIRoute.FetchRecomended}${queryString}`,
+  );
+  return data;
+});
+
+export const fetchTrainingAction = createAsyncThunk<
+  TrainingRdo,
+  number,
+  AsyncThunkConfig
+>('training/info', async (trainingId, { extra: api }) => {
+  const { data } = await api.get<TrainingRdo>(
+    `${APIRoute.Training}/${trainingId}`,
+  );
+  return data;
+});
+
+export const fetchFeedbacksAction = createAsyncThunk<
+  FeedbackRdo[],
+  number,
+  AsyncThunkConfig
+>('fetchFeedbacksAction', async (trainingId, { extra: api }) => {
+  const { data } = await api.get<FeedbackRdo[]>(
+    `${APIRoute.Feedbacks}/${trainingId}`,
+  );
+  return data;
+});
+
+export const createFeedbackAction = createAsyncThunk<
+  FeedbackRdo,
+  FeedbackDto,
+  AsyncThunkConfig
+>('createReviewAction', async (createReviewDto, { extra: api }) => {
+  const { data } = await api.post<FeedbackRdo>(
+    APIRoute.CreateFeedback,
+    createReviewDto,
   );
   return data;
 });

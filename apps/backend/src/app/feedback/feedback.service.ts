@@ -6,15 +6,22 @@ import { FeedbackEntity } from './feedback.entity';
 
 @Injectable()
 export class FeedbackService {
-  constructor(private readonly feedbackRepository: FeedbackRepository) {}
+  constructor(
+    private readonly feedbackRepository: FeedbackRepository,
+    private readonly userService: UserService,
+  ) {}
 
   public async create(user: ITokenPayload, dto: CreateReviewDto) {
     const { trainingId, rating, text } = dto;
+    const existsUser = await this.userService.findById(user.sub);
+
     const feedback: IFeedback = {
       userId: user.sub,
       trainingId,
       rating,
       text,
+      userName: user.name,
+      userAvatar: existsUser.avatar,
       createdAt: new Date(),
     };
     const feedbackEntity = new FeedbackEntity(feedback);

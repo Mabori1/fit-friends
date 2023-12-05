@@ -15,6 +15,7 @@ export const DISCOUNT_PERCENTAGE = 10;
 export const MAX_SLIDER_POPULAR_TRAININGS_PER_PAGE = 4;
 export const MAX_SLIDER_USERS_COUNT = 8;
 export const MAX_SLIDER_USERS_COUNT_PER_PAGE = 4;
+export const RATING_VALUES = [1, 2, 3, 4, 5];
 
 export const DAYS_IN_A_WEEK = 7;
 
@@ -76,7 +77,13 @@ export enum APIRoute {
   FetchTrainings = 'trainer/feed',
   FetchRecomended = 'client/recomended',
   TrainingCatalog = 'trainer/training-catalog',
-  Orders = '/orders/trainings',
+  TrainerOrders = '/trainer/orders',
+  ClientBalance = '/client/balance',
+  Training = 'trainer/training',
+  SpendTraining = 'client/training',
+  BuyOrder = 'client/order',
+  CreateFeedback = 'feedbacks/create',
+  Feedbacks = 'feedbacks',
 }
 
 export enum SortDirection {

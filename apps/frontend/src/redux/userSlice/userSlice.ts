@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   IBalance,
+  IFriend,
   INotify,
   IOrder,
   IPersonalOrder,
-  IUser,
 } from '@fit-friends/types';
 import { AuthStatus, NameSpace, SliceStatus } from '../../constants';
 import {
@@ -21,6 +21,9 @@ import {
   deleteNotifyAction,
   fetchFriendsAction,
   fetchUsersCatalogAction,
+  fetchOrdersAction,
+  fetchPersonalOrdersAction,
+  fetchBalanceAction,
 } from './apiUserActions';
 import { UserRequestRdo } from '../../types/user-request.rdo';
 import { UserRdo } from '../../types/user.rdo';
@@ -28,9 +31,9 @@ import { UserRdo } from '../../types/user.rdo';
 type UserSlice = {
   authStatus: AuthStatus;
   sliceStatus: SliceStatus;
-  user: IUser | undefined;
+  user: UserRdo | undefined;
   users: UserRdo[];
-  friends: UserRdo[];
+  friends: IFriend[];
   notices: INotify[] | [];
   orders?: IOrder[];
   personalOrders?: IPersonalOrder[];
@@ -171,7 +174,7 @@ export const userSlice = createSlice({
         if (state.user?.trainer?.certificate) {
           state.user.trainer.certificate =
             state.user.trainer.certificate.filter(
-              (certificat) => certificat !== action.payload,
+              (certificat: string) => certificat !== action.payload,
             );
         }
         state.sliceStatus = SliceStatus.Fulfilled;
@@ -199,6 +202,24 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUsersCatalogAction.rejected, (state) => {
         state.users = [];
+      })
+      .addCase(fetchOrdersAction.fulfilled, (state, action) => {
+        state.orders = action.payload;
+      })
+      .addCase(fetchOrdersAction.rejected, (state) => {
+        state.orders = [];
+      })
+      .addCase(fetchPersonalOrdersAction.fulfilled, (state, action) => {
+        state.personalOrders = action.payload;
+      })
+      .addCase(fetchPersonalOrdersAction.rejected, (state) => {
+        state.personalOrders = [];
+      })
+      .addCase(fetchBalanceAction.fulfilled, (state, action) => {
+        state.balance = action.payload;
+      })
+      .addCase(fetchBalanceAction.rejected, (state) => {
+        state.balance = [];
       });
   },
 });

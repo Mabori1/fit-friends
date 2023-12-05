@@ -4,17 +4,29 @@ import { APIRoute } from '../../constants';
 import { CreateUserDto } from '../../types/create-user.dto';
 import { dropTokens, saveTokens } from '../../services/tokens';
 import { LoginUserDto } from '../../types/login-user.dto';
-import { AsyncThunkConfig } from '../../types/async-thunk-config';
+import {
+  AsyncThunkConfig,
+  AsyncThunkConfig,
+} from '../../types/async-thunk-config';
 import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/update-user.dto';
 import { UploadedFileRdo } from '../../types/uploaded-files.rdo';
-import { IFriend, INotify, OrderStatus } from '@fit-friends/types';
+import {
+  IBalance,
+  IFriend,
+  INotify,
+  IPersonalOrder,
+  OrderStatus,
+} from '@fit-friends/types';
 import { UserRdo } from '../../types/user.rdo';
 import { UserRequestRdo } from '../../types/user-request.rdo';
 import { UserRequestType } from '../../types/user-request-type.enum';
 import { createQueryString } from '../../helper/utils';
 import { UserQuery } from '../../types/user.query';
+import { OrderQuery } from '../../types/order.query';
+import { OrderRdo } from '../../types/order.rdo';
+import { OrderDto } from '../../types/order.dto';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -143,14 +155,14 @@ export const uploadCertificateAction = createAsyncThunk<
 });
 
 export const deleteCertificateAction = createAsyncThunk<
-  undefined,
+  string,
   string,
   AsyncThunkConfig
 >('user/deleteCertificate', async (certificateUrl, { extra: api }) => {
-  const { data } = await api.delete<undefined>(
+  await api.delete<string>(
     `${APIRoute.DeleteCertificate}/?certificateUrl=${certificateUrl}`,
   );
-  return data;
+  return certificateUrl;
 });
 
 export const fetchNotifyAction = createAsyncThunk<
@@ -263,5 +275,53 @@ export const fetchRemoveFriendAction = createAsyncThunk<
   AsyncThunkConfig
 >('user/fetchRemoveFriendAction', async (friendId, { extra: api }) => {
   const { data } = await api.delete<undefined>(`${APIRoute.Users}${friendId}`);
+  return data;
+});
+
+export const fetchOrdersAction = createAsyncThunk<
+  IOrder[],
+  OrderQuery,
+  AsyncThunkConfig
+>('user/fetchOrdersAction', async (query, { extra: api }) => {
+  const { data } = await api.get<IOrder[]>(
+    `${APIRoute.TrainerOrders}${createQueryString(query)}`,
+  );
+  return data;
+});
+
+export const fetchPersonalOrdersAction = createAsyncThunk<
+  IPersonalOrder[],
+  OrderQuery,
+  AsyncThunkConfig
+>('user/fetchPersonalOrdersAction', async (query, { extra: api }) => {
+  const { data } = await api.get<IPersonalOrder[]>(
+    `${APIRoute.TrainerOrders}${createQueryString(query)}`,
+  );
+  return data;
+});
+
+export const fetchBalanceAction = createAsyncThunk<
+  IBalance[],
+  undefined,
+  AsyncThunkConfig
+>('user/fetchBalanceAction', async (_args, { extra: api }) => {
+  const { data } = await api.get<IBalance[]>(APIRoute.ClientBalance);
+  return data;
+});
+
+export const spendTrainingAction = createAsyncThunk<
+  undefined,
+  number,
+  AsyncThunkConfig
+>('user/spendTraining', async (_args, { extra: api }) => {
+  await api.delete<undefined>(APIRoute.SpendTraining);
+});
+
+export const buyTrainingAction = createAsyncThunk<
+  OrderRdo,
+  OrderDto,
+  AsyncThunkConfig
+>('user/buyTrainingAction', async (createOrderDto, { extra: api }) => {
+  const { data } = await api.post<OrderRdo>(APIRoute.BuyOrder, createOrderDto);
   return data;
 });

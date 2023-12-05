@@ -36,7 +36,7 @@ CREATE TABLE "trainers" (
     "user_id" INTEGER NOT NULL,
     "merits" TEXT NOT NULL DEFAULT '',
     "personal_training" BOOLEAN DEFAULT false,
-    "certificate" TEXT NOT NULL,
+    "certificate" TEXT[],
 
     CONSTRAINT "trainers_pkey" PRIMARY KEY ("id")
 );
@@ -80,6 +80,8 @@ CREATE TABLE "feed_backs" (
     "training_id" INTEGER NOT NULL,
     "rating" INTEGER NOT NULL DEFAULT 0,
     "text" TEXT NOT NULL DEFAULT '',
+    "user_name" TEXT NOT NULL DEFAULT '',
+    "user_avatar" TEXT NOT NULL DEFAULT '',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "feed_backs_pkey" PRIMARY KEY ("id")

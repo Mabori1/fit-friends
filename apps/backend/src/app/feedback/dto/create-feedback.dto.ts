@@ -35,4 +35,18 @@ export class CreateReviewDto {
     message: FEEDBACK_TEXT_NOT_VALID,
   })
   public text!: string;
+
+  @ApiProperty({
+    description: 'feedback author name',
+    example: 'Татьяна',
+    required: true,
+  })
+  public userName!: string;
+
+  @ApiProperty({
+    description: 'feedback author avatar',
+    example: 'https://i.pravatar.cc/300',
+    required: true,
+  })
+  public userAvatar!: string;
 }

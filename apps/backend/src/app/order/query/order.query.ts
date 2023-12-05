@@ -2,7 +2,7 @@ import { IsIn, IsNumber, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { OrderQueryDefault } from '@fit-friends/types';
 
-export class OrdersQuery {
+export class OrderQuery {
   @IsNumber()
   @Transform(({ value }) => +value || OrderQueryDefault.Limit)
   @IsOptional()

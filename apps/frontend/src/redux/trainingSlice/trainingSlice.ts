@@ -9,6 +9,7 @@ import {
   fetchTrainingsAction,
   fetchTrainingsCatalogAction,
   fetchUserInfoAction,
+  fetchFeedbacksAction,
 } from './apiTrainingActions';
 
 type TrainingData = {
@@ -46,10 +47,16 @@ export const trainingSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(fetchTrainingsAction.fulfilled, (state, action) => {
-      state.trainings = action.payload;
-    });
     builder
+      .addCase(fetchTrainingAction.fulfilled, (state, action) => {
+        state.training = action.payload;
+      })
+      .addCase(fetchTrainingAction.rejected, (state) => {
+        state.training = [];
+      })
+      .addCase(fetchTrainingsAction.fulfilled, (state, action) => {
+        state.trainings = action.payload;
+      })
       .addCase(fetchTrainingsAction.rejected, (state) => {
         state.trainings = [];
       })
@@ -70,6 +77,12 @@ export const trainingSlice = createSlice({
       })
       .addCase(fetchUserInfoAction.rejected, (state) => {
         state.userInfo = null;
+      })
+      .addCase(fetchFeedbacksAction.fulfilled, (state, action) => {
+        state.feedbacks = action.payload;
+      })
+      .addCase(fetchFeedbacksAction.rejected, (state) => {
+        state.feedbacks = [];
       });
   },
 });

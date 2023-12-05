@@ -96,6 +96,8 @@ model Feedback {
   trainingId Int      @map("training_id")
   rating     Int      @default(0)
   text       String   @default("")
+  userName   String   @default("") @map("user_name")
+  userAvatar String   @default("") @map("user_avatar")
   createdAt  DateTime @default(now()) @map("created_at")
 
   @@map("feed_backs")

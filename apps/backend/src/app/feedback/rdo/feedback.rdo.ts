@@ -50,4 +50,20 @@ export class FeedbackRdo {
   })
   @Expose()
   public createdAt!: Date;
+
+  @ApiProperty({
+    description: 'feedback author name',
+    example: 'Татьяна',
+    required: true,
+  })
+  @Expose()
+  public userName!: string;
+
+  @ApiProperty({
+    description: 'feedback author avatar',
+    example: 'https://i.pravatar.cc/300',
+    required: true,
+  })
+  @Expose()
+  public userAvatar!: string;
 }
