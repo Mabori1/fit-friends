@@ -1,11 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  IBalance,
-  IFriend,
-  INotify,
-  IOrder,
-  IPersonalOrder,
-} from '@fit-friends/types';
+import { IBalance, INotify } from '@fit-friends/types';
 import { AuthStatus, NameSpace, SliceStatus } from '../../constants';
 import {
   registerUserAction,
@@ -19,27 +13,35 @@ import {
   deleteCertificateAction,
   fetchNotifyAction,
   deleteNotifyAction,
-  fetchFriendsAction,
+  fetchTrainerFriendsAction,
+  fetchClientFriendsAction,
   fetchUsersCatalogAction,
   fetchOrdersAction,
   fetchPersonalOrdersAction,
   fetchBalanceAction,
+  toggleSubscribeAction,
+  buyPersonalTrainingAction,
+  checkSubscribeAction,
 } from './apiUserActions';
 import { UserRequestRdo } from '../../types/user-request.rdo';
 import { UserRdo } from '../../types/user.rdo';
+import { OrderRdo } from '../../types/order.rdo';
+import { PersonalOrderRdo } from '../../types/personal-order.rdo';
 
 type UserSlice = {
   authStatus: AuthStatus;
   sliceStatus: SliceStatus;
   user: UserRdo | undefined;
   users: UserRdo[];
-  friends: IFriend[];
+  trainerFriends: UserRdo[];
+  clientFriends: UserRdo[];
   notices: INotify[] | [];
-  orders?: IOrder[];
-  personalOrders?: IPersonalOrder[];
+  orders?: OrderRdo[];
+  personalOrders?: PersonalOrderRdo[];
   balance?: IBalance[];
   incomingRequests: UserRequestRdo[];
   outgoingRequests: UserRequestRdo[];
+  subscribeStatus: boolean;
 };
 
 const initialState: UserSlice = {
@@ -47,13 +49,15 @@ const initialState: UserSlice = {
   sliceStatus: SliceStatus.Idle,
   user: undefined,
   users: [],
-  friends: [],
+  trainerFriends: [],
+  clientFriends: [],
   notices: [],
   orders: [],
   personalOrders: [],
   balance: [],
   incomingRequests: [],
   outgoingRequests: [],
+  subscribeStatus: false,
 };
 
 export const userSlice = createSlice({
@@ -194,8 +198,11 @@ export const userSlice = createSlice({
       .addCase(deleteNotifyAction.rejected, (state) => {
         state.sliceStatus = SliceStatus.Rejected;
       })
-      .addCase(fetchFriendsAction.fulfilled, (state, action) => {
-        state.friends = action.payload;
+      .addCase(fetchTrainerFriendsAction.fulfilled, (state, action) => {
+        state.trainerFriends = action.payload;
+      })
+      .addCase(fetchClientFriendsAction.fulfilled, (state, action) => {
+        state.clientFriends = action.payload;
       })
       .addCase(fetchUsersCatalogAction.fulfilled, (state, action) => {
         state.users = action.payload;
@@ -220,6 +227,18 @@ export const userSlice = createSlice({
       })
       .addCase(fetchBalanceAction.rejected, (state) => {
         state.balance = [];
+      })
+      .addCase(checkSubscribeAction.fulfilled, (state, action) => {
+        state.subscribeStatus = action.payload;
+      })
+      .addCase(toggleSubscribeAction.fulfilled, (state, action) => {
+        state.subscribeStatus = action.payload;
+      })
+      .addCase(toggleSubscribeAction.rejected, (state) => {
+        state.subscribeStatus = false;
+      })
+      .addCase(buyPersonalTrainingAction.fulfilled, (state, action) => {
+        state.personalOrders?.push(action.payload);
       });
   },
 });

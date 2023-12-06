@@ -5,9 +5,11 @@ import { FeedbackController } from './feedback.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { getJwtOptions } from '../config/get-jwt-options';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
+    UserModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: getJwtOptions,

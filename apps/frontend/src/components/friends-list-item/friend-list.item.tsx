@@ -5,8 +5,8 @@ import { OrderStatus } from '@fit-friends/types';
 import { MAX_DIFF_IN_MILLISECONDS } from '../../constants';
 import {
   changePersonalOrderStatusAction,
-  fetchIncomingUserRequestsForTraining,
-  fetchOutgoingUserRequestsForTraining,
+  fetchInPersonalOrderAction,
+  fetchOutPersonalOrderAction,
   sendTrainingRequestAction,
 } from '../../redux/userSlice/apiUserActions';
 import { UserRdo } from '../../types/user.rdo';
@@ -42,9 +42,9 @@ function FriendsListItem({
         userId: friend.userId,
       }),
     );
-    dispatch(fetchIncomingUserRequestsForTraining());
+    dispatch(fetchInPersonalOrderAction());
     if (!isTrainer) {
-      dispatch(fetchOutgoingUserRequestsForTraining());
+      dispatch(fetchOutPersonalOrderAction());
     }
   };
 
@@ -60,9 +60,9 @@ function FriendsListItem({
           requestId: request.id,
         }),
       );
-      dispatch(fetchIncomingUserRequestsForTraining());
+      dispatch(fetchInPersonalOrderAction());
       if (!isTrainer) {
-        dispatch(fetchOutgoingUserRequestsForTraining());
+        dispatch(fetchInPersonalOrderAction());
       }
     }
   };
@@ -75,9 +75,9 @@ function FriendsListItem({
           requestId: request.id,
         }),
       );
-      dispatch(fetchIncomingUserRequestsForTraining());
+      dispatch(fetchInPersonalOrderAction());
       if (!isTrainer) {
-        dispatch(fetchOutgoingUserRequestsForTraining());
+        dispatch(fetchInPersonalOrderAction());
       }
     }
   };

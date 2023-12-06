@@ -16,6 +16,8 @@ export const MAX_SLIDER_POPULAR_TRAININGS_PER_PAGE = 4;
 export const MAX_SLIDER_USERS_COUNT = 8;
 export const MAX_SLIDER_USERS_COUNT_PER_PAGE = 4;
 export const RATING_VALUES = [1, 2, 3, 4, 5];
+export const MAX_USER_CARD_TRAININGS_COUNT = 5;
+export const MAX_POPUP_CERTIFICATES_COUNT_PER_PAGE = 1;
 
 export const DAYS_IN_A_WEEK = 7;
 
@@ -39,7 +41,6 @@ export enum AppRoute {
   TrainingCatalog = '/training-catalog',
   UsersCatalog = '/users-catalog',
   UserCard = '/user-card',
-  UserCardId = '/user-card/:id',
   NotFound = '*',
 }
 
@@ -62,10 +63,13 @@ export enum APIRoute {
   Logout = '/auth/logout',
   Refresh = '/auth/refresh',
   UpdateUser = '/users/update',
-  Users = '/users/feed',
+  Users = '/users',
+  UsersQuery = '/users/feed',
   Notify = '/notify',
   TrainerFriends = '/trainer/friends',
+  ClientFriends = '/client/friends',
   InPersonalTraining = '/personal-order/incoming',
+  ChangePersonalTraining = '/personal-order/change',
   OutPersonalTraining = '/personal-order',
   UploadAvatar = 'files/upload/img',
   UploadVideo = 'files/upload/video',
@@ -82,8 +86,11 @@ export enum APIRoute {
   Training = 'trainer/training',
   SpendTraining = 'client/training',
   BuyOrder = 'client/order',
+  BuyPersonalOrder = 'client/personal-order',
   CreateFeedback = 'feedbacks/create',
   Feedbacks = 'feedbacks',
+  CheckSubscribe = 'clitnt/check-subscribe',
+  ToggleSubscribe = 'client/subscribe',
 }
 
 export enum SortDirection {

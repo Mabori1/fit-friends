@@ -22,7 +22,12 @@ const MonthNamesMap = {
   '12': 'декабря',
 };
 
-export const getNotificationDate = (date: string) => {
+export const getNotificationDate = (dateArg: Date) => {
+  if (!dateArg) {
+    return '';
+  }
+  const date = dateArg.toString();
+
   const day = `${date[8]}${date[9]}`;
   const month =
     MonthNamesMap[`${date[5]}${date[6]}` as keyof typeof MonthNamesMap];

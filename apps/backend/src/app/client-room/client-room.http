@@ -72,14 +72,15 @@ Content-Type: application/json
 }
 ###
 
-# Subscribe to trainer
+# Toggle subscribe to trainer
 
 POST {{baseUrl}}/client/subscribe/203 HTTP/1.1
 Authorization: Bearer {{token}}
 ###
 
-# Unsubscribe to trainer
+# Check subscribe to trainer
 
-DELETE {{baseUrl}}/client/unsubscribe/103 HTTP/1.1
+POST {{baseUrl}}/client/check-subscribe/203 HTTP/1.1
 Authorization: Bearer {{token}}
 ###
+

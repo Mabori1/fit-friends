@@ -22,6 +22,7 @@ import TrainerOrdersPage from './pages/trainer-orders/trainer-orders-page';
 import FriendsListPage from './pages/friends-list-page/fiiends-list-page';
 import TrainingCatalog from './pages/training-catalog/training-catalog';
 import TrainingCard from './pages/training-card/training-card';
+import UserCard from './pages/user-card/user-card';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -161,6 +162,15 @@ export function App() {
         element={
           <PrivateRoute isAuth={isAuth}>
             {!isTrainer ? <TrainingCatalog /> : <Navigate to={AppRoute.Root} />}
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path={AppRoute.UserCard}
+        element={
+          <PrivateRoute isAuth={isAuth}>
+            <UserCard />
           </PrivateRoute>
         }
       />

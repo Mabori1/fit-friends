@@ -13,7 +13,7 @@ export class TrainingQuery {
   public ratingMin?: number;
   public ratingMax?: number;
   public types?: string;
-  public trainerId?: string;
+  public trainerId?: number;
   public durations?: string;
   public levelOfUser?: string;
   public isPromo?: boolean;

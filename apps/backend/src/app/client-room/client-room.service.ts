@@ -7,7 +7,7 @@ import {
 import { TrainingRepository } from '../training/training.repository';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import { IFriend, ISubscriber, ITokenPayload, IUser } from '@fit-friends/types';
+import { IFriend, ITokenPayload, IUser } from '@fit-friends/types';
 import { FriendEntity } from '../friend/friend.entity';
 import { BalanceRepository } from '../balance/balance.repository';
 import { BalanceEntity } from '../balance/balance.entity';
@@ -110,25 +110,14 @@ export class ClientRoomService {
     return friends;
   }
 
-  public async showMyFriendsList(userId: number): Promise<IUser[] | null> {
-    const userFriends = await this.friendRepository
-      .findByUserId(userId)
-      .catch((err) => {
-        this.logger.error(err);
-        throw new NotFoundException('Friends not found');
-      });
-
-    if (!userFriends) {
-      throw new NotFoundException('Friends not found');
+  public async getFriends(userId: number) {
+    const friends = await this.friendRepository.findByUserId(userId);
+    const users: IUser[] = [];
+    for (let i = 0; i < friends.length; i++) {
+      const user = await this.userRepository.findById(friends[i].userId);
+      users.push(user);
     }
-
-    const friends = await Promise.all(
-      userFriends.map(async (friend) => {
-        return await this.userRepository.findById(friend.friendId);
-      }),
-    );
-
-    return friends;
+    return users;
   }
 
   public async showBalance(userId: number, trainerId: number) {
@@ -242,38 +231,38 @@ export class ClientRoomService {
 
   public async subscribe(dto: CreateSubscriberDto) {
     const subscriber = await this.subscriberRepository
-      .findByTrainerId(dto.trainerId)
-      .catch((err) => {
-        this.logger.error(err);
-        throw new ConflictException('Subscriber already exists');
-      });
-
-    if (subscriber.length) {
-      throw new ConflictException('Subscriber already exists');
-    }
-    const subscriberEntity = new SubscriberEntity(dto);
-    const newSubscriber =
-      await this.subscriberRepository.create(subscriberEntity);
-
-    await this.notifyService.addSubscribe(newSubscriber);
-    return newSubscriber;
-  }
-
-  public async unsubscribe(unsubscriber: ISubscriber) {
-    const subscriber = await this.subscriberRepository
-      .findByEmailAndTrainerId(unsubscriber.email, unsubscriber.trainerId)
+      .findByEmailAndTrainerId(dto.email, dto.trainerId)
       .catch((err) => {
         this.logger.error(err);
         throw new NotFoundException('Subscriber not found');
       });
 
-    if (!subscriber) {
-      throw new NotFoundException('Subscriber not found');
+    if (subscriber) {
+      await this.notifyService.deleteSubscribe(subscriber);
+      await this.subscriberRepository.destroy(subscriber.id);
+      return false;
     }
 
-    await this.subscriberRepository.destroy(subscriber.id);
-    await this.notifyService.deleteSubscribe(unsubscriber);
+    const subscriberEntity = new SubscriberEntity(dto);
+    const newSubscriber =
+      await this.subscriberRepository.create(subscriberEntity);
 
-    return 'Unsubscribe to the trainer.';
+    await this.notifyService.addSubscribe(newSubscriber);
+    return true;
+  }
+
+  public async checkSubscribe(dto: CreateSubscriberDto) {
+    const subscriber = await this.subscriberRepository
+      .findByEmailAndTrainerId(dto.email, dto.trainerId)
+      .catch((err) => {
+        this.logger.error(err);
+        throw new NotFoundException('Subscriber not found');
+      });
+
+    if (subscriber) {
+      return true;
+    }
+
+    return false;
   }
 }

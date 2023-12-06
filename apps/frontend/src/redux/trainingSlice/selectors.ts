@@ -1,5 +1,7 @@
 import { NameSpace } from '../../constants';
+import { FeedbackRdo } from '../../types/feedback.rdo';
 import { TrainingRdo } from '../../types/training.rdo';
+import { UserRdo } from '../../types/user.rdo';
 import { State } from '../store';
 
 export const getTraining = (state: State): TrainingRdo | null =>
@@ -17,8 +19,8 @@ export const getRecommendedTrainings = (state: State): TrainingRdo[] =>
 export const getTrainingCatalog = (state: State): TrainingRdo[] =>
   state[NameSpace.TrainingSlice].trainingsCatalog;
 
-export const getUserInfo = (state: State): UserRdo =>
+export const getUserInfo = (state: State): UserRdo | null =>
   state[NameSpace.TrainingSlice].userInfo;
 
-export const getFeedbacks = (state: State): FeedbackRdo[] =>
+export const getFeedbacks = (state: State): FeedbackRdo[] | null =>
   state[NameSpace.TrainingSlice].feedbacks;

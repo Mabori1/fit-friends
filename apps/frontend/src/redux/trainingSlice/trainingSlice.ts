@@ -10,6 +10,7 @@ import {
   fetchTrainingsCatalogAction,
   fetchUserInfoAction,
   fetchFeedbacksAction,
+  fetchTrainingAction,
 } from './apiTrainingActions';
 
 type TrainingData = {
@@ -52,7 +53,7 @@ export const trainingSlice = createSlice({
         state.training = action.payload;
       })
       .addCase(fetchTrainingAction.rejected, (state) => {
-        state.training = [];
+        state.training = null;
       })
       .addCase(fetchTrainingsAction.fulfilled, (state, action) => {
         state.trainings = action.payload;

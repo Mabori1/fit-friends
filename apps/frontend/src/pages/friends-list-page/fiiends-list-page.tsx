@@ -9,15 +9,17 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
-  getFriends,
+  getClientFriends,
   getIncomingRequests,
   getIsTrainer,
   getOutgoingRequests,
+  getTrainerFriends,
 } from '../../redux/userSlice/selectors';
 import {
-  fetchFriendsAction,
-  fetchIncomingUserRequestsForTraining,
-  fetchOutgoingUserRequestsForTraining,
+  fetchClientFriendsAction,
+  fetchInPersonalOrderAction,
+  fetchOutPersonalOrderAction,
+  fetchTrainerFriendsAction,
 } from '../../redux/userSlice/apiUserActions';
 import FriendsListItem from '../../components/friends-list-item/friend-list.item';
 import { ArrowCheck, ArrowLeft } from '../../helper/svg-const';
@@ -28,7 +30,10 @@ function FriendsListPage(): JSX.Element {
   const navigate = useNavigate();
 
   const isTrainer = useAppSelector(getIsTrainer);
-  const myFriends = useAppSelector(getFriends);
+  const myFriends = useAppSelector(
+    isTrainer ? getTrainerFriends : getClientFriends,
+  );
+
   const myIncomingRequests = useAppSelector(getIncomingRequests);
   const myOutgoingRequests = useAppSelector(getOutgoingRequests);
 
@@ -74,10 +79,13 @@ function FriendsListPage(): JSX.Element {
   };
 
   useEffect(() => {
-    dispatch(fetchFriendsAction());
-    dispatch(fetchIncomingUserRequestsForTraining());
+    isTrainer
+      ? dispatch(fetchTrainerFriendsAction())
+      : dispatch(fetchClientFriendsAction());
+
+    dispatch(fetchInPersonalOrderAction());
     if (!isTrainer) {
-      dispatch(fetchOutgoingUserRequestsForTraining());
+      dispatch(fetchOutPersonalOrderAction());
     }
   }, [dispatch, isTrainer]);
 
@@ -126,7 +134,7 @@ function FriendsListPage(): JSX.Element {
               </div>
               <ul className="friends-list__list">
                 {myFriends
-                  .filter(filterOfflineUsers)
+                  .filter((user) => filterOfflineUsers(user))
                   .slice(0, currentListPage * MAX_FRIENDS_COUNT_PER_PAGE)
                   .map((friend) => (
                     <FriendsListItem

@@ -9,6 +9,12 @@ import { TrainingDdo } from '../../types/training.dto';
 import { UserRdo } from '../../types/user.rdo';
 import { FeedbackRdo } from '../../types/feedback.rdo';
 import { FeedbackDto } from '../../types/feedback.dto';
+import {
+  GenderOfTraining,
+  TrainingDuration,
+  UserLevel,
+  UserTypesTraining,
+} from '@fit-friends/types';
 
 interface UpdateTrainingDto {
   id: number;

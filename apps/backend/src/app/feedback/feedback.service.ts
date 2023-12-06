@@ -3,6 +3,7 @@ import { FeedbackRepository } from './feedback.repository';
 import { CreateReviewDto } from './dto/create-feedback.dto';
 import { IFeedback, ITokenPayload } from '@fit-friends/types';
 import { FeedbackEntity } from './feedback.entity';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class FeedbackService {
@@ -13,7 +14,7 @@ export class FeedbackService {
 
   public async create(user: ITokenPayload, dto: CreateReviewDto) {
     const { trainingId, rating, text } = dto;
-    const existsUser = await this.userService.findById(user.sub);
+    const existsUser = await this.userService.getUser(user.sub);
 
     const feedback: IFeedback = {
       userId: user.sub,

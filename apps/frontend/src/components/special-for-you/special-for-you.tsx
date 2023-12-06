@@ -22,6 +22,23 @@ function SpecialForYou(): JSX.Element {
   const userDailyCaloriesCount = user?.client?.caloryLosingPlanDaily;
   const specialForYouTrainings = useAppSelector(getRecommendedTrainings);
 
+  let caloriesMin = 1000;
+  let caloriesMax = 5000;
+
+  if (userDailyCaloriesCount) {
+    caloriesMin =
+      userDailyCaloriesCount * MIN_CALORIES_COUNT_COEFFICIENT < 1000 ||
+      userDailyCaloriesCount * MIN_CALORIES_COUNT_COEFFICIENT > 5000
+        ? 1000
+        : +(userDailyCaloriesCount * MIN_CALORIES_COUNT_COEFFICIENT).toFixed(0);
+
+    caloriesMax =
+      userDailyCaloriesCount * MAX_CALORIES_COUNT_COEFFICIENT < 1000 ||
+      userDailyCaloriesCount * MAX_CALORIES_COUNT_COEFFICIENT > 5000
+        ? 5000
+        : +(userDailyCaloriesCount * MAX_CALORIES_COUNT_COEFFICIENT).toFixed(0);
+  }
+
   const [trainingsCurrentPage, setTrainingsCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -35,13 +52,9 @@ function SpecialForYou(): JSX.Element {
         fetchRecommendedTrainingsAction({
           types: userTrainingTypes.join(','),
           durations: userDuration,
-          level: userTrainingLevel,
-          caloriesMin: +(
-            userDailyCaloriesCount * MIN_CALORIES_COUNT_COEFFICIENT
-          ).toFixed(0),
-          caloriesMax: +(
-            userDailyCaloriesCount * MAX_CALORIES_COUNT_COEFFICIENT
-          ).toFixed(0),
+          levelOfUser: userTrainingLevel,
+          caloriesMin,
+          caloriesMax,
           limit: MAX_SLIDER_TRAININGS_COUNT,
         }),
       );
@@ -52,6 +65,8 @@ function SpecialForYou(): JSX.Element {
     userDuration,
     userTrainingLevel,
     userTrainingTypes,
+    caloriesMax,
+    caloriesMin,
   ]);
 
   const handleBackArrowButtonClick = () => {

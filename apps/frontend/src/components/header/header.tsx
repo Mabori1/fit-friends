@@ -82,9 +82,9 @@ function Header(): JSX.Element {
               <Link
                 className={`
                 main-nav__link
-                ${pathName === AppRoute.FriendsList ? 'is-active' : ''}
+                ${pathName === AppRoute.Friends ? 'is-active' : ''}
               `}
-                to={AppRoute.FriendsList}
+                to={AppRoute.Friends}
                 aria-label="Друзья"
               >
                 <svg width="22" height="16" aria-hidden="true">
@@ -112,7 +112,9 @@ function Header(): JSX.Element {
                   {notify?.map((notify) => (
                     <li key={notify.id} className="main-nav__subitem">
                       <Link
-                        onClick={() => handleNotificationClick(notify.id)}
+                        onClick={() =>
+                          handleNotificationClick(notify.id as number)
+                        }
                         className="notification is-active"
                         to="#"
                       >
@@ -121,7 +123,7 @@ function Header(): JSX.Element {
                           className="notification__time"
                           dateTime="2023-12-23 12:35"
                         >
-                          {getNotificationDate(notify.createdAt.toString())}
+                          {getNotificationDate(notify.createdAt as Date)}
                         </time>
                       </Link>
                     </li>

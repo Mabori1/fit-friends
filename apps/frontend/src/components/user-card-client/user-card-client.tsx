@@ -2,38 +2,38 @@ import { nanoid } from 'nanoid';
 import { useEffect } from 'react';
 import { UserRdo } from '../../types/user.rdo';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getFriends } from '../../redux/userSlice/selectors';
+import { getClientFriends } from '../../redux/userSlice/selectors';
 import {
   fetchAddFriendAction,
-  fetchFriendsAction,
+  fetchClientFriendsAction,
   fetchRemoveFriendAction,
 } from '../../redux/userSlice/apiUserActions';
 import { FriendAction } from '../../types/friend-action';
 
 type UserCardProps = {
-  user: UserRdo | null;
+  client: UserRdo | null;
 };
 
-function UserCardUser({ user }: UserCardProps): JSX.Element {
+function UserCardClient({ client }: UserCardProps): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const myFriends = useAppSelector(getFriends);
+  const myFriends = useAppSelector(getClientFriends);
 
   useEffect(() => {
-    dispatch(fetchFriendsAction());
+    dispatch(fetchClientFriendsAction());
   }, [dispatch]);
 
   const handleFriendRelations = async (type: FriendAction) => {
-    if (user) {
+    if (client) {
       switch (type) {
         case FriendAction.Add:
-          await dispatch(fetchAddFriendAction(user.userId));
+          await dispatch(fetchAddFriendAction(client.userId));
           break;
         case FriendAction.Remove:
-          await dispatch(fetchRemoveFriendAction(user.userId));
+          await dispatch(fetchRemoveFriendAction(client.userId));
           break;
       }
-      await dispatch(fetchFriendsAction());
+      await dispatch(fetchClientFriendsAction());
     }
   };
 
@@ -51,7 +51,7 @@ function UserCardUser({ user }: UserCardProps): JSX.Element {
       <div className="user-card__wrapper">
         <div className="user-card__content">
           <div className="user-card__head">
-            <h2 className="user-card__title">{user?.name}</h2>
+            <h2 className="user-card__title">{client?.name}</h2>
             <div className="user-card__icon">
               <svg
                 className="user-card__crown"
@@ -72,9 +72,9 @@ function UserCardUser({ user }: UserCardProps): JSX.Element {
             >
               <use xlinkHref="#icon-location"></use>
             </svg>
-            <span>{user?.location}</span>
+            <span>{client?.location}</span>
           </div>
-          {user?.client?.isReady ? (
+          {client?.client?.isReady ? (
             <div className="user-card__status">
               <span>Готов к тренировке</span>
             </div>
@@ -84,10 +84,10 @@ function UserCardUser({ user }: UserCardProps): JSX.Element {
             </div>
           )}
           <div className="user-card__text">
-            <p>{user?.description}</p>
+            <p>{client?.description}</p>
           </div>
           <ul className="user-card__hashtag-list">
-            {user?.typesOfTraining.map((type) => (
+            {client?.typesOfTraining.map((type) => (
               <li key={nanoid()} className="user-card__hashtag-item">
                 <div className="hashtag">
                   <span>{`#${type}`}</span>
@@ -96,11 +96,11 @@ function UserCardUser({ user }: UserCardProps): JSX.Element {
             ))}
             <li className="user-card__hashtag-item">
               <div className="hashtag">
-                <span>{`#${user ? user.level : ''}`}</span>
+                <span>{`#${client ? client.level : ''}`}</span>
               </div>
             </li>
           </ul>
-          {myFriends.some((friend) => friend.userId === user?.userId) ? (
+          {myFriends.some((friend) => friend.userId === client?.userId) ? (
             <button
               onClick={handleRemoveFriendButtonClick}
               className="btn user-card__btn"
@@ -145,4 +145,4 @@ function UserCardUser({ user }: UserCardProps): JSX.Element {
   );
 }
 
-export default UserCardUser;
+export default UserCardClient;
