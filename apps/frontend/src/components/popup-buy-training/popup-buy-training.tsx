@@ -6,6 +6,16 @@ import {
   buyTrainingAction,
   fetchBalanceAction,
 } from '../../redux/userSlice/apiUserActions';
+import {
+  DashLine,
+  IconCross,
+  IconMinus,
+  IconPlus,
+  IomoneyLogo,
+  MirLogo,
+  VisaLogo,
+} from '../../helper/svg-const';
+import { toast } from 'react-toastify';
 
 type PopupBuyTrainingProps = {
   training: TrainingRdo;
@@ -42,7 +52,8 @@ function PopupBuyTraining({
 
   const buyTraining = async () => {
     if (training.price && paymentMethod) {
-      await dispatch(
+      console.log(training.id);
+      const response = await dispatch(
         buyTrainingAction({
           type: TypeOfOrder.Subscription,
           trainerId: training.trainerId,
@@ -53,14 +64,20 @@ function PopupBuyTraining({
           typeOfPayment: paymentMethod,
         }),
       );
+
+      if (response.meta.requestStatus === 'fulfilled') {
+        console.log(response);
+        toast.success(`Куплено тренировок: ${quantity} шт.`);
+      }
+
       await dispatch(fetchBalanceAction());
+      setModalOpened(false);
     }
   };
 
   const handleBuyButtonClick = () => {
     if (!paymentMethod) {
       setPaymentMethodError('Выберите способ оплаты');
-    } else {
       buyTraining();
     }
   };
@@ -79,7 +96,7 @@ function PopupBuyTraining({
                 aria-label="close"
               >
                 <svg width="20" height="20" aria-hidden="true">
-                  <use xlinkHref="#icon-cross"></use>
+                  <IconCross />
                 </svg>
               </button>
             </div>
@@ -111,7 +128,7 @@ function PopupBuyTraining({
                       aria-label="minus"
                     >
                       <svg width="12" height="12" aria-hidden="true">
-                        <use xlinkHref="#icon-minus"></use>
+                        <IconMinus />
                       </svg>
                     </button>
                     <div className="input-quantity__input">
@@ -131,7 +148,7 @@ function PopupBuyTraining({
                       aria-label="plus"
                     >
                       <svg width="12" height="12" aria-hidden="true">
-                        <use xlinkHref="#icon-plus"></use>
+                        <IconPlus />
                       </svg>
                     </button>
                   </div>
@@ -162,7 +179,7 @@ function PopupBuyTraining({
                         />
                         <span className="btn-radio-image__image">
                           <svg width="58" height="20" aria-hidden="true">
-                            <use xlinkHref="#visa-logo"></use>
+                            <VisaLogo />
                           </svg>
                         </span>
                       </label>
@@ -179,7 +196,7 @@ function PopupBuyTraining({
                         />
                         <span className="btn-radio-image__image">
                           <svg width="66" height="20" aria-hidden="true">
-                            <use xlinkHref="#mir-logo"></use>
+                            <MirLogo />
                           </svg>
                         </span>
                       </label>
@@ -198,7 +215,7 @@ function PopupBuyTraining({
                         />
                         <span className="btn-radio-image__image">
                           <svg width="106" height="24" aria-hidden="true">
-                            <use xlinkHref="#iomoney-logo"></use>
+                            <IomoneyLogo />
                           </svg>
                         </span>
                       </label>
@@ -213,13 +230,8 @@ function PopupBuyTraining({
               </section>
               <div className="popup__total">
                 <p className="popup__total-text">Итого</p>
-                <svg
-                  className="popup__total-dash"
-                  width="310"
-                  height="2"
-                  aria-hidden="true"
-                >
-                  <use xlinkHref="#dash-line"></use>
+                <svg>
+                  <DashLine />
                 </svg>
                 <p className="popup__total-price">
                   {`${totalPrice}`}

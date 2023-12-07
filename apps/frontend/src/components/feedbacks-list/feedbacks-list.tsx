@@ -7,6 +7,7 @@ import { fetchFeedbacksAction } from '../../redux/trainingSlice/apiTrainingActio
 import { fetchBalanceAction } from '../../redux/userSlice/apiUserActions';
 import FeedbacksListItem from '../feedbacks-list-item/feedbacks-list-item';
 import PopupFeedback from '../popup-feedback/popup-feedback';
+import { ArrowLeft } from '../../helper/svg-const';
 
 type FeedbasListProps = {
   training: TrainingRdo | null;
@@ -44,7 +45,7 @@ function FeedbacksList({ training }: FeedbasListProps): JSX.Element {
           type="button"
         >
           <svg width="14" height="10" aria-hidden="true">
-            <use xlinkHref="#arrow-left"></use>
+            <ArrowLeft />
           </svg>
           <span>Назад</span>
         </button>

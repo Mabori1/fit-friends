@@ -26,6 +26,7 @@ import {
   IconDiscount,
   IconEdit,
   IconImportVideo,
+  IconStar,
 } from '../../helper/svg-const';
 import PopupBuyTraining from '../../components/popup-buy-training/popup-buy-training';
 import FeedbacksList from '../../components/feedbacks-list/feedbacks-list';
@@ -57,8 +58,6 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
     `#${training ? training.duration : ''}`,
   ];
 
-  const [startTrainingTime, setStartTrainingTime] = useState<Date | null>(null);
-
   const [isBuyTrainingModalOpened, setIsBuyTrainingModalOpened] =
     useState(false);
 
@@ -67,32 +66,26 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
   const [isCurrentVideoMarkedForDeleting, setIsCurrentVideoMarkedForDeleting] =
     useState(false);
 
-  const [trainingStarted, setTrainingStarted] = useState(false);
-
   const priceInputRef = useRef<HTMLInputElement | null>(null);
   const titleInputRef = useRef<HTMLInputElement | null>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement | null>(null);
   const videoElementRef = useRef<HTMLVideoElement | null>(null);
   const playButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  // значения полей
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [isPromo, setIsPromo] = useState(false);
   const [videoFile, setVideoFile] = useState<File | null>(null);
 
-  // текст ошибки
   const [titleError, setTitleTypeError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [priceError, setPriceError] = useState('');
   const [videoFileError, setVideoFileError] = useState('');
 
-  // валидны ли данные формы или нет
   const [formValid, setFormValid] = useState(true);
 
   useEffect(() => {
-    // если страница перезагружалась, заново запрашиваем данные о тренировке
     if (!training) {
       dispatch(fetchTrainingAction(+getTrainingId()));
     } else if (!avatar || !userName) {
@@ -272,21 +265,11 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
     setIsBuyTrainingModalOpened(true);
   };
 
-  const spendTraining = async () => {
+  const handleSpendTrainingButtonClick = async () => {
     if (training) {
       await dispatch(spendTrainingAction(training.id));
       dispatch(fetchBalanceAction());
     }
-  };
-
-  const handleStartTrainingButtonClick = () => {
-    setTrainingStarted(true);
-    setStartTrainingTime(new Date());
-    spendTraining();
-  };
-
-  const handleStopTrainingButtonClick = () => {
-    setTrainingStarted(false);
   };
 
   return (
@@ -417,7 +400,7 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
                               </span>
                               <span className="training-info__rating-icon">
                                 <svg width="18" height="18" aria-hidden="true">
-                                  <use xlinkHref="#icon-star"></use>
+                                  <IconStar />
                                 </svg>
                               </span>
                               <input
@@ -483,7 +466,6 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
                               onClick={handleBuyButtonClick}
                               className="btn training-info__buy"
                               type="button"
-                              disabled={!!isTrainingAlreadyInMyBalance}
                             >
                               Купить
                             </button>
@@ -524,7 +506,7 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
                           ></video>
                         )}
                       </div>
-                      {isTrainingAlreadyInMyBalance && trainingStarted && (
+                      {isTrainingAlreadyInMyBalance && (
                         <button
                           ref={playButtonRef}
                           onClick={handlePlayButtonClick}
@@ -572,24 +554,16 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
                     </div>
                   )}
                   <div className="training-video__buttons-wrapper">
-                    {trainingStarted ? (
+                    {
                       <button
-                        onClick={handleStopTrainingButtonClick}
-                        className="btn training-video__button"
-                        type="button"
-                      >
-                        Закончить
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleStartTrainingButtonClick}
+                        onClick={handleSpendTrainingButtonClick}
                         className="btn training-video__button training-video__button--start"
                         type="button"
                         disabled={isBeginTrainingButtonDisabled}
                       >
-                        Приступить
+                        Списать
                       </button>
-                    )}
+                    }
                     {isTrainer && isContentEditable && (
                       <div className="training-video__edit-buttons">
                         <button

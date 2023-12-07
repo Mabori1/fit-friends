@@ -1,3 +1,4 @@
+import { IconStar } from '../../helper/svg-const';
 import { FeedbackRdo } from '../../types/feedback.rdo';
 
 type FeedbackListItemProps = {
@@ -24,7 +25,7 @@ function FeedbacksListItem({ feedback }: FeedbackListItemProps): JSX.Element {
           <span className="review__user-name">{feedback.userName}</span>
           <div className="review__rating">
             <svg width="16" height="16" aria-hidden="true">
-              <use xlinkHref="#icon-star"></use>
+              <IconStar />
             </svg>
             <span>{feedback.rating}</span>
           </div>

@@ -317,10 +317,10 @@ export const fetchBalanceAction = createAsyncThunk<
 
 export const spendTrainingAction = createAsyncThunk<
   void,
-  undefined,
+  number,
   AsyncThunkConfig
->('user/spendTraining', async (_arg, { extra: api }) => {
-  await api.delete(APIRoute.SpendTraining);
+>('user/spendTraining', async (trainingId, { extra: api }) => {
+  await api.delete(`${APIRoute.SpendTraining}/${trainingId}`);
 });
 
 export const buyTrainingAction = createAsyncThunk<
