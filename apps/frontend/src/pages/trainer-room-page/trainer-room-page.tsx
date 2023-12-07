@@ -235,13 +235,15 @@ function TrainerRoomPage() {
         }),
       )
         .then(isFulfilled)
-        .then(() => {
+        .then(async () => {
           if (avatarFile) {
             const formData = new FormData();
             formData.append('file', avatarFile);
-            dispatch(uploadAvatarAction(formData)).catch(() => {
-              toast.error('Аватар не загружен');
-            });
+            const data = await dispatch(uploadAvatarAction(formData));
+            if (uploadAvatarAction.fulfilled.match(data)) {
+              await dispatch(updateUserAction({ avatar: data.payload.path }));
+              toast.success('Аватар успешно обновлен');
+            }
           }
         })
         .catch(() => {

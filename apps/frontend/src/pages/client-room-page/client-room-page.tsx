@@ -211,13 +211,13 @@ function ClientRoomPage(): JSX.Element {
         }),
       )
         .then(isFulfilled)
-        .then(() => {
+        .then(async () => {
           if (avatarFile) {
             const formData = new FormData();
             formData.append('file', avatarFile);
-            const data = dispatch(uploadAvatarAction(formData));
+            const data = await dispatch(uploadAvatarAction(formData));
             if (uploadAvatarAction.fulfilled.match(data)) {
-              dispatch(updateUserAction({ avatar: data.payload.path }));
+              await dispatch(updateUserAction({ avatar: data.payload.path }));
               toast.success('Аватар успешно обновлен');
             }
           }
