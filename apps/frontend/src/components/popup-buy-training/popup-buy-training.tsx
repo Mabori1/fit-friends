@@ -65,7 +65,6 @@ function PopupBuyTraining({
       );
 
       if (response.meta.requestStatus === 'fulfilled') {
-        console.log(response);
         toast.success(`Куплено тренировок: ${quantity} шт.`);
       }
 

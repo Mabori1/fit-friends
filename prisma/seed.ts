@@ -44,6 +44,11 @@ async function fiilDb() {
         role: userRole,
         description: faker.lorem.paragraph(4),
         location: faker.helpers.enumValue(UserLocation),
+        level: faker.helpers.enumValue(UserLevel),
+        typesOfTraining: faker.helpers.arrayElements(
+          ['бокс', 'аэробика', 'силовые', 'стрейчинг', 'фитнес', 'йога', 'бег'],
+          { min: 1, max: 3 },
+        ),
         client: {
           create:
             userRole === UserRole.Client
@@ -65,21 +70,19 @@ async function fiilDb() {
           create:
             userRole === UserRole.Trainer
               ? {
-                  certificate: faker.helpers.arrayElement([
-                    'sertificate1.pdf',
-                    'sertificate2.pdf',
-                    'sertificate3.pdf',
-                  ]),
+                  certificate: faker.helpers.arrayElements(
+                    [
+                      'sertificate1.pdf',
+                      'sertificate2.pdf',
+                      'sertificate3.pdf',
+                    ],
+                    { min: 1, max: 3 },
+                  ),
                   merits: faker.lorem.paragraph(1),
                   isPersonalTraining: faker.helpers.arrayElement([true, false]),
                 }
               : undefined,
         },
-        level: faker.helpers.enumValue(UserLevel),
-        typesOfTraining: faker.helpers.arrayElements(
-          ['бокс', 'аэробика', 'стрейчинг', 'фитнес', 'йога', 'бег'],
-          { min: 1, max: 3 },
-        ),
         orders: {
           create: [
             {
