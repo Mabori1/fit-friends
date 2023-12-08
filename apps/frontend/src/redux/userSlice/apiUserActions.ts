@@ -189,7 +189,7 @@ export const fetchClientFriendsAction = createAsyncThunk<
   undefined,
   AsyncThunkConfig
 >('user/fetchClientFriends', async (_arg, { extra: api }) => {
-  const { data } = await api.get<UserRdo[]>(APIRoute.TrainerFriends);
+  const { data } = await api.get<UserRdo[]>(APIRoute.ClientFriends);
   return data;
 });
 

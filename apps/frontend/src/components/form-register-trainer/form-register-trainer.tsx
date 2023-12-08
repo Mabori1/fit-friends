@@ -17,6 +17,7 @@ import {
 } from '@fit-friends/types';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
+  checkUserAction,
   updateUserAction,
   uploadCertificateAction,
 } from '../../redux/userSlice/apiUserActions';
@@ -104,6 +105,8 @@ function FormRegisgerTrainer() {
             });
           }
           reset();
+          dispatch(checkUserAction);
+
           navigate(AppRoute.TrainerRoom);
         })
         .catch(() => {

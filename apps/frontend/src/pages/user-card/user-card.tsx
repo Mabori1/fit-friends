@@ -5,10 +5,10 @@ import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getUserInfo } from '../../redux/trainingSlice/selectors';
 import { fetchUserInfoAction } from '../../redux/trainingSlice/apiTrainingActions';
 import { fetchOutPersonalOrderAction } from '../../redux/userSlice/apiUserActions';
-import { UserRole } from '@fit-friends/types';
 import UserCardTrainer from '../../components/user-card-trainer/user-card-trainer';
 import UserCardClient from '../../components/user-card-client/user-card-client';
 import { ArrowLeft } from '../../helper/svg-const';
+import { getIsTrainer } from '../../redux/userSlice/selectors';
 
 function UserCard(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -16,6 +16,7 @@ function UserCard(): JSX.Element {
   const userId = useParams().id;
 
   const user = useAppSelector(getUserInfo);
+  const isTrainer = useAppSelector(getIsTrainer);
 
   useEffect(() => {
     if (userId && user?.userId !== +userId) {
@@ -42,12 +43,9 @@ function UserCard(): JSX.Element {
                 <span>Назад</span>
               </button>
               <div className="inner-page__content">
-                {user?.role === UserRole.Trainer && (
-                  <UserCardTrainer trainer={user} />
-                )}
-                {user?.role === UserRole.Client && (
-                  <UserCardClient client={user} />
-                )}
+                {isTrainer && user && <UserCardTrainer trainer={user} />}
+                {!isTrainer && user && <UserCardClient client={user} />}
+                {!user && <h1>Пользователь не найден</h1>}
               </div>
             </div>
           </div>

@@ -29,8 +29,6 @@ export function App() {
   const isAuth = useAppSelector(getIsAuth);
   const isTrainer = useAppSelector(getIsTrainer);
 
-  console.log(isTrainer);
-
   if (isLoading) {
     //  return <LoadingPage />;
   }
