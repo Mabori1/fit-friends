@@ -28,9 +28,13 @@ export class TrainingQuery {
   @IsOptional()
   public limit: number = DefaultTraining.Limit;
 
-  @IsIn(['asc', 'desc'])
+  @IsIn(['asc', 'desc', ''])
   @IsOptional()
-  public sortDirection?: 'desc' | 'asc' = DefaultTraining.SortDirection;
+  public priceSort: 'desc' | 'asc' | '' = DefaultTraining.SortDirection;
+
+  @IsIn(['asc', 'desc', ''])
+  @IsOptional()
+  public ratingSort: 'desc' | 'asc' | '' = DefaultTraining.SortDirection;
 
   @IsOptional()
   @Transform(({ value }) => +value)
@@ -49,10 +53,6 @@ export class TrainingQuery {
   @Transform(({ value }) => +value)
   @IsOptional()
   public priceMax: number;
-
-  @IsIn(['asc', 'desc', 'none'])
-  @IsOptional()
-  public priceSort: 'asc' | 'desc' = DefaultTraining.SortDirection;
 
   @Min(CaloriesOfDay.Min)
   @Max(CaloriesOfDay.Max)

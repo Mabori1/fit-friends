@@ -500,7 +500,7 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
                           <video
                             onPause={handlePauseControlClick}
                             ref={videoElementRef}
-                            src={`${import.meta.env.VITE_BACKEND_URL}/${
+                            src={`${import.meta.env.VITE_SERVER_URL_FILES}${
                               training.video
                             }`}
                           ></video>

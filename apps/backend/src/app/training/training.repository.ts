@@ -122,6 +122,8 @@ export class TrainingRepository
     durations,
     levelOfUser,
     isPromo,
+    priceSort,
+    ratingSort,
   }): Promise<ITraining[] | null> {
     return await this.prisma.training.findMany({
       where: {
@@ -134,7 +136,18 @@ export class TrainingRepository
           { isPromo },
         ],
       },
-
+      orderBy: [
+        ratingSort !== ''
+          ? ratingSort === 'asc'
+            ? { rating: 'asc' }
+            : { rating: 'desc' }
+          : { createdAt: 'desc' },
+        priceSort !== ''
+          ? priceSort === 'asc'
+            ? { price: 'asc' }
+            : { price: 'desc' }
+          : { createdAt: 'desc' },
+      ],
       include: { feedbacks: true },
       skip: page > 0 ? limit * (page - 1) : undefined,
     });

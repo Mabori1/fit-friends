@@ -37,6 +37,7 @@ export const getNotificationDate = (dateArg: Date) => {
 
   return notificationDate;
 };
+
 export const createQueryString = (queryArgs?: TrainingQuery & UserQuery) => {
   if (!queryArgs) {
     return '';

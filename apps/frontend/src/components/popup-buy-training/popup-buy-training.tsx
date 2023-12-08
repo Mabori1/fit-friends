@@ -52,7 +52,6 @@ function PopupBuyTraining({
 
   const buyTraining = async () => {
     if (training.price && paymentMethod) {
-      console.log(training.id);
       const response = await dispatch(
         buyTrainingAction({
           type: TypeOfOrder.Subscription,
@@ -78,8 +77,9 @@ function PopupBuyTraining({
   const handleBuyButtonClick = () => {
     if (!paymentMethod) {
       setPaymentMethodError('Выберите способ оплаты');
-      buyTraining();
+      return;
     }
+    buyTraining();
   };
 
   return (

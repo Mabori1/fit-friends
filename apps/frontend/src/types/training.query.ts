@@ -1,10 +1,11 @@
 import { DefaultTraining } from '@fit-friends/types';
+import { SortDirection } from '../constants';
 
 export class TrainingQuery {
   public limit?: number = DefaultTraining.Limit;
-  public sortDirection?: 'desc' | 'asc' = DefaultTraining.SortDirection;
+  public sortDirection?: 'desc' | 'asc' = SortDirection.Desc;
   public priceSort?: 'asc' | 'desc' = 'desc';
-  public ratingSort?: 'asc' | 'desc' = 'desc';
+  public ratingSort?: 'asc' | 'desc' = SortDirection.Desc;
   public page?: number = DefaultTraining.Page;
   public priceMin?: number;
   public priceMax?: number;
