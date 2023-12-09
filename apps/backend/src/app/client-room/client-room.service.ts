@@ -67,8 +67,7 @@ export class ClientRoomService {
       isConfirmed,
     });
 
-    const newFriend = await this.friendRepository.create(userFriendEntity);
-    console.log(newFriend);
+    await this.friendRepository.create(userFriendEntity);
 
     await this.notifyService.addFriend({
       targetEmail: friend.email,
@@ -77,7 +76,7 @@ export class ClientRoomService {
       srcEmail: payload.email,
     });
 
-    return newFriend;
+    return friend;
   }
 
   public async deleteFriend(userId: number, friendId: number): Promise<void> {

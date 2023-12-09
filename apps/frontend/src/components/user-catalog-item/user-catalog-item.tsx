@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { nanoid } from 'nanoid';
 import { UserRdo } from '../../types/user.rdo';
 import { useAppSelector } from '../../redux/store';
 import { getIsTrainer } from '../../redux/userSlice/selectors';
@@ -67,7 +66,7 @@ function UsersCatalogItem({ user }: UsersCatalogItemProps): JSX.Element {
         </div>
         <ul className="thumbnail-user__hashtags-list">
           {user.typesOfTraining.map((type) => (
-            <li key={nanoid()} className="thumbnail-user__hashtags-item">
+            <li key={type} className="thumbnail-user__hashtags-item">
               <div className="hashtag thumbnail-user__hashtag">
                 <span>{`#${type}`}</span>
               </div>

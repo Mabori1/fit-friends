@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { IconStar } from '../../helper/svg-const';
+import { AppRoute } from '../../constants';
 
 function PopularTrainingCard() {
   return (
@@ -55,13 +56,13 @@ function PopularTrainingCard() {
           <div className="thumbnail-training__button-wrapper">
             <Link
               className="btn btn--small thumbnail-training__button-catalog"
-              to="#"
+              to={AppRoute.UserCard}
             >
               Подробнее
             </Link>
             <Link
               className="btn btn--small btn--outlined thumbnail-training__button-catalog"
-              to="#"
+              to={AppRoute.UserCard}
             >
               Отзывы
             </Link>

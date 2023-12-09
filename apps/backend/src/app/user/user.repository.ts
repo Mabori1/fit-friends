@@ -169,7 +169,6 @@ export class UserRepository
     filter: IUserFilter,
     page: number,
   ): Promise<IUser[]> | null {
-    console.log(filter.locations);
     return this.prisma.user.findMany({
       where: {
         AND: [

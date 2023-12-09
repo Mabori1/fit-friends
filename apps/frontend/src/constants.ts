@@ -44,6 +44,7 @@ export enum AppRoute {
   TrainingCatalog = '/training-catalog',
   UsersCatalog = '/users-catalog',
   UserCardId = '/user-card/:id',
+  UserCard = '/user-card',
   NotFound = '*',
 }
 

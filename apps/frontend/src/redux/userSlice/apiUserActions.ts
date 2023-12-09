@@ -9,7 +9,7 @@ import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/update-user.dto';
 import { UploadedFileRdo } from '../../types/uploaded-files.rdo';
-import { IBalance, IFriend, INotify, OrderStatus } from '@fit-friends/types';
+import { IBalance, INotify, OrderStatus } from '@fit-friends/types';
 import { UserRdo } from '../../types/user.rdo';
 import { UserRequestRdo } from '../../types/user-request.rdo';
 import { UserRequestType } from '../../types/user-request-type.enum';
@@ -267,21 +267,25 @@ export const fetchUsersCatalogAction = createAsyncThunk<
 });
 
 export const fetchAddFriendAction = createAsyncThunk<
-  IFriend,
+  UserRdo,
   number,
   AsyncThunkConfig
 >('user/fetchAddFriendAction', async (friendId, { extra: api }) => {
-  const { data } = await api.post<IFriend>(`${APIRoute.Users}${friendId}`);
+  const { data } = await api.post<UserRdo>(
+    `${APIRoute.AddRemoveFriend}/${friendId}`,
+  );
   return data;
 });
-
+type RemoveFriendId = {
+  friendId: number;
+};
 export const fetchRemoveFriendAction = createAsyncThunk<
-  undefined,
+  RemoveFriendId,
   number,
   AsyncThunkConfig
 >('user/fetchRemoveFriendAction', async (friendId, { extra: api }) => {
-  const { data } = await api.delete<undefined>(`${APIRoute.Users}${friendId}`);
-  return data;
+  await api.delete<undefined>(`${APIRoute.AddRemoveFriend}/${friendId}`);
+  return friendId;
 });
 
 export const fetchOrdersAction = createAsyncThunk<

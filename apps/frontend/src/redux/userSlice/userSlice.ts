@@ -22,6 +22,8 @@ import {
   toggleSubscribeAction,
   buyPersonalTrainingAction,
   checkSubscribeAction,
+  fetchAddFriendAction,
+  fetchRemoveFriendAction,
 } from './apiUserActions';
 import { UserRequestRdo } from '../../types/user-request.rdo';
 import { UserRdo } from '../../types/user.rdo';
@@ -233,6 +235,14 @@ export const userSlice = createSlice({
       })
       .addCase(toggleSubscribeAction.fulfilled, (state, action) => {
         state.subscribeStatus = action.payload;
+      })
+      .addCase(fetchAddFriendAction.fulfilled, (state, action) => {
+        state.clientFriends.push(action.payload);
+      })
+      .addCase(fetchRemoveFriendAction.fulfilled, (state, action) => {
+        state.clientFriends = state.clientFriends.filter(
+          (friend) => friend.userId !== action.payload.friendId,
+        );
       })
       .addCase(toggleSubscribeAction.rejected, (state) => {
         state.subscribeStatus = false;

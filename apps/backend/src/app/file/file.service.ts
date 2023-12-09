@@ -114,7 +114,6 @@ export class FileService {
       if (fs.existsSync(pathFile)) {
         fs.unlink(pathFile, (err) => {
           if (err) {
-            console.error(err);
             return err;
           }
         });

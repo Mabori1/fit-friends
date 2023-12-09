@@ -32,7 +32,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RoleClientGuard)
   @Get('/feed')
   public async feedLine(@Query() query: UserQuery) {
-    console.log('query', query);
     const users = await this.userService.getUsers(query);
     return fillObject(UserRdo, users);
   }
@@ -60,7 +59,6 @@ export class UserController {
     @Req() { user: payload }: IRequestWithTokenPayload,
     @Body() dto: UpdateUserDto,
   ) {
-    console.log(dto);
     const updatedUser = await this.userService.updateUser(payload.sub, dto);
     return fillObject(UserRdo, updatedUser);
   }
