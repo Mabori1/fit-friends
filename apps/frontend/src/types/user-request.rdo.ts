@@ -6,8 +6,7 @@ export class UserRequestRdo {
   public createdAt!: string;
   public updatedAt!: string;
   public type!: UserRequestType;
-  public initiatorId!: number;
+  public targetId!: number;
   public userId!: number;
-  public statusChangeDate!: string;
   public status!: OrderStatus;
 }

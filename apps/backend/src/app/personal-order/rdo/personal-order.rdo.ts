@@ -24,7 +24,7 @@ export class PersonalOrderRdo {
     required: true,
   })
   @Expose()
-  public trainerId: number;
+  public targetId: number;
 
   @ApiProperty({
     description: 'The order status',

@@ -18,9 +18,9 @@ export class PersonalOrderService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  public async buyPersonalTraining(userId: number, trainerId: number) {
+  public async buyPersonalTraining(userId: number, targetId: number) {
     const trainer = await this.userRepository
-      .findById(trainerId)
+      .findById(targetId)
       .catch((err) => {
         this.logger.error(err);
         throw new NotFoundException('User not found');
@@ -30,10 +30,10 @@ export class PersonalOrderService {
       throw new NotFoundException('Trainer not found');
     }
 
-    if (userId !== trainerId) {
+    if (userId !== targetId) {
       const entity = new PersonalOrderEntity({
         userId,
-        trainerId,
+        targetId,
         orderStatus: OrderStatus.Pending,
       });
       return await this.personalOrderRepository.create(entity);
@@ -62,7 +62,7 @@ export class PersonalOrderService {
     if (!order) {
       throw new NotFoundException('Order not found');
     }
-    if (order.trainerId !== payload.sub) {
+    if (order.targetId !== payload.sub) {
       throw new ForbiddenException('You are not the trainer');
     }
 

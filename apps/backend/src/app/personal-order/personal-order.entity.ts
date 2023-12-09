@@ -4,7 +4,7 @@ export class PersonalOrderEntity
   implements IEntity<PersonalOrderEntity>, IPersonalOrder
 {
   userId: number;
-  trainerId: number;
+  targetId: number;
   createdAt: Date;
   updateAt: Date;
   orderStatus: string;
@@ -15,7 +15,7 @@ export class PersonalOrderEntity
 
   public fillEntity(entity: IPersonalOrder) {
     this.userId = entity.userId;
-    this.trainerId = entity.trainerId;
+    this.targetId = entity.targetId;
     this.orderStatus = entity.orderStatus || OrderStatus.Pending;
     this.createdAt = new Date();
     this.updateAt = entity.updateAt || new Date();

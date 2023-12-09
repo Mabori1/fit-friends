@@ -25,18 +25,18 @@ function FriendsListItem({
   isTrainer,
 }: FriendsListItemProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const isFrindTrainer = friend.role === UserRole.Trainer;
+  const isFriendTrainer = friend.role === UserRole.Trainer;
 
   const timeNow = Number(new Date());
   const lastTimeUpdated = Number(new Date(friend.updatedAt ?? timeNow));
   const timeDiff = Math.abs(timeNow - lastTimeUpdated);
 
   const isUserOnline = timeDiff < MAX_DIFF_IN_MILLISECONDS;
-  const isReadyForTraining = !isFrindTrainer
+  const isReadyForTraining = !isFriendTrainer
     ? friend.client?.isReady
     : friend.trainer?.isPersonalTraining;
 
-  const createUserRequest = async () => {
+  const createPersonalOrder = async () => {
     await dispatch(
       sendTrainingRequestAction({
         type: UserRequestType.Training,
@@ -50,7 +50,7 @@ function FriendsListItem({
   };
 
   const handleInviteButtonClick = () => {
-    createUserRequest();
+    createPersonalOrder();
   };
 
   const dispatchAcceptRequest = async () => {
@@ -173,7 +173,7 @@ function FriendsListItem({
           )}
         </div>
         {request?.status === OrderStatus.Pending &&
-          friend.userId === request.initiatorId && (
+          friend.userId === request.targetId && (
             <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-user">
               <p className="thumbnail-friend__request-text">
                 Запрос на&nbsp;персональную тренировку

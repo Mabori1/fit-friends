@@ -1,7 +1,7 @@
 export interface IPersonalOrder {
   id?: number;
   userId: number;
-  trainerId: number;
+  targetId: number;
   createdAt?: Date;
   updateAt?: Date;
   orderStatus: string;

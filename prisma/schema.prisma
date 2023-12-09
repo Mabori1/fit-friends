@@ -132,7 +132,7 @@ model Order {
 model PersonalOrder {
   id          Int      @id @default(autoincrement())
   userId      Int      @map("user_id")
-  trainerId   Int      @map("trainer_id")
+  targetId   Int      @map("target_id")
   createdAt   DateTime @default(now()) @map("created_at")
   updateAt    DateTime @default(now()) @map("update_at")
   orderStatus String   @default("") @map("order_status")
