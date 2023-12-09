@@ -1,3 +1,4 @@
+import { PersonalOrderStatusQuery } from '../types/personal-order-status-query';
 import { TrainingQuery } from '../types/training.query';
 import { UserQuery } from '../types/user.query';
 
@@ -38,7 +39,9 @@ export const getNotificationDate = (dateArg: Date) => {
   return notificationDate;
 };
 
-export const createQueryString = (queryArgs?: TrainingQuery & UserQuery) => {
+export const createQueryString = (
+  queryArgs?: TrainingQuery & UserQuery & PersonalOrderStatusQuery,
+) => {
   if (!queryArgs) {
     return '';
   }
@@ -70,6 +73,8 @@ export const createQueryString = (queryArgs?: TrainingQuery & UserQuery) => {
         ? `typesOfTraining=${queryArgs.typesOfTraining}`
         : ''
     }`,
+    `${queryArgs.orderId ? `orderId=${queryArgs.orderId}` : ''}`,
+    `${queryArgs.newStatus ? `newStatus=${queryArgs.newStatus}` : ''}`,
   ];
 
   const isNotEmptyString =

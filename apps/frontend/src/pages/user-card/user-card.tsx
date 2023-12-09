@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getUserInfo } from '../../redux/trainingSlice/selectors';
 import { fetchUserInfoAction } from '../../redux/trainingSlice/apiTrainingActions';
-import { fetchOutPersonalOrderAction } from '../../redux/userSlice/apiUserActions';
 import UserCardTrainer from '../../components/user-card-trainer/user-card-trainer';
 import UserCardClient from '../../components/user-card-client/user-card-client';
 import { ArrowLeft } from '../../helper/svg-const';
 import { getIsTrainer } from '../../redux/userSlice/selectors';
+import { fetchPersonalOrdersAction } from '../../redux/userSlice/apiUserActions';
 
 function UserCard(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -22,7 +22,9 @@ function UserCard(): JSX.Element {
     if (userId && user?.userId !== +userId) {
       dispatch(fetchUserInfoAction(+userId));
     }
-    dispatch(fetchOutPersonalOrderAction());
+    if (user?.userId) {
+      dispatch(fetchPersonalOrdersAction(user?.userId));
+    }
   }, [dispatch, user, userId]);
 
   return (

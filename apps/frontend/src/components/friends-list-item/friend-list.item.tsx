@@ -1,31 +1,31 @@
-import { UserRequestRdo } from '../../types/user-request.rdo';
-import { useAppDispatch } from '../../redux/store';
-import { UserRequestType } from '../../types/user-request-type.enum';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { OrderStatus, UserRole } from '@fit-friends/types';
 import { MAX_DIFF_IN_MILLISECONDS } from '../../constants';
-import {
-  changePersonalOrderStatusAction,
-  fetchInPersonalOrderAction,
-  fetchOutPersonalOrderAction,
-  sendTrainingRequestAction,
-} from '../../redux/userSlice/apiUserActions';
 import { UserRdo } from '../../types/user.rdo';
 import { IconLocation } from '../../helper/svg-const';
 import { IconInvite } from '../../helper/svg-const';
+import { PersonalOrderRdo } from '../../types/personal-order.rdo';
+import {
+  addPersonalOrderAction,
+  changePersonalOrderStatusAction,
+  fetchPersonalOrdersAction,
+} from '../../redux/userSlice/apiUserActions';
+import { getUserId } from '../../redux/userSlice/selectors';
 
 type FriendsListItemProps = {
   friend: UserRdo;
-  request: UserRequestRdo | undefined;
+  personalOrder: PersonalOrderRdo;
   isTrainer: boolean;
 };
 
 function FriendsListItem({
   friend,
-  request,
+  personalOrder,
   isTrainer,
 }: FriendsListItemProps): JSX.Element {
   const dispatch = useAppDispatch();
   const isFriendTrainer = friend.role === UserRole.Trainer;
+  const userId = useAppSelector(getUserId);
 
   const timeNow = Number(new Date());
   const lastTimeUpdated = Number(new Date(friend.updatedAt ?? timeNow));
@@ -36,59 +36,39 @@ function FriendsListItem({
     ? friend.client?.isReady
     : friend.trainer?.isPersonalTraining;
 
-  const createPersonalOrder = async () => {
-    await dispatch(
-      sendTrainingRequestAction({
-        type: UserRequestType.Training,
-        userId: friend.userId,
-      }),
-    );
-    dispatch(fetchInPersonalOrderAction());
-    if (!isTrainer) {
-      dispatch(fetchOutPersonalOrderAction());
+  const handleInviteButtonClick = async () => {
+    await dispatch(addPersonalOrderAction(friend.userId));
+    if (userId) {
+      dispatch(fetchPersonalOrdersAction(userId));
     }
   };
 
-  const handleInviteButtonClick = () => {
-    createPersonalOrder();
-  };
-
-  const dispatchAcceptRequest = async () => {
-    if (request) {
+  const handleAcceptTrainingRequestButtonClick = async () => {
+    if (personalOrder) {
       await dispatch(
         changePersonalOrderStatusAction({
-          trainingRequestStatus: OrderStatus.Accepted,
-          requestId: request.id,
+          orderId: personalOrder.id,
+          newStatus: OrderStatus.Accepted,
         }),
       );
-      dispatch(fetchInPersonalOrderAction());
-      if (!isTrainer) {
-        dispatch(fetchInPersonalOrderAction());
+      if (userId) {
+        dispatch(fetchPersonalOrdersAction(userId));
       }
     }
   };
 
-  const dispatchRejectRequest = async () => {
-    if (request) {
+  const handleRejectTrainingRequestButtonClick = async () => {
+    if (personalOrder) {
       await dispatch(
         changePersonalOrderStatusAction({
-          trainingRequestStatus: OrderStatus.Declined,
-          requestId: request.id,
+          orderId: personalOrder.id,
+          newStatus: OrderStatus.Declined,
         }),
       );
-      dispatch(fetchInPersonalOrderAction());
-      if (!isTrainer) {
-        dispatch(fetchInPersonalOrderAction());
+      if (userId) {
+        dispatch(fetchPersonalOrdersAction(userId));
       }
     }
-  };
-
-  const handleAcceptTrainingRequestButtonClick = () => {
-    dispatchAcceptRequest();
-  };
-
-  const handleRejectTrainingRequestButtonClick = () => {
-    dispatchRejectRequest();
   };
 
   return (
@@ -153,7 +133,7 @@ function FriendsListItem({
                   onClick={handleInviteButtonClick}
                   className="thumbnail-friend__invite-button"
                   type="button"
-                  disabled={!!request}
+                  disabled={!!personalOrder}
                 >
                   <svg>
                     <IconInvite />
@@ -172,8 +152,8 @@ function FriendsListItem({
             </div>
           )}
         </div>
-        {request?.status === OrderStatus.Pending &&
-          friend.userId === request.targetId && (
+        {personalOrder?.orderStatus === OrderStatus.Pending &&
+          friend.userId === personalOrder.targetId && (
             <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-user">
               <p className="thumbnail-friend__request-text">
                 Запрос на&nbsp;персональную тренировку
@@ -196,8 +176,8 @@ function FriendsListItem({
               </div>
             </div>
           )}
-        {request?.status === OrderStatus.Accepted &&
-          friend.userId === request.userId && (
+        {personalOrder?.orderStatus === OrderStatus.Accepted &&
+          friend.userId === personalOrder.userId && (
             <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-user">
               {isTrainer && (
                 <p className="thumbnail-friend__request-text">
@@ -211,8 +191,8 @@ function FriendsListItem({
               )}
             </div>
           )}
-        {request?.status === OrderStatus.Declined &&
-          friend.userId === request.userId && (
+        {personalOrder?.orderStatus === OrderStatus.Declined &&
+          friend.userId === personalOrder.userId && (
             <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-coach">
               {isTrainer && (
                 <p className="thumbnail-friend__request-text">

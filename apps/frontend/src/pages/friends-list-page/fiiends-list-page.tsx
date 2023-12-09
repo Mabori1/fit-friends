@@ -13,11 +13,11 @@ import {
   getOrders,
   getPersonalOrders,
   getTrainerFriends,
+  getUserId,
 } from '../../redux/userSlice/selectors';
 import {
   fetchClientFriendsAction,
-  fetchInPersonalOrderAction,
-  fetchOutPersonalOrderAction,
+  fetchPersonalOrdersAction,
   fetchTrainerFriendsAction,
 } from '../../redux/userSlice/apiUserActions';
 import FriendsListItem from '../../components/friends-list-item/friend-list.item';
@@ -32,6 +32,7 @@ function FriendsListPage(): JSX.Element {
   const myFriends = useAppSelector(
     isTrainer ? getTrainerFriends : getClientFriends,
   );
+  const userId = useAppSelector(getUserId);
 
   const personalOrders = useAppSelector(getPersonalOrders);
   const orders = useAppSelector(getOrders);
@@ -63,9 +64,9 @@ function FriendsListPage(): JSX.Element {
     window.scrollTo(0, 0);
   };
 
-  const findIncomingRequest = (friendId: number) => {
+  const findPersonalOrder = (friendId: number) => {
     const friendRequest = personalOrders.find(
-      (request) => request.initiatorId === friendId,
+      (request) => request.target === friendId,
     );
     return friendRequest;
   };
@@ -82,11 +83,10 @@ function FriendsListPage(): JSX.Element {
       ? dispatch(fetchTrainerFriendsAction())
       : dispatch(fetchClientFriendsAction());
 
-    dispatch(fetchInPersonalOrderAction());
-    if (!isTrainer) {
-      dispatch(fetchOutPersonalOrderAction());
+    if (userId) {
+      dispatch(fetchPersonalOrdersAction(userId));
     }
-  }, [dispatch, isTrainer]);
+  }, [dispatch, userId, isTrainer]);
 
   const handleOnlineStatusInputChange = () => {
     setOnlineFilterChecked((prevState) => !prevState);
@@ -139,8 +139,8 @@ function FriendsListPage(): JSX.Element {
                     <FriendsListItem
                       key={friend.userId}
                       friend={friend}
-                      request={
-                        findIncomingRequest(friend.userId ?? 0) ??
+                      personalOrder={
+                        findPersonalOrder(friend.userId ?? 0) ??
                         findOutgoingRequest(friend.userId ?? 0)
                       }
                       isTrainer={isTrainer}

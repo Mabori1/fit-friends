@@ -38,9 +38,9 @@ export class PersonalOrderRepository
     });
   }
 
-  public async findByTrainerId(trainerId: number): Promise<IPersonalOrder[]> {
+  public async findByTrainerId(targetId: number): Promise<IPersonalOrder[]> {
     return await this.prisma.personalOrder.findMany({
-      where: { trainerId },
+      where: { targetId },
     });
   }
 

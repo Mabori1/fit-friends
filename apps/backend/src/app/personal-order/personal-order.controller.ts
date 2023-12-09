@@ -31,13 +31,13 @@ export class PersonalOrderController {
   @UseGuards(JwtAuthGuard, RoleClientGuard)
   @Post(':id')
   public async addPersonalOrder(
-    @Param('id') trainerId: number,
+    @Param('id') targetId: number,
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {
     const newPersonalOrder =
       await this.personalOrderService.buyPersonalTraining(
         payload.sub,
-        trainerId,
+        targetId,
       );
     return fillObject(PersonalOrderRdo, newPersonalOrder);
   }
@@ -67,9 +67,9 @@ export class PersonalOrderController {
   })
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
-  public async checkPersonalOrder(@Param('id') orderId: number) {
-    const personalOrder =
-      await this.personalOrderService.getPersonalOrder(orderId);
-    return fillObject(PersonalOrderRdo, personalOrder);
+  public async getPersonalOrders(@Param('id') userId: number) {
+    const personalOrders =
+      await this.personalOrderService.getPersonalOrders(userId);
+    return fillObject(PersonalOrderRdo, personalOrders);
   }
 }

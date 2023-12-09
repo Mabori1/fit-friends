@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PersonalOrderRepository } from './personal-order.repository';
 import { UserRepository } from '../user/user.repository';
-import { ITokenPayload, OrderStatus, UserRole } from '@fit-friends/types';
+import { ITokenPayload, OrderStatus } from '@fit-friends/types';
 import { PersonalOrderEntity } from './personal-order.entity';
 
 @Injectable()
@@ -19,15 +19,15 @@ export class PersonalOrderService {
   ) {}
 
   public async buyPersonalTraining(userId: number, targetId: number) {
-    const trainer = await this.userRepository
+    const targetUser = await this.userRepository
       .findById(targetId)
       .catch((err) => {
         this.logger.error(err);
         throw new NotFoundException('User not found');
       });
 
-    if (!trainer || trainer.role === UserRole.Client) {
-      throw new NotFoundException('Trainer not found');
+    if (!targetUser) {
+      throw new NotFoundException('TargetUser not found');
     }
 
     if (userId !== targetId) {

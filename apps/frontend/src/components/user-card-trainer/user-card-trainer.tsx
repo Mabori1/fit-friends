@@ -14,7 +14,7 @@ import {
   buyPersonalTrainingAction,
   checkSubscribeAction,
   fetchAddFriendAction,
-  fetchOutPersonalOrderAction,
+  fetchPersonalOrdersAction,
   fetchRemoveFriendAction,
   fetchTrainerFriendsAction,
   toggleSubscribeAction,
@@ -100,7 +100,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
 
   const handleInviteButtonClick = async () => {
     await dispatch(buyPersonalTrainingAction(trainer.userId));
-    dispatch(fetchOutPersonalOrderAction());
+    dispatch(fetchPersonalOrdersAction(trainer.userId));
   };
 
   const handleSubscribeInputChange = async () => {

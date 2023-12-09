@@ -333,8 +333,7 @@ function TrainerRoomPage() {
       setTypesOfTraining(user.typesOfTraining ?? []);
       setLocation(user.location);
       setGender(user.gender);
-      setLevel(user.level ?? 'новичок');
-      setIsPersonalTraining(user.trainer?.isPersonalTraining ?? false);
+      setLevel(user.level);
     } else {
       dispatch(checkUserAction());
     }

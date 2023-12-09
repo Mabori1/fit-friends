@@ -9,16 +9,15 @@ import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { UpdateUserDto } from '../../types/update-user.dto';
 import { UploadedFileRdo } from '../../types/uploaded-files.rdo';
-import { IBalance, INotify, OrderStatus } from '@fit-friends/types';
+import { IBalance, INotify } from '@fit-friends/types';
 import { UserRdo } from '../../types/user.rdo';
-import { UserRequestRdo } from '../../types/user-request.rdo';
-import { UserRequestType } from '../../types/user-request-type.enum';
 import { createQueryString } from '../../helper/utils';
 import { UserQuery } from '../../types/user.query';
 import { OrderQuery } from '../../types/order.query';
 import { OrderRdo } from '../../types/order.rdo';
 import { OrderDto } from '../../types/order.dto';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
+import { PersonalOrderStatusQuery } from '../../types/personal-order-status-query';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -193,66 +192,36 @@ export const fetchClientFriendsAction = createAsyncThunk<
   return data;
 });
 
-export const fetchInPersonalOrderAction = createAsyncThunk<
-  PersonalOrderRdo[],
-  undefined,
+// export const fetchOutPersonalOrderAction = createAsyncThunk<
+//   PersonalOrderRdo[],
+//   undefined,
+//   AsyncThunkConfig
+// >('user/fetchOutPersonalOrder', async (_arg, { extra: api }) => {
+//   const { data } = await api.post<PersonalOrderRdo[]>(APIRoute.Check);
+//   return data;
+// });
+
+export const addPersonalOrderAction = createAsyncThunk<
+  PersonalOrderRdo,
+  number,
   AsyncThunkConfig
->('user/fetchInPersonalOrder', async (_arg, { extra: api }) => {
-  const { data } = await api.get<PersonalOrderRdo[]>(
-    APIRoute.InPersonalTraining,
+>('user/addPersonalOrderAction', async (targetId, { extra: api }) => {
+  const { data } = await api.post<PersonalOrderRdo>(
+    `${APIRoute.PersonalOrder}/${targetId}`,
   );
   return data;
 });
-
-export const fetchOutPersonalOrderAction = createAsyncThunk<
-  PersonalOrderRdo[],
-  undefined,
-  AsyncThunkConfig
->('user/fetchOutPersonalOrder', async (_arg, { extra: api }) => {
-  const { data } = await api.post<PersonalOrderRdo[]>(APIRoute.Check);
-  return data;
-});
-
-type TrainingRequestDto = {
-  type: UserRequestType.Training;
-  userId?: number;
-};
-
-export const sendTrainingRequestAction = createAsyncThunk<
-  UserRequestRdo,
-  TrainingRequestDto,
-  AsyncThunkConfig
->('sendTrainingRequestAction', async (trainingRequest, { extra: api }) => {
-  const { data } = await api.post<UserRequestRdo>(
-    `${APIRoute.InPersonalTraining}`,
-    trainingRequest,
-  );
-  return data;
-});
-
-type ChangeRequestStatusDto = {
-  trainingRequestStatus: OrderStatus;
-  requestId: number;
-};
 
 export const changePersonalOrderStatusAction = createAsyncThunk<
-  UserRequestRdo,
-  ChangeRequestStatusDto,
+  PersonalOrderRdo,
+  PersonalOrderStatusQuery,
   AsyncThunkConfig
->(
-  'user/changePersonalOrderStatusAction',
-  async (changeRequestStatusDto, { extra: api }) => {
-    const requestId = changeRequestStatusDto.requestId;
-    const updateUserRequestDto = {
-      status: changeRequestStatusDto.trainingRequestStatus,
-    };
-    const { data } = await api.patch<UserRequestRdo>(
-      `${APIRoute.ChangePersonalTraining}/${requestId}`,
-      updateUserRequestDto,
-    );
-    return data;
-  },
-);
+>('user/changePersonalOrderStatusAction', async (query, { extra: api }) => {
+  const { data } = await api.patch<PersonalOrderRdo>(
+    `${APIRoute.PersonalOrder}${createQueryString(query)}`,
+  );
+  return data;
+});
 
 export const fetchUsersCatalogAction = createAsyncThunk<
   UserRdo[],
@@ -286,8 +255,8 @@ export const fetchRemoveFriendAction = createAsyncThunk<
   number,
   AsyncThunkConfig
 >('user/fetchRemoveFriendAction', async (friendId, { extra: api }) => {
-  await api.delete<number>(`${APIRoute.AddRemoveFriend}/${friendId}`);
-  return friendId;
+  await api.delete<undefined>(`${APIRoute.AddRemoveFriend}/${friendId}`);
+  return { friendId };
 });
 
 export const fetchOrdersAction = createAsyncThunk<
@@ -303,11 +272,11 @@ export const fetchOrdersAction = createAsyncThunk<
 
 export const fetchPersonalOrdersAction = createAsyncThunk<
   PersonalOrderRdo[],
-  OrderQuery,
+  number,
   AsyncThunkConfig
->('user/fetchPersonalOrdersAction', async (query, { extra: api }) => {
+>('user/fetchPersonalOrdersAction', async (userId, { extra: api }) => {
   const { data } = await api.get<PersonalOrderRdo[]>(
-    `${APIRoute.TrainerOrders}${createQueryString(query)}`,
+    `${APIRoute.PersonalOrder}/${userId}`,
   );
   return data;
 });

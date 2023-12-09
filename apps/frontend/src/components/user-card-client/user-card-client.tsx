@@ -16,7 +16,7 @@ type UserCardProps = {
 
 function UserCardClient({ client }: UserCardProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const isFriend = useAppSelector(getIsClientFriend(client?.userId));
+  const isFriend = useAppSelector(getIsClientFriend(client?.userId || 0));
 
   useEffect(() => {
     dispatch(fetchClientFriendsAction());
