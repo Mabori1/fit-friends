@@ -172,10 +172,10 @@ export class UserRepository
     return this.prisma.user.findMany({
       where: {
         AND: [
-          { role: filter.role ? { contains: filter.role } : 'пользователь' },
+          { role: { contains: filter.role } },
 
           {
-            location: filter.locations ? { in: filter.locations } : undefined,
+            location: { in: filter.locations },
           },
 
           { level: { contains: filter.level } },

@@ -1,12 +1,6 @@
-import {
-  IBalance,
-  INotify,
-  IPersonalOrder,
-  UserRole,
-} from '@fit-friends/types';
+import { IBalance, INotify, UserRole } from '@fit-friends/types';
 import { AuthStatus, NameSpace, SliceStatus } from '../../constants';
 import { State } from '../store';
-import { UserRequestRdo } from '../../types/user-request.rdo';
 import { UserRdo } from '../../types/user.rdo';
 import { OrderRdo } from '../../types/order.rdo';
 
@@ -49,19 +43,28 @@ export const getTrainerFriends = (state: State): UserRdo[] =>
 export const getClientFriends = (state: State): UserRdo[] =>
   state[NameSpace.UserSlice].clientFriends;
 
-export const getIncomingRequests = (state: State): UserRequestRdo[] =>
-  state[NameSpace.UserSlice].incomingRequests;
-export const getOutgoingRequests = (state: State): UserRequestRdo[] =>
-  state[NameSpace.UserSlice].outgoingRequests;
+export const getIsClientFriend =
+  (id: number) =>
+  (state: State): boolean =>
+    state[NameSpace.UserSlice].clientFriends.some(
+      (friend) => friend.userId === id,
+    );
+
+export const getIsTrainerFriend =
+  (id: number) =>
+  (state: State): boolean =>
+    state[NameSpace.UserSlice].trainerFriends.some(
+      (friend) => friend.userId === id,
+    );
+
+export const getPersonalOrders = (state: State): PersonalOrderRdo[] =>
+  state[NameSpace.UserSlice].personalOrders;
 
 export const getUsers = (state: State): UserRdo[] =>
   state[NameSpace.UserSlice].users;
 
 export const getOrders = (state: State): OrderRdo[] | undefined =>
   state[NameSpace.UserSlice].orders;
-
-export const getPersonalOrders = (state: State): IPersonalOrder[] | undefined =>
-  state[NameSpace.UserSlice].personalOrders;
 
 export const getBalance = (state: State): IBalance[] | undefined =>
   state[NameSpace.UserSlice].balance;

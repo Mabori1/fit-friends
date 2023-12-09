@@ -209,7 +209,7 @@ export const fetchOutPersonalOrderAction = createAsyncThunk<
   undefined,
   AsyncThunkConfig
 >('user/fetchOutPersonalOrder', async (_arg, { extra: api }) => {
-  const { data } = await api.get<PersonalOrderRdo[]>(APIRoute.Check);
+  const { data } = await api.post<PersonalOrderRdo[]>(APIRoute.Check);
   return data;
 });
 
@@ -276,15 +276,17 @@ export const fetchAddFriendAction = createAsyncThunk<
   );
   return data;
 });
+
 type RemoveFriendId = {
   friendId: number;
 };
+
 export const fetchRemoveFriendAction = createAsyncThunk<
   RemoveFriendId,
   number,
   AsyncThunkConfig
 >('user/fetchRemoveFriendAction', async (friendId, { extra: api }) => {
-  await api.delete<undefined>(`${APIRoute.AddRemoveFriend}/${friendId}`);
+  await api.delete<number>(`${APIRoute.AddRemoveFriend}/${friendId}`);
   return friendId;
 });
 

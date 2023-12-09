@@ -56,7 +56,6 @@ function UsersCatalogFilter(): JSX.Element {
         typesOfTraining: trainingTypeFilter.join(','),
         level: trainingLevelFilter,
         role: userRoleFilter,
-        isReady: true,
       }),
     );
   }, [

@@ -2,13 +2,13 @@ import { nanoid } from 'nanoid';
 import { useEffect } from 'react';
 import { UserRdo } from '../../types/user.rdo';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getClientFriends } from '../../redux/userSlice/selectors';
+import { getIsClientFriend } from '../../redux/userSlice/selectors';
 import {
   fetchAddFriendAction,
   fetchClientFriendsAction,
   fetchRemoveFriendAction,
 } from '../../redux/userSlice/apiUserActions';
-import { FriendAction } from '../../types/friend-action';
+import { IconCrown, IconLocation } from '../../helper/svg-const';
 
 type UserCardProps = {
   client: UserRdo | null;
@@ -16,33 +16,21 @@ type UserCardProps = {
 
 function UserCardClient({ client }: UserCardProps): JSX.Element {
   const dispatch = useAppDispatch();
-
-  const myFriends = useAppSelector(getClientFriends);
+  const isFriend = useAppSelector(getIsClientFriend(client?.userId));
 
   useEffect(() => {
     dispatch(fetchClientFriendsAction());
   }, [dispatch]);
 
-  const handleFriendRelations = async (type: FriendAction) => {
+  const handleFriendRelations = async () => {
     if (client) {
-      switch (type) {
-        case FriendAction.Add:
-          await dispatch(fetchAddFriendAction(client.userId));
-          break;
-        case FriendAction.Remove:
-          await dispatch(fetchRemoveFriendAction(client.userId));
-          break;
+      if (isFriend) {
+        dispatch(fetchRemoveFriendAction(client.userId));
+      } else {
+        dispatch(fetchAddFriendAction(client.userId));
       }
       await dispatch(fetchClientFriendsAction());
     }
-  };
-
-  const handleAddFriendButtonClick = () => {
-    handleFriendRelations(FriendAction.Add);
-  };
-
-  const handleRemoveFriendButtonClick = () => {
-    handleFriendRelations(FriendAction.Remove);
   };
 
   return (
@@ -59,7 +47,7 @@ function UserCardClient({ client }: UserCardProps): JSX.Element {
                 height="12"
                 aria-hidden="true"
               >
-                <use xlinkHref="#icon-crown"></use>
+                <IconCrown />
               </svg>
             </div>
           </div>
@@ -70,7 +58,7 @@ function UserCardClient({ client }: UserCardProps): JSX.Element {
               height="14"
               aria-hidden="true"
             >
-              <use xlinkHref="#icon-location"></use>
+              <IconLocation />
             </svg>
             <span>{client?.location}</span>
           </div>
@@ -100,9 +88,9 @@ function UserCardClient({ client }: UserCardProps): JSX.Element {
               </div>
             </li>
           </ul>
-          {myFriends.some((friend) => friend.userId === client?.userId) ? (
+          {isFriend ? (
             <button
-              onClick={handleRemoveFriendButtonClick}
+              onClick={handleFriendRelations}
               className="btn user-card__btn"
               type="button"
             >
@@ -110,7 +98,7 @@ function UserCardClient({ client }: UserCardProps): JSX.Element {
             </button>
           ) : (
             <button
-              onClick={handleAddFriendButtonClick}
+              onClick={handleFriendRelations}
               className="btn user-card__btn"
               type="button"
             >

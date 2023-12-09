@@ -69,13 +69,13 @@ export class ClientRoomService {
 
     await this.friendRepository.create(userFriendEntity);
 
-    await this.notifyService.addFriend({
-      targetEmail: friend.email,
-      targetName: friend.name,
-      srcName: payload.name,
-      srcEmail: payload.email,
-    });
-
+    // await this.notifyService.addFriend({
+    //   targetEmail: friend.email,
+    //   targetName: friend.name,
+    //   srcName: payload.name,
+    //   srcEmail: payload.email,
+    // });
+    //
     return friend;
   }
 
@@ -113,7 +113,7 @@ export class ClientRoomService {
     const friends = await this.friendRepository.findByUserId(userId);
     const users: IUser[] = [];
     for (let i = 0; i < friends.length; i++) {
-      const user = await this.userRepository.findById(friends[i].userId);
+      const user = await this.userRepository.findById(friends[i].friendId);
       users.push(user);
     }
     return users;

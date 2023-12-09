@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Header from '../../components/header/header';
-import { nanoid } from 'nanoid';
 import {
   AppRoute,
   MAX_DIFF_IN_MILLISECONDS,
@@ -10,9 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
   getClientFriends,
-  getIncomingRequests,
   getIsTrainer,
-  getOutgoingRequests,
+  getOrders,
+  getPersonalOrders,
   getTrainerFriends,
 } from '../../redux/userSlice/selectors';
 import {
@@ -34,8 +33,8 @@ function FriendsListPage(): JSX.Element {
     isTrainer ? getTrainerFriends : getClientFriends,
   );
 
-  const myIncomingRequests = useAppSelector(getIncomingRequests);
-  const myOutgoingRequests = useAppSelector(getOutgoingRequests);
+  const personalOrders = useAppSelector(getPersonalOrders);
+  const orders = useAppSelector(getOrders);
 
   const [currentListPage, setCurrentListPage] = useState(1);
   const pagesCount = Math.ceil(myFriends.length / MAX_FRIENDS_COUNT_PER_PAGE);
@@ -65,15 +64,15 @@ function FriendsListPage(): JSX.Element {
   };
 
   const findIncomingRequest = (friendId: number) => {
-    const friendRequest = myIncomingRequests.find(
+    const friendRequest = personalOrders.find(
       (request) => request.initiatorId === friendId,
     );
     return friendRequest;
   };
 
   const findOutgoingRequest = (friendId: number) => {
-    const friendRequest = myOutgoingRequests.find(
-      (request) => request.userId === friendId,
+    const friendRequest = orders?.find(
+      (request) => request.trainingId === friendId,
     );
     return friendRequest;
   };
@@ -138,7 +137,7 @@ function FriendsListPage(): JSX.Element {
                   .slice(0, currentListPage * MAX_FRIENDS_COUNT_PER_PAGE)
                   .map((friend) => (
                     <FriendsListItem
-                      key={nanoid()}
+                      key={friend.userId}
                       friend={friend}
                       request={
                         findIncomingRequest(friend.userId ?? 0) ??

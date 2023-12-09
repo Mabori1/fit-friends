@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
 import { UserRdo } from '../../types/user.rdo';
-import { useAppSelector } from '../../redux/store';
-import { getIsTrainer } from '../../redux/userSlice/selectors';
 import { IconCrown, IconLocation } from '../../helper/svg-const';
 import { AppRoute } from '../../constants';
+import { UserRole } from '@fit-friends/types';
 
 type UsersCatalogItemProps = {
   user: UserRdo;
 };
 
 function UsersCatalogItem({ user }: UsersCatalogItemProps): JSX.Element {
-  const isUserVip = true;
-  const isTrainer = useAppSelector(getIsTrainer);
+  const isTrainer = user.role === UserRole.Trainer;
+  const isUserVip = isTrainer
+    ? user.trainer?.isPersonalTraining
+    : user.client?.isReady;
 
   return (
     <li className="users-catalog__item" data-testid="users-catalog-item">

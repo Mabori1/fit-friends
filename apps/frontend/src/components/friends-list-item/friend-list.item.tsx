@@ -1,7 +1,7 @@
 import { UserRequestRdo } from '../../types/user-request.rdo';
 import { useAppDispatch } from '../../redux/store';
 import { UserRequestType } from '../../types/user-request-type.enum';
-import { OrderStatus } from '@fit-friends/types';
+import { OrderStatus, UserRole } from '@fit-friends/types';
 import { MAX_DIFF_IN_MILLISECONDS } from '../../constants';
 import {
   changePersonalOrderStatusAction,
@@ -25,13 +25,14 @@ function FriendsListItem({
   isTrainer,
 }: FriendsListItemProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const isFrindTrainer = friend.role === UserRole.Trainer;
 
   const timeNow = Number(new Date());
   const lastTimeUpdated = Number(new Date(friend.updatedAt ?? timeNow));
   const timeDiff = Math.abs(timeNow - lastTimeUpdated);
 
   const isUserOnline = timeDiff < MAX_DIFF_IN_MILLISECONDS;
-  const isReadyForTraining = !isTrainer
+  const isReadyForTraining = !isFrindTrainer
     ? friend.client?.isReady
     : friend.trainer?.isPersonalTraining;
 
@@ -107,7 +108,7 @@ function FriendsListItem({
             <div className="thumbnail-friend__image">
               <picture>
                 <img
-                  src={`${import.meta.env.VITE_SERVER_URL_FILES}/${
+                  src={`${import.meta.env.VITE_SERVER_URL_FILES}${
                     friend.avatar
                   }`}
                   width="78"

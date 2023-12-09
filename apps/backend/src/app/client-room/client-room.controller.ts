@@ -17,7 +17,6 @@ import { RoleClientGuard } from '../auth/guards/role-client.guard';
 import { ClientRoomService } from './client-room.service';
 import { IRequestWithTokenPayload } from '@fit-friends/types';
 import { fillObject } from '@fit-friends/core';
-import { FriendRdo } from './rdo/friend.rdo';
 import { BalanceRdo } from './rdo/balance.rdo';
 import { OrderRdo } from '../order/rdo/order.rdo';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -37,11 +36,14 @@ export class ClientRoomController {
   @UseGuards(JwtAuthGuard, RoleClientGuard)
   @Post('friend/:id')
   public async addFriend(
-    @Param('id') id: number,
+    @Param('id') friendId: number,
     @Req() { user: payload }: IRequestWithTokenPayload,
   ) {
-    const userFriend = await this.clientRoomService.addFriend(payload, id);
-    return fillObject(FriendRdo, userFriend);
+    const userFriend = await this.clientRoomService.addFriend(
+      payload,
+      friendId,
+    );
+    return fillObject(UserRdo, userFriend);
   }
 
   @ApiResponse({
