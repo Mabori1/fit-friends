@@ -42,7 +42,6 @@ export class UserQuery {
   public page?: number;
 
   @IsOptional()
-  @IsString()
   @IsEnum(UserLocation, { each: true })
   @Transform(({ value }) => value.split(',').map((item: string) => item))
   public locations?: string[];

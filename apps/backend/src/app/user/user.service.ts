@@ -34,7 +34,7 @@ export class UserService {
       .find(limit, userFilter, page)
       .catch((err) => {
         this.logger.error(err);
-        throw new NotFoundException('Users not found');
+        throw new NotFoundException('.catch: Users not found');
       });
 
     if (!users) {

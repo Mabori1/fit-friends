@@ -23,6 +23,7 @@ import FriendsListPage from './pages/friends-list-page/fiiends-list-page';
 import TrainingCatalog from './pages/training-catalog/training-catalog';
 import TrainingCard from './pages/training-card/training-card';
 import UserCard from './pages/user-card/user-card';
+import UsersCatalog from './pages/user-catalog/user-catalog';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -163,9 +164,16 @@ export function App() {
           </PrivateRoute>
         }
       />
-
       <Route
-        path={AppRoute.UserCard}
+        path={AppRoute.UsersCatalog}
+        element={
+          <PrivateRoute isAuth={isAuth}>
+            {!isTrainer ? <UsersCatalog /> : <Navigate to={AppRoute.Root} />}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={AppRoute.UserCardId}
         element={
           <PrivateRoute isAuth={isAuth}>
             <UserCard />

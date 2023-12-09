@@ -18,7 +18,10 @@ export const MAX_SLIDER_USERS_COUNT_PER_PAGE = 4;
 export const RATING_VALUES = [1, 2, 3, 4, 5];
 export const MAX_USER_CARD_TRAININGS_COUNT = 5;
 export const MAX_POPUP_CERTIFICATES_COUNT_PER_PAGE = 1;
-
+export const MAX_USERS_CATALOG_ITEMS_COUNT_PER_PAGE = 9;
+export const MAX_LOCATION_TYPES_COUNT_PER_PAGE = 4;
+export const MAX_USERS_CATALOG_COUNT_PER_PAGE = 20;
+export const MAX_TRAINING_TYPES_COUNT_PER_PAGE = 4;
 export const DAYS_IN_A_WEEK = 7;
 
 export enum AppRoute {
@@ -40,7 +43,7 @@ export enum AppRoute {
   TrainingCard = '/training-card',
   TrainingCatalog = '/training-catalog',
   UsersCatalog = '/users-catalog',
-  UserCard = '/user-card',
+  UserCardId = '/user-card/:id',
   NotFound = '*',
 }
 

@@ -28,6 +28,9 @@ export const getRole = (state: State): string =>
 export const getUser = (state: State): UserRdo | undefined =>
   state[NameSpace.UserSlice].user;
 
+export const getUserId = (state: State): number | undefined =>
+  state[NameSpace.UserSlice].user?.userId;
+
 export const getUserName = (state: State): string | undefined =>
   state[NameSpace.UserSlice].user?.name;
 

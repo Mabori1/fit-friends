@@ -32,6 +32,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RoleClientGuard)
   @Get('/feed')
   public async feedLine(@Query() query: UserQuery) {
+    console.log('query', query);
     const users = await this.userService.getUsers(query);
     return fillObject(UserRdo, users);
   }

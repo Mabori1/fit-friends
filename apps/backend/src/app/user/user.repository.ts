@@ -169,16 +169,23 @@ export class UserRepository
     filter: IUserFilter,
     page: number,
   ): Promise<IUser[]> | null {
+    console.log(filter.locations);
     return this.prisma.user.findMany({
       where: {
         AND: [
-          { role: { contains: filter.role } },
+          { role: filter.role ? { contains: filter.role } : 'пользователь' },
 
-          { location: { in: filter.locations } },
+          {
+            location: filter.locations ? { in: filter.locations } : undefined,
+          },
 
           { level: { contains: filter.level } },
 
-          { typesOfTraining: { hasSome: filter.typesOfTraining } },
+          {
+            typesOfTraining: filter.typesOfTraining
+              ? { hasSome: filter.typesOfTraining }
+              : undefined,
+          },
 
           {
             client: {

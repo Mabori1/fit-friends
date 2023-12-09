@@ -58,18 +58,6 @@ export class ClientRoomController {
     return await this.clientRoomService.deleteFriend(payload.sub, id);
   }
 
-  // @ApiResponse({
-  //   type: UserRdo,
-  //   status: HttpStatus.OK,
-  //   description: 'The friends list obj has been successfully created.',
-  // })
-  // @UseGuards(JwtAuthGuard, RoleClientGuard)
-  // @Get('friends')
-  // public async getfriends(@Req() { user: payload }: IRequestWithTokenPayload) {
-  //   const users = await this.clientRoomService.showFriends(payload.sub);
-  //   return fillObject(FriendRdo, users);
-  // }
-
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
