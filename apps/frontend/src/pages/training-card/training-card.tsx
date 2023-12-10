@@ -506,7 +506,7 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
                           ></video>
                         )}
                       </div>
-                      {isTrainingAlreadyInMyBalance && (
+                      {!videoFileError && (
                         <button
                           ref={playButtonRef}
                           onClick={handlePlayButtonClick}

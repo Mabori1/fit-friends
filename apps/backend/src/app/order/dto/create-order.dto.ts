@@ -36,7 +36,6 @@ export class CreateOrderDto {
     required: true,
   })
   @IsNumber()
-  @IsPositive()
   @Min(0)
   public price!: number;
 

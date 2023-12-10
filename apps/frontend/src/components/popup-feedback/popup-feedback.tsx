@@ -9,6 +9,7 @@ import {
 } from '../../redux/trainingSlice/apiTrainingActions';
 import { getTrainingId } from '../../helper/utils';
 import { RATING_VALUES } from '../../constants';
+import { IconCross } from '../../helper/svg-const';
 
 type PopupFeedbackProps = {
   trainingId: number | undefined;
@@ -84,6 +85,7 @@ function PopupFeedback({
 
   const handleGoNextButtonClick = () => {
     createFeedback();
+    setPopupOpened(false);
   };
 
   return (
@@ -100,7 +102,7 @@ function PopupFeedback({
                 aria-label="close"
               >
                 <svg width="20" height="20" aria-hidden="true">
-                  <use xlinkHref="#icon-cross"></use>
+                  <IconCross />
                 </svg>
               </button>
             </div>

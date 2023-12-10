@@ -16,6 +16,7 @@ import {
   VisaLogo,
 } from '../../helper/svg-const';
 import { toast } from 'react-toastify';
+import { isFulfilled } from '@reduxjs/toolkit';
 
 type PopupBuyTrainingProps = {
   training: TrainingRdo;
@@ -51,8 +52,8 @@ function PopupBuyTraining({
   };
 
   const buyTraining = async () => {
-    if (training.price && paymentMethod) {
-      const response = await dispatch(
+    if (training.price >= 0 && paymentMethod) {
+      dispatch(
         buyTrainingAction({
           type: TypeOfOrder.Subscription,
           trainerId: training.trainerId,
@@ -62,11 +63,12 @@ function PopupBuyTraining({
           sumPrice: training.price * quantity,
           typeOfPayment: paymentMethod,
         }),
-      );
-
-      if (response.meta.requestStatus === 'fulfilled') {
-        toast.success(`Куплено тренировок: ${quantity} шт.`);
-      }
+      )
+        .then(isFulfilled)
+        .then(() => toast.success(`Куплено тренировок: ${quantity} шт.`))
+        .catch((error) => {
+          toast.error(error.message);
+        });
 
       await dispatch(fetchBalanceAction());
       setModalOpened(false);
