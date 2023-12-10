@@ -3,6 +3,7 @@ import { AuthStatus, NameSpace, SliceStatus } from '../../constants';
 import { State } from '../store';
 import { UserRdo } from '../../types/user.rdo';
 import { OrderRdo } from '../../types/order.rdo';
+import { PersonalOrderRdo } from '../../types/personal-order.rdo';
 
 export const getAuthStatus = (state: State): AuthStatus =>
   state[NameSpace.UserSlice].authStatus;
@@ -57,8 +58,15 @@ export const getIsTrainerFriend =
       (friend) => friend.userId === id,
     );
 
-export const getPersonalOrders = (state: State): PersonalOrderRdo[] =>
-  state[NameSpace.UserSlice].personalOrders;
+export const getInPersonalOrders = (
+  state: State,
+): PersonalOrderRdo[] | undefined =>
+  state[NameSpace.UserSlice].inPersonalOrders;
+
+export const getOutPersonalOrders = (
+  state: State,
+): PersonalOrderRdo[] | undefined =>
+  state[NameSpace.UserSlice].outPersonalOrders;
 
 export const getUsers = (state: State): UserRdo[] =>
   state[NameSpace.UserSlice].users;

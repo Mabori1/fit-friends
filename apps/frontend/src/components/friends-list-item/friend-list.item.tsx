@@ -8,19 +8,22 @@ import { PersonalOrderRdo } from '../../types/personal-order.rdo';
 import {
   addPersonalOrderAction,
   changePersonalOrderStatusAction,
-  fetchPersonalOrdersAction,
+  fetchInPersonalOrdersAction,
+  fetchOutPersonalOrdersAction,
 } from '../../redux/userSlice/apiUserActions';
 import { getUserId } from '../../redux/userSlice/selectors';
 
 type FriendsListItemProps = {
   friend: UserRdo;
-  personalOrder: PersonalOrderRdo;
+  inPersonalOrder: PersonalOrderRdo | undefined;
+  outPersonalOrder: PersonalOrderRdo | undefined;
   isTrainer: boolean;
 };
 
 function FriendsListItem({
   friend,
-  personalOrder,
+  inPersonalOrder,
+  outPersonalOrder,
   isTrainer,
 }: FriendsListItemProps): JSX.Element {
   const dispatch = useAppDispatch();
@@ -39,34 +42,35 @@ function FriendsListItem({
   const handleInviteButtonClick = async () => {
     await dispatch(addPersonalOrderAction(friend.userId));
     if (userId) {
-      dispatch(fetchPersonalOrdersAction(userId));
+      dispatch(fetchInPersonalOrdersAction(userId));
+      dispatch(fetchOutPersonalOrdersAction(userId));
     }
   };
 
   const handleAcceptTrainingRequestButtonClick = async () => {
-    if (personalOrder) {
+    if (inPersonalOrder) {
       await dispatch(
         changePersonalOrderStatusAction({
-          orderId: personalOrder.id,
+          orderId: inPersonalOrder.id,
           newStatus: OrderStatus.Accepted,
         }),
       );
       if (userId) {
-        dispatch(fetchPersonalOrdersAction(userId));
+        dispatch(fetchInPersonalOrdersAction(userId));
       }
     }
   };
 
   const handleRejectTrainingRequestButtonClick = async () => {
-    if (personalOrder) {
+    if (inPersonalOrder) {
       await dispatch(
         changePersonalOrderStatusAction({
-          orderId: personalOrder.id,
+          orderId: inPersonalOrder.id,
           newStatus: OrderStatus.Declined,
         }),
       );
       if (userId) {
-        dispatch(fetchPersonalOrdersAction(userId));
+        dispatch(fetchInPersonalOrdersAction(userId));
       }
     }
   };
@@ -133,7 +137,7 @@ function FriendsListItem({
                   onClick={handleInviteButtonClick}
                   className="thumbnail-friend__invite-button"
                   type="button"
-                  disabled={!!personalOrder}
+                  disabled={!!outPersonalOrder || !!inPersonalOrder}
                 >
                   <svg>
                     <IconInvite />
@@ -152,56 +156,68 @@ function FriendsListItem({
             </div>
           )}
         </div>
-        {personalOrder?.orderStatus === OrderStatus.Pending &&
-          friend.userId === personalOrder.targetId && (
-            <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-user">
+        {inPersonalOrder?.orderStatus === OrderStatus.Pending && (
+          <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-user">
+            <p className="thumbnail-friend__request-text">
+              Запрос на&nbsp;персональную тренировку
+            </p>
+            <div className="thumbnail-friend__button-wrapper">
+              <button
+                onClick={handleAcceptTrainingRequestButtonClick}
+                className="btn btn--medium btn--dark-bg thumbnail-friend__button"
+                type="button"
+              >
+                Принять
+              </button>
+              <button
+                onClick={handleRejectTrainingRequestButtonClick}
+                className="btn btn--medium btn--outlined btn--dark-bg thumbnail-friend__button"
+                type="button"
+              >
+                Отклонить
+              </button>
+            </div>
+          </div>
+        )}
+        {inPersonalOrder?.orderStatus === OrderStatus.Accepted && (
+          <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-user">
+            {isTrainer && (
               <p className="thumbnail-friend__request-text">
-                Запрос на&nbsp;персональную тренировку
+                Запрос на&nbsp;персональную тренировку принят
               </p>
-              <div className="thumbnail-friend__button-wrapper">
-                <button
-                  onClick={handleAcceptTrainingRequestButtonClick}
-                  className="btn btn--medium btn--dark-bg thumbnail-friend__button"
-                  type="button"
-                >
-                  Принять
-                </button>
-                <button
-                  onClick={handleRejectTrainingRequestButtonClick}
-                  className="btn btn--medium btn--outlined btn--dark-bg thumbnail-friend__button"
-                  type="button"
-                >
-                  Отклонить
-                </button>
-              </div>
-            </div>
-          )}
-        {personalOrder?.orderStatus === OrderStatus.Accepted &&
-          friend.userId === personalOrder.userId && (
-            <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-user">
-              {isTrainer && (
-                <p className="thumbnail-friend__request-text">
-                  Запрос на&nbsp;персональную тренировку принят
-                </p>
-              )}
-              {!isTrainer && (
-                <p className="thumbnail-friend__request-text">
-                  Запрос на&nbsp;совместную тренировку принят
-                </p>
-              )}
-            </div>
-          )}
-        {personalOrder?.orderStatus === OrderStatus.Declined &&
-          friend.userId === personalOrder.userId && (
+            )}
+            {!isTrainer && (
+              <p className="thumbnail-friend__request-text">
+                Запрос на&nbsp;совместную тренировку принят
+              </p>
+            )}
+          </div>
+        )}
+        {inPersonalOrder?.orderStatus === OrderStatus.Declined && (
+          <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-coach">
+            {isTrainer && (
+              <p className="thumbnail-friend__request-text">
+                Запрос на&nbsp;персональную тренировку отклонён
+              </p>
+            )}
+            {!isTrainer && (
+              <p className="thumbnail-friend__request-text">
+                Запрос на&nbsp;совместную тренировку отклонён
+              </p>
+            )}
+          </div>
+        )}
+        {outPersonalOrder?.orderStatus === OrderStatus.Pending &&
+          friend.userId === outPersonalOrder.targetId && (
             <div className="thumbnail-friend__request-status thumbnail-friend__request-status--role-coach">
               {isTrainer && (
                 <p className="thumbnail-friend__request-text">
-                  Запрос на&nbsp;персональную тренировку отклонён
+                  Запрос на&nbsp;персональную тренировку отправлен
                 </p>
               )}
               {!isTrainer && (
                 <p className="thumbnail-friend__request-text">
-                  Запрос на&nbsp;совместную тренировку отклонён
+                  Запрос на&nbsp;совместную тренировку отправлен
                 </p>
               )}
             </div>

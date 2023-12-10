@@ -17,15 +17,15 @@ import {
   fetchClientFriendsAction,
   fetchUsersCatalogAction,
   fetchOrdersAction,
-  fetchPersonalOrdersAction,
+  fetchInPersonalOrdersAction,
   fetchBalanceAction,
   toggleSubscribeAction,
   buyPersonalTrainingAction,
   checkSubscribeAction,
   fetchAddFriendAction,
   fetchRemoveFriendAction,
+  fetchOutPersonalOrdersAction,
 } from './apiUserActions';
-import { UserRequestRdo } from '../../types/user-request.rdo';
 import { UserRdo } from '../../types/user.rdo';
 import { OrderRdo } from '../../types/order.rdo';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
@@ -39,10 +39,9 @@ type UserSlice = {
   clientFriends: UserRdo[];
   notices: INotify[] | [];
   orders?: OrderRdo[];
-  personalOrders?: PersonalOrderRdo[];
+  inPersonalOrders?: PersonalOrderRdo[];
+  outPersonalOrders?: PersonalOrderRdo[];
   balance?: IBalance[];
-  incomingRequests: UserRequestRdo[];
-  outgoingRequests: UserRequestRdo[];
   subscribeStatus: boolean;
 };
 
@@ -55,10 +54,9 @@ const initialState: UserSlice = {
   clientFriends: [],
   notices: [],
   orders: [],
-  personalOrders: [],
+  inPersonalOrders: [],
+  outPersonalOrders: [],
   balance: [],
-  incomingRequests: [],
-  outgoingRequests: [],
   subscribeStatus: false,
 };
 
@@ -218,11 +216,17 @@ export const userSlice = createSlice({
       .addCase(fetchOrdersAction.rejected, (state) => {
         state.orders = [];
       })
-      .addCase(fetchPersonalOrdersAction.fulfilled, (state, action) => {
-        state.personalOrders = action.payload;
+      .addCase(fetchInPersonalOrdersAction.fulfilled, (state, action) => {
+        state.inPersonalOrders = action.payload;
       })
-      .addCase(fetchPersonalOrdersAction.rejected, (state) => {
-        state.personalOrders = [];
+      .addCase(fetchInPersonalOrdersAction.rejected, (state) => {
+        state.inPersonalOrders = [];
+      })
+      .addCase(fetchOutPersonalOrdersAction.fulfilled, (state, action) => {
+        state.outPersonalOrders = action.payload;
+      })
+      .addCase(fetchOutPersonalOrdersAction.rejected, (state) => {
+        state.outPersonalOrders = [];
       })
       .addCase(fetchBalanceAction.fulfilled, (state, action) => {
         state.balance = action.payload;
@@ -248,7 +252,7 @@ export const userSlice = createSlice({
         state.subscribeStatus = false;
       })
       .addCase(buyPersonalTrainingAction.fulfilled, (state, action) => {
-        state.personalOrders?.push(action.payload);
+        state.inPersonalOrders?.push(action.payload);
       });
   },
 });

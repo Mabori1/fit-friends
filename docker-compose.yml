@@ -23,7 +23,7 @@ services:
       - fitfriends
 
   fitfriends.pgadmin:
-    image: dpage/pgadmin4:7.7
+    image: dpage/pgadmin4:8.0
     container_name: fitfriends.pgadmin
     restart: always
     environment:

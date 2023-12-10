@@ -9,15 +9,16 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
   getClientFriends,
+  getInPersonalOrders,
   getIsTrainer,
-  getOrders,
-  getPersonalOrders,
+  getOutPersonalOrders,
   getTrainerFriends,
   getUserId,
 } from '../../redux/userSlice/selectors';
 import {
   fetchClientFriendsAction,
-  fetchPersonalOrdersAction,
+  fetchInPersonalOrdersAction,
+  fetchOutPersonalOrdersAction,
   fetchTrainerFriendsAction,
 } from '../../redux/userSlice/apiUserActions';
 import FriendsListItem from '../../components/friends-list-item/friend-list.item';
@@ -34,8 +35,11 @@ function FriendsListPage(): JSX.Element {
   );
   const userId = useAppSelector(getUserId);
 
-  const personalOrders = useAppSelector(getPersonalOrders);
-  const orders = useAppSelector(getOrders);
+  const outOrders = useAppSelector(getOutPersonalOrders);
+  const inOrders = useAppSelector(getInPersonalOrders);
+
+  console.log('outOrders', outOrders);
+  console.log('inOrders', inOrders);
 
   const [currentListPage, setCurrentListPage] = useState(1);
   const pagesCount = Math.ceil(myFriends.length / MAX_FRIENDS_COUNT_PER_PAGE);
@@ -64,18 +68,12 @@ function FriendsListPage(): JSX.Element {
     window.scrollTo(0, 0);
   };
 
-  const findPersonalOrder = (friendId: number) => {
-    const friendRequest = personalOrders.find(
-      (request) => request.target === friendId,
-    );
-    return friendRequest;
+  const findInPersonalOrder = (friendId: number) => {
+    return inOrders?.find((request) => request.userId === friendId);
   };
 
-  const findOutgoingRequest = (friendId: number) => {
-    const friendRequest = orders?.find(
-      (request) => request.trainingId === friendId,
-    );
-    return friendRequest;
+  const findOutPersonalOrder = (friendId: number) => {
+    return outOrders?.find((request) => request.targetId === friendId);
   };
 
   useEffect(() => {
@@ -84,7 +82,8 @@ function FriendsListPage(): JSX.Element {
       : dispatch(fetchClientFriendsAction());
 
     if (userId) {
-      dispatch(fetchPersonalOrdersAction(userId));
+      dispatch(fetchInPersonalOrdersAction(userId));
+      dispatch(fetchOutPersonalOrdersAction(userId));
     }
   }, [dispatch, userId, isTrainer]);
 
@@ -139,10 +138,8 @@ function FriendsListPage(): JSX.Element {
                     <FriendsListItem
                       key={friend.userId}
                       friend={friend}
-                      personalOrder={
-                        findPersonalOrder(friend.userId ?? 0) ??
-                        findOutgoingRequest(friend.userId ?? 0)
-                      }
+                      inPersonalOrder={findInPersonalOrder(friend.userId)}
+                      outPersonalOrder={findOutPersonalOrder(friend.userId)}
                       isTrainer={isTrainer}
                     />
                   ))}

@@ -270,13 +270,24 @@ export const fetchOrdersAction = createAsyncThunk<
   return data;
 });
 
-export const fetchPersonalOrdersAction = createAsyncThunk<
+export const fetchInPersonalOrdersAction = createAsyncThunk<
   PersonalOrderRdo[],
   number,
   AsyncThunkConfig
->('user/fetchPersonalOrdersAction', async (userId, { extra: api }) => {
+>('user/fetchInPersonalOrdersAction', async (userId, { extra: api }) => {
   const { data } = await api.get<PersonalOrderRdo[]>(
-    `${APIRoute.PersonalOrder}/${userId}`,
+    `${APIRoute.InPersonalOrder}/${userId}`,
+  );
+  return data;
+});
+
+export const fetchOutPersonalOrdersAction = createAsyncThunk<
+  PersonalOrderRdo[],
+  number,
+  AsyncThunkConfig
+>('user/fetchOutPersonalOrdersAction', async (userId, { extra: api }) => {
+  const { data } = await api.get<PersonalOrderRdo[]>(
+    `${APIRoute.OutPersonalOrder}/${userId}`,
   );
   return data;
 });

@@ -6,7 +6,7 @@ import { UserRdo } from '../../types/user.rdo';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
   getTrainerFriends,
-  getPersonalOrders,
+  getInPersonalOrders,
   getSubscribeStatus,
 } from '../../redux/userSlice/selectors';
 import { getTrainings } from '../../redux/trainingSlice/selectors';
@@ -14,7 +14,7 @@ import {
   buyPersonalTrainingAction,
   checkSubscribeAction,
   fetchAddFriendAction,
-  fetchPersonalOrdersAction,
+  fetchInPersonalOrdersAction,
   fetchRemoveFriendAction,
   fetchTrainerFriendsAction,
   toggleSubscribeAction,
@@ -40,7 +40,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
 
   const myFriends = useAppSelector(getTrainerFriends);
   const trainings = useAppSelector(getTrainings);
-  const outOrders = useAppSelector(getPersonalOrders);
+  const outOrders = useAppSelector(getInPersonalOrders);
   const isSubscribers = useAppSelector(getSubscribeStatus);
 
   const [isCertificatesModalOpened, setIsCertificatesModalOpened] =
@@ -100,7 +100,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
 
   const handleInviteButtonClick = async () => {
     await dispatch(buyPersonalTrainingAction(trainer.userId));
-    dispatch(fetchPersonalOrdersAction(trainer.userId));
+    dispatch(fetchInPersonalOrdersAction(trainer.userId));
   };
 
   const handleSubscribeInputChange = async () => {

@@ -29,6 +29,15 @@ export class PersonalOrderService {
     if (!targetUser) {
       throw new NotFoundException('TargetUser not found');
     }
+    const existsOrder =
+      await this.personalOrderRepository.findByUserIdAndTargetId(
+        userId,
+        targetId,
+      );
+
+    if (existsOrder.length) {
+      return existsOrder;
+    }
 
     if (userId !== targetId) {
       const entity = new PersonalOrderEntity({
@@ -44,7 +53,11 @@ export class PersonalOrderService {
     return await this.personalOrderRepository.findById(orderId);
   }
 
-  public async getPersonalOrders(userId: number) {
+  public async getInPersonalOrders(targetId: number) {
+    return await this.personalOrderRepository.findByTargetId(targetId);
+  }
+
+  public async getOutPersonalOrders(userId: number) {
     return await this.personalOrderRepository.findByUserId(userId);
   }
 

@@ -66,10 +66,23 @@ export class PersonalOrderController {
     description: 'The personal training order successfully showed',
   })
   @UseGuards(JwtAuthGuard)
-  @Get('/:id')
-  public async getPersonalOrders(@Param('id') userId: number) {
+  @Get('/in/:id')
+  public async getInPersonalOrders(@Param('id') userId: number) {
     const personalOrders =
-      await this.personalOrderService.getPersonalOrders(userId);
+      await this.personalOrderService.getInPersonalOrders(userId);
+    return fillObject(PersonalOrderRdo, personalOrders);
+  }
+
+  @ApiResponse({
+    type: PersonalOrderRdo,
+    status: HttpStatus.OK,
+    description: 'The personal training order successfully showed',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('/out/:id')
+  public async getOutPersonalOrders(@Param('id') userId: number) {
+    const personalOrders =
+      await this.personalOrderService.getOutPersonalOrders(userId);
     return fillObject(PersonalOrderRdo, personalOrders);
   }
 }

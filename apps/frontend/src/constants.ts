@@ -73,6 +73,8 @@ export enum APIRoute {
   TrainerFriends = '/trainer/friends',
   ClientFriends = '/client/friends',
   PersonalOrder = '/personal-order',
+  InPersonalOrder = '/personal-order/in',
+  OutPersonalOrder = '/personal-order/out',
   UploadAvatar = 'files/upload/img',
   UploadVideo = 'files/upload/video',
   Certificate = 'files/upload/pdf',
