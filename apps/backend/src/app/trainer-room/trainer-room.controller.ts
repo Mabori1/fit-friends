@@ -80,7 +80,7 @@ export class TrainerRoomController {
     status: HttpStatus.OK,
     description: 'The training list has been successfully created.',
   })
-  @UseGuards(JwtAuthGuard, RoleTrainerGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('/feed')
   public async feedLine(
     @Query() query: TrainingQuery,

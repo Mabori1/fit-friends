@@ -18,12 +18,12 @@ import FormRegisterTrainer from './components/form-register-trainer/form-registe
 import FormRegisterClient from './components/form-register-client/form-register-client';
 import CreateTrainingPage from './pages/create-training-page/create-training-page';
 import TrainerTrainingsPage from './pages/trainer-trainings-page/trainer-trainings-page';
-import TrainerOrdersPage from './pages/trainer-orders/trainer-orders-page';
 import FriendsListPage from './pages/friends-list-page/fiiends-list-page';
 import TrainingCatalog from './pages/training-catalog/training-catalog';
 import TrainingCard from './pages/training-card/training-card';
 import UserCard from './pages/user-card/user-card';
 import UsersCatalog from './pages/user-catalog/user-catalog';
+import OrdersPage from './pages/orders-page/orders-page';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -131,11 +131,7 @@ export function App() {
         path={AppRoute.TrainerOrders}
         element={
           <PrivateRoute isAuth={isAuth}>
-            {isTrainer ? (
-              <TrainerOrdersPage />
-            ) : (
-              <Navigate to={AppRoute.Root} />
-            )}
+            {isTrainer ? <OrdersPage /> : <Navigate to={AppRoute.Root} />}
           </PrivateRoute>
         }
       />

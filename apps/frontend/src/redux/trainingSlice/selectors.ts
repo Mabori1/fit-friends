@@ -13,6 +13,13 @@ export const getTrainings = (state: State): TrainingRdo[] =>
 export const getAllTrainings = (state: State): TrainingRdo[] =>
   state[NameSpace.TrainingSlice].allTrainings;
 
+export const getTrainingById =
+  (id: number) =>
+  (state: State): TrainingRdo | undefined =>
+    state[NameSpace.TrainingSlice].allTrainings.find(
+      (training) => training.id === id,
+    );
+
 export const getRecommendedTrainings = (state: State): TrainingRdo[] =>
   state[NameSpace.TrainingSlice].recommendedTrainings;
 

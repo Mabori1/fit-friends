@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/header';
 import { AppRoute, MAX_TRAININGS_COUNT_PER_PAGE } from '../../constants';
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
 import TrainingThumbnail from '../../components/training-thumbnail/training-thumbnail';
 import { useAppSelector } from '../../redux/store';
 import { getTrainingCatalog } from '../../redux/trainingSlice/selectors';
@@ -58,7 +57,7 @@ function TrainingCatalog(): JSX.Element {
                   {trainingCatalog
                     .slice(0, trainingsPage * MAX_TRAININGS_COUNT_PER_PAGE)
                     .map((training) => (
-                      <li key={nanoid()} className="training-catalog__item">
+                      <li key={training.id} className="training-catalog__item">
                         <TrainingThumbnail training={training} />
                       </li>
                     ))}

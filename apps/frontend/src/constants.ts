@@ -23,6 +23,7 @@ export const MAX_LOCATION_TYPES_COUNT_PER_PAGE = 4;
 export const MAX_USERS_CATALOG_COUNT_PER_PAGE = 20;
 export const MAX_TRAINING_TYPES_COUNT_PER_PAGE = 4;
 export const DAYS_IN_A_WEEK = 7;
+export const MAX_ORDERS_COUNT_PER_PAGE = 4;
 
 export enum AppRoute {
   Root = '/',
@@ -58,6 +59,14 @@ export enum AuthStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
+}
+
+export enum SortType {
+  Date = 'createdAt',
+  Price = 'price',
+  Quantity = 'totalSoldQuantity',
+  AmountOfMoney = 'totalSoldAmountOfMoney',
+  Rating = 'rating',
 }
 
 export enum APIRoute {

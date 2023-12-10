@@ -71,8 +71,8 @@ export const getOutPersonalOrders = (
 export const getUsers = (state: State): UserRdo[] =>
   state[NameSpace.UserSlice].users;
 
-export const getOrders = (state: State): OrderRdo[] | undefined =>
-  state[NameSpace.UserSlice].orders;
+export const getOrders = (state: State): OrderRdo[] =>
+  state[NameSpace.UserSlice].orders ?? [];
 
 export const getBalance = (state: State): IBalance[] | undefined =>
   state[NameSpace.UserSlice].balance;

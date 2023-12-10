@@ -6,11 +6,13 @@ import {
   Rating,
   TrainingDuration,
   TrainingPrice,
+  UserTypesTraining,
 } from '@fit-friends/types';
 import { debounce } from '../../helper/utils';
-import { FILTER_QUERY_DELAY } from '../../constants';
+import { FILTER_QUERY_DELAY, SortDirection } from '../../constants';
 import RangeSlider from '../range-slider/range-slider';
 import { fetchTrainingsAction } from '../../redux/trainingSlice/apiTrainingActions';
+import { ArrowCheck } from '../../helper/svg-const';
 
 function TrainingsFilter(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -35,12 +37,22 @@ function TrainingsFilter(): JSX.Element {
   const [price, setPrice] = useState<number[]>([]);
   const [caloriesCount, setCaloriesCount] = useState<number[]>([]);
   const [duration, setDuration] = useState<TrainingDuration[]>([]);
+  const [trainingType, setTrainingType] = useState<UserTypesTraining[]>([]);
 
   // фильтры
   const [priceFilter, setPriceFilter] = useState<number[]>([]);
   const [caloriesCountFilter, setCaloriesCountFilter] = useState<number[]>([]);
   const [ratingFilter, setRatingFilter] = useState<number[]>([]);
   const [durationFilter, setDurationFilter] = useState<TrainingDuration[]>([]);
+  const [trainingTypeFilter, setTrainingTypeFilter] = useState<
+    UserTypesTraining[]
+  >([]);
+  const [activeSortType, setActiveSortType] = useState<
+    SortDirection | undefined
+  >(undefined);
+  const [activeSortDerection, setActiveSortDirection] = useState<
+    SortDirection | undefined
+  >(undefined);
 
   useEffect(() => {
     dispatch(
@@ -52,6 +64,9 @@ function TrainingsFilter(): JSX.Element {
         ratingMin: ratingFilter[0],
         ratingMax: ratingFilter[1],
         durations: durationFilter.join(','),
+        types: trainingTypeFilter.join(','),
+        priceSort: activeSortType,
+        sortDirection: activeSortDerection,
       }),
     );
   }, [
@@ -60,6 +75,9 @@ function TrainingsFilter(): JSX.Element {
     durationFilter,
     priceFilter,
     ratingFilter,
+    trainingTypeFilter,
+    activeSortType,
+    activeSortDerection,
   ]);
 
   const setPriceFilterDebounced = debounce<number[]>(
@@ -77,6 +95,9 @@ function TrainingsFilter(): JSX.Element {
     (arg) => setRatingFilter(arg),
     FILTER_QUERY_DELAY,
   );
+  const setTrainingTypeFilterDebounced = debounce<
+    (prevState: UserTypesTraining[]) => UserTypesTraining[]
+  >((arg) => setTrainingTypeFilter(arg), FILTER_QUERY_DELAY);
 
   const handlePriceInputChange = (evt: FormEvent<HTMLInputElement>) => {
     const inputValue = Number(evt.currentTarget.value);
@@ -120,6 +141,38 @@ function TrainingsFilter(): JSX.Element {
       setDuration((prevState) => [...prevState, option]);
       setDurationFilterDebounced((prevState) => [...prevState, option]);
     }
+  };
+
+  const handleTrainingTypeInputChange = (option: UserTypesTraining) => {
+    if (trainingTypeFilter.includes(option)) {
+      setTrainingType((prevState) =>
+        prevState.filter((durationValue) => durationValue !== option),
+      );
+      setTrainingTypeFilterDebounced((prevState) =>
+        prevState.filter((durationValue) => durationValue !== option),
+      );
+    } else {
+      setTrainingType((prevState) => [...prevState, option]);
+      setTrainingTypeFilterDebounced((prevState) => [...prevState, option]);
+    }
+  };
+
+  const handleSortCheaperInputChange = () => {
+    setActiveSortType(SortDirection.Asc);
+    setActiveSortDirection(SortDirection.Asc);
+    setPriceFilterDebounced(price);
+  };
+
+  const handleSortPricierInputChange = () => {
+    setActiveSortType(SortDirection.Desc);
+    setActiveSortDirection(SortDirection.Desc);
+    setPriceFilterDebounced(price);
+  };
+
+  const handleSortForFreeInputChange = () => {
+    setActiveSortType(undefined);
+    setActiveSortDirection(undefined);
+    setPriceFilterDebounced([0, 0]);
   };
 
   return (
@@ -229,6 +282,32 @@ function TrainingsFilter(): JSX.Element {
                   />
                   <span className="custom-toggle__icon">
                     <svg width="9" height="6" aria-hidden="true">
+                      <ArrowCheck />
+                    </svg>
+                  </span>
+                  <span className="custom-toggle__label">{option}</span>
+                </label>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="gym-catalog-form__block gym-catalog-form__block--type">
+        <h4 className="gym-catalog-form__block-title">Тип</h4>
+        <ul className="gym-catalog-form__check-list">
+          {Object.values(UserTypesTraining).map((option) => (
+            <li key={option} className="gym-catalog-form__check-list-item">
+              <div className="custom-toggle custom-toggle--checkbox">
+                <label>
+                  <input
+                    onChange={() => handleTrainingTypeInputChange(option)}
+                    checked={trainingType.includes(option)}
+                    type="checkbox"
+                    value="type-1"
+                    name="type"
+                  />
+                  <span className="custom-toggle__icon">
+                    <svg width="9" height="6" aria-hidden="true">
                       <use xlinkHref="#arrow-check"></use>
                     </svg>
                   </span>
@@ -238,6 +317,38 @@ function TrainingsFilter(): JSX.Element {
             </li>
           ))}
         </ul>
+      </div>
+      <div className="gym-catalog-form__block gym-catalog-form__block--sort">
+        <h4 className="gym-catalog-form__title gym-catalog-form__title--sort">
+          Сортировка
+        </h4>
+        <div className="btn-radio-sort gym-catalog-form__radio">
+          <label>
+            <input
+              onChange={handleSortCheaperInputChange}
+              type="radio"
+              name="sort"
+            />
+            <span className="btn-radio-sort__label">Дешевле</span>
+          </label>
+          <label>
+            <input
+              onChange={handleSortPricierInputChange}
+              type="radio"
+              name="sort"
+            />
+            <span className="btn-radio-sort__label">Дороже</span>
+          </label>
+          <label>
+            <input
+              onChange={handleSortForFreeInputChange}
+              type="radio"
+              name="sort"
+              checked={priceFilter[0] === 0 && priceFilter[1] === 0}
+            />
+            <span className="btn-radio-sort__label">Бесплатные</span>
+          </label>
+        </div>
       </div>
     </form>
   );
