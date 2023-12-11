@@ -90,6 +90,7 @@ export class TrainerRoomController {
       query,
       payload.sub,
     );
+
     return fillObject(TrainingRdo, trainings);
   }
 

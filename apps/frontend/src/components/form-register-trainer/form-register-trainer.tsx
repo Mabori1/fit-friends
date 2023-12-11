@@ -14,6 +14,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import {
   MAXIMUM_TRAINING_TYPES_CHOICE,
   TrainerMeritLength,
+  UserRole,
 } from '@fit-friends/types';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
@@ -107,7 +108,9 @@ function FormRegisgerTrainer() {
           reset();
           dispatch(checkUserAction);
 
-          navigate(AppRoute.TrainerRoom);
+          if (user?.role === UserRole.Trainer) {
+            navigate(AppRoute.TrainerRoom);
+          }
         })
         .catch(() => {
           toast.error('Что-то пошло не так');

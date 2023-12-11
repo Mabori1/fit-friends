@@ -90,6 +90,7 @@ export class TrainingRepository
       ratingMax,
       durations,
       levelOfUser,
+      types,
     },
     trainerId: number,
   ): Promise<ITraining[] | null> {
@@ -102,6 +103,7 @@ export class TrainingRepository
           { rating: { gte: ratingMin, lte: ratingMax } },
           { duration: { in: durations } },
           { levelOfUser },
+          { typeOfTraining: { in: types } },
         ],
       },
 
