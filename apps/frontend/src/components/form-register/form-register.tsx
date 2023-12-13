@@ -28,7 +28,7 @@ import {
   updateUserAction,
   uploadAvatarAction,
 } from '../../redux/userSlice/apiUserActions';
-import { getIsAuth, getRole } from '../../redux/userSlice/selectors';
+import { getIsAuth, getIsTrainer } from '../../redux/userSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
 import { CreateUserDto } from '../../types/create-user.dto';
@@ -63,7 +63,7 @@ function FormRegister() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getIsAuth);
-  const role = useAppSelector(getRole);
+  const isTrainer = useAppSelector(getIsTrainer);
 
   const {
     register,
@@ -76,16 +76,11 @@ function FormRegister() {
 
   useEffect(() => {
     if (isAuth) {
-      switch (role) {
-        case UserRole.Trainer:
-          navigate(AppRoute.TrainerRoom);
-          break;
-        case UserRole.Client:
-          navigate(AppRoute.ClientRoom);
-          break;
-      }
+      isTrainer
+        ? navigate(AppRoute.RegisterTrainer)
+        : navigate(AppRoute.RegisterClient);
     }
-  }, [isAuth, role, navigate]);
+  }, [isAuth, isTrainer, navigate]);
 
   useEffect(() => {
     setFocus('name');
@@ -160,9 +155,9 @@ function FormRegister() {
           );
           if (updateUserAction.fulfilled.match(dataUserAvatar)) {
             if (dataUserAvatar.payload.role === UserRole.Client) {
-              navigate(AppRoute.ClientRoom);
+              navigate(AppRoute.RegisterClient);
             } else {
-              navigate(AppRoute.TrainerRoom);
+              navigate(AppRoute.RegisterTrainer);
             }
             reset();
           }

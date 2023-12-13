@@ -22,7 +22,7 @@ import {
 } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../constants';
-import { getUser } from '../../redux/userSlice/selectors';
+import { getIsAuth, getUser } from '../../redux/userSlice/selectors';
 
 const formSchema = z.object({
   typesOfTraining: z
@@ -45,16 +45,20 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-function FormRegisgerTrainer() {
+function FormRegisterTrainer() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(getUser);
+  const isAuth = useAppSelector(getIsAuth);
 
   useEffect(() => {
+    if (!isAuth) {
+      navigate(AppRoute.Intro);
+    }
     if (!user?.name) {
       navigate(AppRoute.Register);
     }
-  }, [user, navigate]);
+  }, [user, isAuth, navigate]);
 
   const {
     register,
@@ -87,22 +91,19 @@ function FormRegisgerTrainer() {
 
       const res = await dispatch(updateUserAction(updateData));
       if (certificate && updateUserAction.fulfilled.match(res)) {
-        console.log('res', res);
         const formData = new FormData();
         formData.append('file', certificate);
         const dataCertificate = await dispatch(
           uploadCertificateAction(formData),
         );
         if (uploadCertificateAction.fulfilled.match(dataCertificate)) {
-          console.log('dataCertificate', dataCertificate);
           const resCertificate = await dispatch(
             updateUserAction({
               trainer: { certificate: [dataCertificate.payload?.path] },
             }),
           );
           if (updateUserAction.fulfilled.match(resCertificate)) {
-            console.log('resCertificate', resCertificate);
-            navigate(AppRoute.TrainerRoom, { replace: true });
+            navigate(AppRoute.TrainerRoom);
           }
         }
       }
@@ -306,4 +307,4 @@ function FormRegisgerTrainer() {
   );
 }
 
-export default FormRegisgerTrainer;
+export default FormRegisterTrainer;

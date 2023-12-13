@@ -38,9 +38,6 @@ function FriendsListPage(): JSX.Element {
   const outOrders = useAppSelector(getOutPersonalOrders);
   const inOrders = useAppSelector(getInPersonalOrders);
 
-  console.log('outOrders', outOrders);
-  console.log('inOrders', inOrders);
-
   const [currentListPage, setCurrentListPage] = useState(1);
   const pagesCount = Math.ceil(myFriends.length / MAX_FRIENDS_COUNT_PER_PAGE);
 

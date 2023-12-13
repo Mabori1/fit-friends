@@ -50,10 +50,7 @@ export function App() {
         element={isAuth ? <Navigate to={AppRoute.Root} /> : <IntroPage />}
       />
 
-      <Route
-        path={AppRoute.Register}
-        element={isAuth ? <Navigate to={AppRoute.Root} /> : <RegisterPage />}
-      />
+      <Route path={AppRoute.Register} element={<RegisterPage />} />
 
       <Route
         path={AppRoute.RegisterTrainer}
