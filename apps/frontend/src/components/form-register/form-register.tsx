@@ -28,11 +28,10 @@ import {
   updateUserAction,
   uploadAvatarAction,
 } from '../../redux/userSlice/apiUserActions';
-import { getAvatar, getIsAuth, getRole } from '../../redux/userSlice/selectors';
+import { getIsAuth, getRole } from '../../redux/userSlice/selectors';
 import { useNavigate } from 'react-router-dom';
 import { upFirstWord } from '../../helper/utils';
 import { CreateUserDto } from '../../types/create-user.dto';
-import { toast } from 'react-toastify';
 
 const formSchema = z.object({
   name: z
@@ -63,7 +62,6 @@ type FormSchema = z.infer<typeof formSchema>;
 function FormRegister() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const avatarPath = useAppSelector(getAvatar);
   const isAuth = useAppSelector(getIsAuth);
   const role = useAppSelector(getRole);
 
@@ -152,28 +150,27 @@ function FormRegister() {
 
       const dataRegister = await dispatch(registerUserAction(newData));
 
-      if (fileAvatar && dataRegister.meta.requestStatus === 'fulfilled') {
+      if (fileAvatar && registerUserAction.fulfilled.match(dataRegister)) {
         const formData = new FormData();
         formData.append('file', fileAvatar);
-        await dispatch(uploadAvatarAction(formData)).catch((error) => {
-          toast.error(error);
-        });
-        reset();
-        if (data.role === UserRole.Client) {
-          navigate(AppRoute.RegisterClient);
-        } else {
-          navigate(AppRoute.RegisterTrainer);
+        const dataAvatar = await dispatch(uploadAvatarAction(formData));
+        if (uploadAvatarAction.fulfilled.match(dataAvatar)) {
+          const dataUserAvatar = await dispatch(
+            updateUserAction({ avatar: dataAvatar.payload?.path }),
+          );
+          if (updateUserAction.fulfilled.match(dataUserAvatar)) {
+            if (dataUserAvatar.payload.role === UserRole.Client) {
+              navigate(AppRoute.ClientRoom);
+            } else {
+              navigate(AppRoute.TrainerRoom);
+            }
+            reset();
+          }
         }
       }
     }
     setAvatarInputUsed(true);
   };
-
-  useEffect(() => {
-    if (avatarPath) {
-      dispatch(updateUserAction({ avatar: avatarPath }));
-    }
-  }, [avatarPath, dispatch]);
 
   return (
     <form method="post" onSubmit={handleSubmit(onSubmit)}>

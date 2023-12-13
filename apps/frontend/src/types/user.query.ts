@@ -8,5 +8,5 @@ export class UserQuery {
   public isReady?: boolean;
   public role?: string;
   public level?: string;
-  public typesOfTraining?: string[];
+  public typesOfTraining?: string;
 }

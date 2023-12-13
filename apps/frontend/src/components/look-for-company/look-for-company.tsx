@@ -23,7 +23,7 @@ function LookForCompany(): JSX.Element {
   useEffect(() => {
     dispatch(
       fetchUsersCatalogAction({
-        typesOfTraining: user?.typesOfTraining,
+        typesOfTraining: user?.typesOfTraining.join(','),
         isReady: true,
         limit: MAX_SLIDER_USERS_COUNT,
       }),

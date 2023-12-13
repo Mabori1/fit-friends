@@ -14,18 +14,14 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import {
   MAXIMUM_TRAINING_TYPES_CHOICE,
   TrainerMeritLength,
-  UserRole,
 } from '@fit-friends/types';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
-  checkUserAction,
   updateUserAction,
   uploadCertificateAction,
 } from '../../redux/userSlice/apiUserActions';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../constants';
-import { isFulfilled } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import { getUser } from '../../redux/userSlice/selectors';
 
 const formSchema = z.object({
@@ -77,7 +73,7 @@ function FormRegisgerTrainer() {
     'Загрузите сюда файлы формата PDF, JPG или PNG',
   ]);
 
-  const onSubmit: SubmitHandler<FormSchema> = (data) => {
+  const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     if (!certificateError && certificateInputUsed) {
       const updateData = {
         level: data.level,
@@ -89,32 +85,28 @@ function FormRegisgerTrainer() {
         },
       };
 
-      dispatch(updateUserAction(updateData))
-        .then(isFulfilled)
-        .then(() => {
-          if (certificate) {
-            const formData = new FormData();
-            formData.append('file', certificate);
-            dispatch(uploadCertificateAction(formData)).then((data: any) => {
-              dispatch(
-                updateUserAction({
-                  trainer: {
-                    certificate: [data.payload?.path],
-                  },
-                }),
-              );
-            });
+      const res = await dispatch(updateUserAction(updateData));
+      if (certificate && updateUserAction.fulfilled.match(res)) {
+        console.log('res', res);
+        const formData = new FormData();
+        formData.append('file', certificate);
+        const dataCertificate = await dispatch(
+          uploadCertificateAction(formData),
+        );
+        if (uploadCertificateAction.fulfilled.match(dataCertificate)) {
+          console.log('dataCertificate', dataCertificate);
+          const resCertificate = await dispatch(
+            updateUserAction({
+              trainer: { certificate: [dataCertificate.payload?.path] },
+            }),
+          );
+          if (updateUserAction.fulfilled.match(resCertificate)) {
+            console.log('resCertificate', resCertificate);
+            navigate(AppRoute.TrainerRoom, { replace: true });
           }
-          reset();
-          dispatch(checkUserAction);
-
-          if (user?.role === UserRole.Trainer) {
-            navigate(AppRoute.TrainerRoom);
-          }
-        })
-        .catch(() => {
-          toast.error('Что-то пошло не так');
-        });
+        }
+      }
+      reset();
     }
     setCertificateInputUsed(true);
   };
@@ -263,7 +255,9 @@ function FormRegisgerTrainer() {
                           ></textarea>
                         </label>
                         {errors.merits && (
-                          <span role="alert" className="error"></span>
+                          <span role="alert" className="error">
+                            {errors.merits?.message}
+                          </span>
                         )}
                       </div>
                       <div className="questionnaire-coach__checkbox">

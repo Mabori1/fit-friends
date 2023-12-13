@@ -133,10 +133,12 @@ export const userSlice = createSlice({
         state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(updateUserAction.fulfilled, (state, action) => {
-        state.user = action.payload?.userInfo;
+        state.sliceStatus = SliceStatus.Fulfilled;
+        state.user = action.payload;
       })
       .addCase(updateUserAction.rejected, (state) => {
         state.sliceStatus = SliceStatus.Rejected;
+        state.user = undefined;
       })
       .addCase(uploadAvatarAction.pending, (state) => {
         state.sliceStatus = SliceStatus.Loading;
@@ -166,6 +168,7 @@ export const userSlice = createSlice({
         state.sliceStatus = SliceStatus.Loading;
       })
       .addCase(fetchNotifyAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.notices = action.payload;
       })
       .addCase(fetchNotifyAction.rejected, (state) => {
@@ -199,59 +202,77 @@ export const userSlice = createSlice({
         state.sliceStatus = SliceStatus.Rejected;
       })
       .addCase(fetchTrainerFriendsAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.trainerFriends = action.payload;
       })
       .addCase(fetchClientFriendsAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.clientFriends = action.payload;
       })
       .addCase(fetchUsersCatalogAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.users = action.payload;
       })
       .addCase(fetchUsersCatalogAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
         state.users = [];
       })
       .addCase(fetchOrdersAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.orders = action.payload;
       })
       .addCase(fetchOrdersAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
         state.orders = [];
       })
       .addCase(fetchInPersonalOrdersAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.inPersonalOrders = action.payload;
       })
       .addCase(fetchInPersonalOrdersAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
         state.inPersonalOrders = [];
       })
       .addCase(fetchOutPersonalOrdersAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.outPersonalOrders = action.payload;
       })
       .addCase(fetchOutPersonalOrdersAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
         state.outPersonalOrders = [];
       })
       .addCase(fetchBalanceAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.balance = action.payload;
       })
       .addCase(fetchBalanceAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
         state.balance = [];
       })
       .addCase(checkSubscribeAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.subscribeStatus = action.payload;
       })
       .addCase(toggleSubscribeAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.subscribeStatus = action.payload;
       })
       .addCase(fetchAddFriendAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.clientFriends.push(action.payload);
       })
       .addCase(fetchRemoveFriendAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.clientFriends = state.clientFriends.filter(
           (friend) => friend.userId !== action.payload.friendId,
         );
       })
       .addCase(toggleSubscribeAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
         state.subscribeStatus = false;
       })
       .addCase(buyPersonalTrainingAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
         state.inPersonalOrders?.push(action.payload);
       });
   },

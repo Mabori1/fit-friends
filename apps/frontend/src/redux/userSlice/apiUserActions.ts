@@ -100,24 +100,12 @@ export const checkUserAction = createAsyncThunk<
 });
 
 export const updateUserAction = createAsyncThunk<
-  UserResponse | undefined,
+  UserRdo,
   UpdateUserDto,
   AsyncThunkConfig
 >('user/update', async (updateUserDto, { extra: api }) => {
-  const { data } = await api.patch<UserResponse>(
-    APIRoute.UpdateUser,
-    updateUserDto,
-  );
-  try {
-    toast.success('Вы успешно изменили профиль!');
-    return data;
-  } catch (err) {
-    let message = 'Неизвестная ошибка user/update';
-    if (isAxiosError(err)) {
-      message = err.response?.data.message;
-    }
-    toast.error(message);
-  }
+  const { data } = await api.patch<UserRdo>(APIRoute.UpdateUser, updateUserDto);
+  return data;
 });
 
 export const uploadAvatarAction = createAsyncThunk<
