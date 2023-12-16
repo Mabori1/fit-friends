@@ -92,6 +92,7 @@ export enum APIRoute {
   CreateTraining = 'trainer/create',
   UpdateTraining = 'trainer/update',
   FetchTrainings = 'trainer/feed',
+  FetchTrainerTrainings = 'client/trainings',
   FetchRecomended = 'client/recomended',
   TrainingCatalog = 'trainer/training-catalog',
   TrainerOrders = '/trainer/orders',

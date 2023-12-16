@@ -56,6 +56,24 @@ export const fetchTrainingsAction = createAsyncThunk<
   return data;
 });
 
+type TrainerTraining = {
+  trainerId: number;
+  query: TrainingQuery;
+};
+
+export const fetchTrainerTrainingsAction = createAsyncThunk<
+  TrainingRdo[],
+  TrainerTraining,
+  AsyncThunkConfig
+>('user/fetchTrainerTrainings', async (trainerIdAndQuery, { extra: api }) => {
+  const { trainerId, ...query } = trainerIdAndQuery;
+  const queryString = createQueryString(query);
+  const { data } = await api.get<TrainingRdo[]>(
+    `${APIRoute.FetchTrainerTrainings}/${trainerId}` + queryString,
+  );
+  return data;
+});
+
 export const uploadVideoAction = createAsyncThunk<
   UploadedFileRdo,
   FormData,

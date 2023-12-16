@@ -9,7 +9,7 @@ import {
   getIsClientFriend,
   getOutPersonalOrders,
 } from '../../redux/userSlice/selectors';
-import { getTrainings } from '../../redux/trainingSlice/selectors';
+import { getTrainerTrainings } from '../../redux/trainingSlice/selectors';
 import {
   buyPersonalTrainingAction,
   checkSubscribeAction,
@@ -19,7 +19,7 @@ import {
   fetchRemoveFriendAction,
   toggleSubscribeAction,
 } from '../../redux/userSlice/apiUserActions';
-import { fetchTrainingsAction } from '../../redux/trainingSlice/apiTrainingActions';
+import { fetchTrainerTrainingsAction } from '../../redux/trainingSlice/apiTrainingActions';
 import PopupTrainerCertificates from '../popup-trainer-certificate/pupup-trainer-certificate';
 import {
   ArrowCheck,
@@ -38,7 +38,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const myFriends = useAppSelector(getClientFriends);
-  const trainings = useAppSelector(getTrainings);
+  const trainings = useAppSelector(getTrainerTrainings);
   const outOrders = useAppSelector(getOutPersonalOrders);
   const isSubscribers = useAppSelector(getSubscribeStatus);
   const isFriend = useAppSelector(getIsClientFriend(trainer?.userId));
@@ -52,10 +52,12 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
     dispatch(fetchClientFriendsAction());
     dispatch(fetchOutPersonalOrdersAction());
     dispatch(
-      fetchTrainingsAction({
+      fetchTrainerTrainingsAction({
         trainerId: trainer.userId,
-        page: trainingsCurrentPage,
-        limit: MAX_USER_CARD_TRAININGS_COUNT,
+        query: {
+          page: trainingsCurrentPage,
+          limit: MAX_USER_CARD_TRAININGS_COUNT,
+        },
       }),
     );
     dispatch(checkSubscribeAction(trainer.userId));
@@ -131,7 +133,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
                   </svg>
                   <span>Тренер</span>
                 </div>
-                {trainer.typesOfTraining ? (
+                {trainer.trainer?.isPersonalTraining ? (
                   <div className="user-card-coach__status user-card-coach__status--check">
                     <span>Готов тренировать</span>
                   </div>
@@ -246,7 +248,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
               </ul>
             )}
             <form className="user-card-coach__training-form">
-              {trainer.typesOfTraining &&
+              {trainer.trainer?.isPersonalTraining &&
                 myFriends.some(
                   (friend) => friend.userId === trainer.userId,
                 ) && (

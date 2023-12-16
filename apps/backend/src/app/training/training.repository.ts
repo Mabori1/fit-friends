@@ -50,6 +50,14 @@ export class TrainingRepository
     });
   }
 
+  public async findByTrainerId(trainerId: number): Promise<ITraining[] | null> {
+    return this.prisma.training.findMany({
+      where: {
+        trainerId,
+      },
+    });
+  }
+
   public async findByIdNotFeedback(id: number): Promise<ITraining | null> {
     return this.prisma.training.findFirst({
       where: {

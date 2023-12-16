@@ -26,6 +26,9 @@ export const getRecommendedTrainings = (state: State): TrainingRdo[] =>
 export const getTrainingCatalog = (state: State): TrainingRdo[] =>
   state[NameSpace.TrainingSlice].trainingsCatalog;
 
+export const getTrainerTrainings = (state: State): TrainingRdo[] =>
+  state[NameSpace.TrainingSlice].userTrainings;
+
 export const getUserInfo = (state: State): UserRdo | null =>
   state[NameSpace.TrainingSlice].userInfo;
 

@@ -22,11 +22,15 @@ import { OrderRdo } from '../order/rdo/order.rdo';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { TrainingRdo } from '../trainer-room/rdo/training.rdo';
 import { TrainingQuery } from '../trainer-room/query/training.query';
+import { TrainingRepository } from '../training/training.repository';
 
 @ApiTags('client-room')
 @Controller('client')
 export class ClientRoomController {
-  constructor(private readonly clientRoomService: ClientRoomService) {}
+  constructor(
+    private readonly trainingRepository: TrainingRepository,
+    private readonly clientRoomService: ClientRoomService,
+  ) {}
 
   @ApiResponse({
     type: UserRdo,
@@ -188,6 +192,22 @@ export class ClientRoomController {
       name,
       email,
     });
+
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @ApiResponse({
+    type: Boolean,
+    status: HttpStatus.OK,
+    description: 'Get trainings of the trainer.',
+  })
+  @Get('/trainings/:id')
+  public async getTrainerTrainings(
+    @Query() query: TrainingQuery,
+    @Param('id') trainerId: number,
+  ) {
+    const data = await this.trainingRepository.find(query, trainerId);
 
     return data;
   }
