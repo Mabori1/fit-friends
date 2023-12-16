@@ -58,14 +58,10 @@ export const getIsTrainerFriend =
       (friend) => friend.userId === id,
     );
 
-export const getInPersonalOrders = (
-  state: State,
-): PersonalOrderRdo[] | undefined =>
+export const getInPersonalOrders = (state: State): PersonalOrderRdo[] =>
   state[NameSpace.UserSlice].inPersonalOrders;
 
-export const getOutPersonalOrders = (
-  state: State,
-): PersonalOrderRdo[] | undefined =>
+export const getOutPersonalOrders = (state: State): PersonalOrderRdo[] =>
   state[NameSpace.UserSlice].outPersonalOrders;
 
 export const getUsers = (state: State): UserRdo[] =>

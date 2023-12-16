@@ -99,7 +99,7 @@ export enum APIRoute {
   Training = 'trainer/training',
   SpendTraining = 'client/training',
   BuyOrder = 'client/order',
-  BuyPersonalOrder = 'client/personal-order',
+  BuyPersonalOrder = '/personal-order',
   CreateFeedback = 'feedbacks/create',
   Feedbacks = 'feedbacks',
   CheckSubscribe = 'clitnt/check-subscribe',

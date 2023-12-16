@@ -271,12 +271,10 @@ export const fetchInPersonalOrdersAction = createAsyncThunk<
 
 export const fetchOutPersonalOrdersAction = createAsyncThunk<
   PersonalOrderRdo[],
-  number,
+  undefined,
   AsyncThunkConfig
->('user/fetchOutPersonalOrdersAction', async (userId, { extra: api }) => {
-  const { data } = await api.get<PersonalOrderRdo[]>(
-    `${APIRoute.OutPersonalOrder}/${userId}`,
-  );
+>('user/fetchOutPersonalOrdersAction', async ({ extra: api }) => {
+  const { data } = await api.get<PersonalOrderRdo[]>(APIRoute.OutPersonalOrder);
   return data;
 });
 

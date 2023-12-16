@@ -39,8 +39,8 @@ type UserSlice = {
   clientFriends: UserRdo[];
   notices: INotify[] | [];
   orders?: OrderRdo[];
-  inPersonalOrders?: PersonalOrderRdo[];
-  outPersonalOrders?: PersonalOrderRdo[];
+  inPersonalOrders: PersonalOrderRdo[];
+  outPersonalOrders: PersonalOrderRdo[];
   balance?: IBalance[];
   subscribeStatus: boolean;
 };
@@ -273,7 +273,7 @@ export const userSlice = createSlice({
       })
       .addCase(buyPersonalTrainingAction.fulfilled, (state, action) => {
         state.sliceStatus = SliceStatus.Fulfilled;
-        state.inPersonalOrders?.push(action.payload);
+        state.outPersonalOrders?.push(action.payload);
       });
   },
 });

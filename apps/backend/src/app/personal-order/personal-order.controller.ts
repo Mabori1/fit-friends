@@ -79,10 +79,13 @@ export class PersonalOrderController {
     description: 'The personal training order successfully showed',
   })
   @UseGuards(JwtAuthGuard)
-  @Get('/out/:id')
-  public async getOutPersonalOrders(@Param('id') userId: number) {
-    const personalOrders =
-      await this.personalOrderService.getOutPersonalOrders(userId);
+  @Get('/out')
+  public async getOutPersonalOrders(
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    const personalOrders = await this.personalOrderService.getOutPersonalOrders(
+      payload.sub,
+    );
     return fillObject(PersonalOrderRdo, personalOrders);
   }
 }

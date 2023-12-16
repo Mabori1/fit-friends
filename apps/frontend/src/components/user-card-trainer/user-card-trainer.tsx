@@ -1,26 +1,25 @@
-import { nanoid } from 'nanoid';
 import TrainingThumbnail from '../training-thumbnail/training-thumbnail';
 import { MAX_USER_CARD_TRAININGS_COUNT } from '../../constants';
 import { useEffect, useState } from 'react';
 import { UserRdo } from '../../types/user.rdo';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
-  getTrainerFriends,
-  getInPersonalOrders,
   getSubscribeStatus,
+  getClientFriends,
+  getIsClientFriend,
+  getOutPersonalOrders,
 } from '../../redux/userSlice/selectors';
 import { getTrainings } from '../../redux/trainingSlice/selectors';
 import {
   buyPersonalTrainingAction,
   checkSubscribeAction,
   fetchAddFriendAction,
-  fetchInPersonalOrdersAction,
+  fetchClientFriendsAction,
+  fetchOutPersonalOrdersAction,
   fetchRemoveFriendAction,
-  fetchTrainerFriendsAction,
   toggleSubscribeAction,
 } from '../../redux/userSlice/apiUserActions';
 import { fetchTrainingsAction } from '../../redux/trainingSlice/apiTrainingActions';
-import { FriendAction } from '../../types/friend-action';
 import PopupTrainerCertificates from '../popup-trainer-certificate/pupup-trainer-certificate';
 import {
   ArrowCheck,
@@ -38,10 +37,11 @@ type UserCardTrainerProps = {
 function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const myFriends = useAppSelector(getTrainerFriends);
+  const myFriends = useAppSelector(getClientFriends);
   const trainings = useAppSelector(getTrainings);
-  const outOrders = useAppSelector(getInPersonalOrders);
+  const outOrders = useAppSelector(getOutPersonalOrders);
   const isSubscribers = useAppSelector(getSubscribeStatus);
+  const isFriend = useAppSelector(getIsClientFriend(trainer?.userId));
 
   const [isCertificatesModalOpened, setIsCertificatesModalOpened] =
     useState(false);
@@ -49,7 +49,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
   const [trainingsCurrentPage, setTrainingsCurrentPage] = useState(1);
 
   useEffect(() => {
-    dispatch(fetchTrainerFriendsAction());
+    dispatch(fetchClientFriendsAction());
     dispatch(
       fetchTrainingsAction({
         trainerId: trainer.userId,
@@ -60,24 +60,16 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
     dispatch(checkSubscribeAction(trainer.userId));
   }, [dispatch, trainingsCurrentPage, trainer.userId]);
 
-  const handleFriendRelations = async (type: FriendAction) => {
-    switch (type) {
-      case FriendAction.Add:
-        await dispatch(fetchAddFriendAction(trainer.userId));
-        break;
-      case FriendAction.Remove:
-        await dispatch(fetchRemoveFriendAction(trainer.userId));
-        break;
+  console.log(outOrders);
+
+  const handleFriendRelations = async () => {
+    if (!isFriend) {
+      await dispatch(fetchAddFriendAction(trainer.userId));
+    } else {
+      await dispatch(fetchRemoveFriendAction(trainer.userId));
     }
-    await dispatch(fetchTrainerFriendsAction());
-  };
 
-  const handleAddFriendButtonClick = () => {
-    handleFriendRelations(FriendAction.Add);
-  };
-
-  const handleRemoveFriendButtonClick = () => {
-    handleFriendRelations(FriendAction.Remove);
+    await dispatch(fetchClientFriendsAction());
   };
 
   const handleBackArrowButtonClick = () => {
@@ -100,7 +92,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
 
   const handleInviteButtonClick = async () => {
     await dispatch(buyPersonalTrainingAction(trainer.userId));
-    dispatch(fetchInPersonalOrdersAction(trainer.userId));
+    dispatch(fetchOutPersonalOrdersAction());
   };
 
   const handleSubscribeInputChange = async () => {
@@ -177,7 +169,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
               </ul>
               {myFriends.some((friend) => friend.userId === trainer.userId) ? (
                 <button
-                  onClick={handleRemoveFriendButtonClick}
+                  onClick={handleFriendRelations}
                   className="btn user-card-coach__btn"
                   type="button"
                 >
@@ -185,7 +177,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
                 </button>
               ) : (
                 <button
-                  onClick={handleAddFriendButtonClick}
+                  onClick={handleFriendRelations}
                   className="btn user-card-coach__btn"
                   type="button"
                 >
@@ -245,7 +237,10 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
             {trainings && (
               <ul className="user-card-coach__training-list">
                 {trainings.map((training) => (
-                  <li key={nanoid()} className="user-card-coach__training-item">
+                  <li
+                    key={training.id}
+                    className="user-card-coach__training-item"
+                  >
                     <TrainingThumbnail training={training} />
                   </li>
                 ))}
@@ -261,7 +256,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
                     className="btn user-card-coach__btn-training"
                     type="button"
                     disabled={outOrders?.some(
-                      (request) => request.userId === trainer.userId,
+                      (request) => request.targetId === trainer.userId,
                     )}
                   >
                     Хочу персональную тренировку

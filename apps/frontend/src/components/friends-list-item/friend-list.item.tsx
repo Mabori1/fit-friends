@@ -82,7 +82,7 @@ function FriendsListItem({
           className={`
             thumbnail-friend__info
             ${
-              !isTrainer
+              !isFriendTrainer
                 ? 'thumbnail-friend__info--theme-light'
                 : 'thumbnail-friend__info--theme-dark'
             }

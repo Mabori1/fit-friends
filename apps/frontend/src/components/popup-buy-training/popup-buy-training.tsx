@@ -53,7 +53,7 @@ function PopupBuyTraining({
 
   const buyTraining = async () => {
     if (training.price >= 0 && paymentMethod) {
-      dispatch(
+      await dispatch(
         buyTrainingAction({
           type: TypeOfOrder.Subscription,
           trainerId: training.trainerId,

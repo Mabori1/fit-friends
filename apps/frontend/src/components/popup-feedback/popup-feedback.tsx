@@ -25,7 +25,7 @@ function PopupFeedback({
   const userAvatar = useAppSelector(getAvatar) || '';
   const userName = useAppSelector(getUserName) || '';
 
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(1);
   const [feedbackText, setFeedbackText] = useState('');
 
   const [feedbackTextInputUsed, setFeedbackTextInputUsed] = useState(false);
@@ -47,10 +47,11 @@ function PopupFeedback({
     setFeedbackTextInputUsed(true);
   };
 
-  const handleReviewTextInputChange = (
+  const handleFeedBackTextInputChange = (
     evt: ChangeEvent<HTMLTextAreaElement>,
   ) => {
     const value = evt.currentTarget.value;
+    setFeedbackTextInputUsed(true);
     setFeedbackText(value);
     if (
       value.length < FeedbackTextLength.Min ||
@@ -60,7 +61,7 @@ function PopupFeedback({
         `Длина комментария от ${FeedbackTextLength.Min} до ${FeedbackTextLength.Max} символов`,
       );
       if (!value) {
-        setFeedbackTextError('Заполните поле');
+        setFeedbackTextError('Обязательное поле');
       }
     } else {
       setFeedbackTextError('');
@@ -78,6 +79,7 @@ function PopupFeedback({
           rating,
         }),
       );
+
       await dispatch(fetchFeedbacksAction(trainingId));
       await dispatch(fetchTrainingAction(+getTrainingId()));
     }
@@ -146,7 +148,7 @@ function PopupFeedback({
                             ? 'custom-textarea__error'
                             : ''
                         }`}
-                        onChange={handleReviewTextInputChange}
+                        onChange={handleFeedBackTextInputChange}
                         name="description"
                         placeholder=" "
                         value={feedbackText}

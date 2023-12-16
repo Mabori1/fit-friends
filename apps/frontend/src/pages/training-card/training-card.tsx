@@ -30,6 +30,7 @@ import {
 } from '../../helper/svg-const';
 import PopupBuyTraining from '../../components/popup-buy-training/popup-buy-training';
 import FeedbacksList from '../../components/feedbacks-list/feedbacks-list';
+import { toast } from 'react-toastify';
 
 type TrainingCardProps = {
   isTrainer: boolean;
@@ -268,7 +269,8 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
   const handleSpendTrainingButtonClick = async () => {
     if (training) {
       await dispatch(spendTrainingAction(training.id));
-      dispatch(fetchBalanceAction());
+      toast.success('Тренировка списана');
+      await dispatch(fetchBalanceAction());
     }
   };
 

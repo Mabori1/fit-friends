@@ -7,8 +7,8 @@ import { fetchUserInfoAction } from '../../redux/trainingSlice/apiTrainingAction
 import UserCardTrainer from '../../components/user-card-trainer/user-card-trainer';
 import UserCardClient from '../../components/user-card-client/user-card-client';
 import { ArrowLeft } from '../../helper/svg-const';
-import { getIsTrainer } from '../../redux/userSlice/selectors';
 import { fetchInPersonalOrdersAction } from '../../redux/userSlice/apiUserActions';
+import { UserRole } from '@fit-friends/types';
 
 function UserCard(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ function UserCard(): JSX.Element {
   const userId = useParams().id;
 
   const user = useAppSelector(getUserInfo);
-  const isTrainer = useAppSelector(getIsTrainer);
+  const isTrainer = user?.role === UserRole.Trainer;
 
   useEffect(() => {
     if (userId && user?.userId !== +userId) {

@@ -7,7 +7,6 @@ import {
   AppRoute,
   DAYS_IN_A_WEEK,
 } from '../../constants';
-import { nanoid } from 'nanoid';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { getUser } from '../../redux/userSlice/selectors';
 import {
@@ -554,7 +553,7 @@ function ClientRoomPage(): JSX.Element {
                       {Object.values(UserLocation).map((station) => (
                         <li
                           onClick={() => handleLocationInputClick(station)}
-                          key={nanoid()}
+                          key={station}
                           className="custom-select__item"
                         >
                           {station}
