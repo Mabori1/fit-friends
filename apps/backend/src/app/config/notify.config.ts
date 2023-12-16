@@ -3,7 +3,7 @@ import * as Joi from 'joi';
 
 const DEFAULT_PORT = 4000;
 const DEFAULT_POSTGRES_PORT = 5432;
-const DEFAULT_SMTP_PORT = 25;
+const DEFAULT_SMTP_PORT = 8025;
 
 export interface NotifyConfig {
   environment: string;

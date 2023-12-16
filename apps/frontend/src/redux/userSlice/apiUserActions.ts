@@ -273,7 +273,7 @@ export const fetchOutPersonalOrdersAction = createAsyncThunk<
   PersonalOrderRdo[],
   undefined,
   AsyncThunkConfig
->('user/fetchOutPersonalOrdersAction', async ({ extra: api }) => {
+>('user/fetchOutPersonalOrdersAction', async (_arg, { extra: api }) => {
   const { data } = await api.get<PersonalOrderRdo[]>(APIRoute.OutPersonalOrder);
   return data;
 });

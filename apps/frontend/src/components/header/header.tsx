@@ -103,7 +103,7 @@ function Header(): JSX.Element {
                 </svg>
               </Link>
               <div className="main-nav__dropdown">
-                {notify?.length ? (
+                {!notify?.length ? (
                   <p className="main-nav__label">Оповещений нет</p>
                 ) : (
                   <p className="main-nav__label">Оповещения</p>

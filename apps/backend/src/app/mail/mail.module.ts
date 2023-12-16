@@ -4,9 +4,7 @@ import { MailService } from './mail.service';
 import { getMailerAsyncOptions } from '../config/mail';
 
 @Module({
-  imports: [
-    MailerModule.forRootAsync(getMailerAsyncOptions('application.mail')),
-  ],
+  imports: [MailerModule.forRootAsync(getMailerAsyncOptions('notify.mail'))],
   providers: [MailService],
   exports: [MailService],
 })

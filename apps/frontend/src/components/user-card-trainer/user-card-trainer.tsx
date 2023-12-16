@@ -50,6 +50,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchClientFriendsAction());
+    dispatch(fetchOutPersonalOrdersAction());
     dispatch(
       fetchTrainingsAction({
         trainerId: trainer.userId,
@@ -59,8 +60,6 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
     );
     dispatch(checkSubscribeAction(trainer.userId));
   }, [dispatch, trainingsCurrentPage, trainer.userId]);
-
-  console.log(outOrders);
 
   const handleFriendRelations = async () => {
     if (!isFriend) {
@@ -92,7 +91,7 @@ function UserCardTrainer({ trainer }: UserCardTrainerProps): JSX.Element {
 
   const handleInviteButtonClick = async () => {
     await dispatch(buyPersonalTrainingAction(trainer.userId));
-    dispatch(fetchOutPersonalOrdersAction());
+    await dispatch(fetchOutPersonalOrdersAction());
   };
 
   const handleSubscribeInputChange = async () => {

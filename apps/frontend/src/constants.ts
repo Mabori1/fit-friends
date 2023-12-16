@@ -102,7 +102,7 @@ export enum APIRoute {
   BuyPersonalOrder = '/personal-order',
   CreateFeedback = 'feedbacks/create',
   Feedbacks = 'feedbacks',
-  CheckSubscribe = 'clitnt/check-subscribe',
+  CheckSubscribe = 'client/check-subscribe',
   ToggleSubscribe = 'client/subscribe',
 }
 

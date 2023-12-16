@@ -1,5 +1,4 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import {
   IFriendInfo,
   INewTrainingInfo,
@@ -18,29 +17,28 @@ export class NotifyService {
   private readonly logger = new Logger(NotifyService.name);
 
   constructor(
-    private readonly configService: ConfigService,
     private readonly notifyRepository: NotifyRepository,
     private readonly userRepository: UserRepository,
     private readonly mailService: MailService,
   ) {}
 
   public async addSubscribe(dto: ISubscriber) {
+    this.mailService.sendMailNewSubscribe(dto);
     const notifyEntity = new NotifyEntity({
       targetUserEmail: dto.email,
       text: SUBSCRIBE_TEXT,
     });
     const newNotify = await this.notifyRepository.create(notifyEntity);
-    await this.mailService.sendMailNewSubscribe(dto);
     return newNotify;
   }
 
   public async deleteSubscribe(dto: ISubscriber) {
+    this.mailService.sendMailUnsubscribe(dto);
     const notifyEntity = new NotifyEntity({
       targetUserEmail: dto.email,
       text: UNSUBSCRIBE_TEXT,
     });
     const newNotify = await this.makeNewNotify(notifyEntity);
-    await this.mailService.sendMailUnsubscribe(dto);
     return newNotify;
   }
 
