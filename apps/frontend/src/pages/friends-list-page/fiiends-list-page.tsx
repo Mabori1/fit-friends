@@ -80,7 +80,7 @@ function FriendsListPage(): JSX.Element {
 
     if (userId) {
       dispatch(fetchInPersonalOrdersAction(userId));
-      dispatch(fetchOutPersonalOrdersAction(userId));
+      dispatch(fetchOutPersonalOrdersAction());
     }
   }, [dispatch, userId, isTrainer]);
 

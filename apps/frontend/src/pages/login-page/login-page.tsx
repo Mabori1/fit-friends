@@ -30,7 +30,8 @@ function LoginPage(): JSX.Element {
   useEffect(() => {
     if (isTrainer && isAuth) {
       navigate(AppRoute.TrainerRoom);
-    } else if (!isTrainer && isAuth) {
+    }
+    if (!isTrainer && isAuth) {
       navigate(AppRoute.Main);
     }
   }, [isTrainer, isAuth, navigate]);
@@ -44,8 +45,24 @@ function LoginPage(): JSX.Element {
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    dispatch(loginUserAction(data));
-    reset();
+    dispatch(loginUserAction(data))
+      .then(() => {
+        if (!isAuth) {
+          navigate(AppRoute.Intro);
+        }
+        if (isTrainer && isAuth) {
+          navigate(AppRoute.TrainerRoom);
+        }
+        if (!isTrainer && isAuth) {
+          navigate(AppRoute.Main);
+        }
+        reset();
+        console.log('success', isAuth, isTrainer);
+      })
+      .catch(() => {
+        console.log('error');
+        navigate(AppRoute.Intro);
+      });
   };
 
   useEffect(() => {

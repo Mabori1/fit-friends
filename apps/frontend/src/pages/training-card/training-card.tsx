@@ -45,12 +45,11 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
   const avatar = trainingAuthor?.avatar;
   const userName = trainingAuthor?.name;
 
-  const isTrainingAlreadyInMyBalance = training
+  const isTrainingAlreadyBalance = training
     ? balance?.find((purchase: IBalance) => purchase.trainingId === training.id)
     : false;
 
-  const isBeginTrainingButtonDisabled =
-    isTrainer || !isTrainingAlreadyInMyBalance;
+  const isBeginTrainingButtonDisabled = isTrainer || !isTrainingAlreadyBalance;
 
   const features = [
     `#${training ? training.typeOfTraining : ''}`,

@@ -24,6 +24,7 @@ import TrainingCard from './pages/training-card/training-card';
 import UserCard from './pages/user-card/user-card';
 import UsersCatalog from './pages/user-catalog/user-catalog';
 import OrdersPage from './pages/orders-page/orders-page';
+import LoadingPage from './pages/loading-page/loading-page';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -31,7 +32,7 @@ export function App() {
   const isTrainer = useAppSelector(getIsTrainer);
 
   if (isLoading) {
-    //  return <LoadingPage />;
+    return <LoadingPage />;
   }
 
   return (

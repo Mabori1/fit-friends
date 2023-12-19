@@ -43,7 +43,7 @@ function FriendsListItem({
     await dispatch(addPersonalOrderAction(friend.userId));
     if (userId) {
       dispatch(fetchInPersonalOrdersAction(userId));
-      dispatch(fetchOutPersonalOrdersAction(userId));
+      dispatch(fetchOutPersonalOrdersAction());
     }
   };
 
