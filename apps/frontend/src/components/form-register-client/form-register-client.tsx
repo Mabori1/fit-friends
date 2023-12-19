@@ -247,7 +247,6 @@ function FormRegisgerClient() {
                     </div>
                   </div>
                 </div>
-                <pre>{JSON.stringify(watch(), null, 2)}</pre>
                 <button
                   className="btn questionnaire-user__button"
                   type="submit"

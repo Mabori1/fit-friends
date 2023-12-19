@@ -442,7 +442,6 @@ function FormRegister() {
           </label>
         </div>
         {errors.terms && <span className="error">{errors.terms?.message}</span>}
-        <pre>{JSON.stringify(watch(), null, 2)}</pre>
         <button
           className="btn sign-up__button"
           type="submit"

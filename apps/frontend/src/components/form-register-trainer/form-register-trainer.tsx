@@ -289,7 +289,6 @@ function FormRegisterTrainer() {
                       </div>
                     </div>
                   </div>
-                  <pre>{JSON.stringify(watch(), null, 2)}</pre>
                   <button
                     className="btn questionnaire-coach__button"
                     type="submit"
