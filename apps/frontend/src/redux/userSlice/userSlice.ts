@@ -25,10 +25,12 @@ import {
   fetchAddFriendAction,
   fetchRemoveFriendAction,
   fetchOutPersonalOrdersAction,
+  fetchTrainingsBalanceAction,
 } from './apiUserActions';
 import { UserRdo } from '../../types/user.rdo';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
 import { TrainerOrdersRdo } from '../../types/trainer-orders.rdo';
+import { TrainingRdo } from '../../types/training.rdo';
 
 type UserSlice = {
   authStatus: AuthStatus;
@@ -42,6 +44,7 @@ type UserSlice = {
   inPersonalOrders: PersonalOrderRdo[];
   outPersonalOrders: PersonalOrderRdo[];
   balance?: IBalance[];
+  trainingsBalance: TrainingRdo[];
   subscribeStatus: boolean;
 };
 
@@ -57,6 +60,7 @@ const initialState: UserSlice = {
   inPersonalOrders: [],
   outPersonalOrders: [],
   balance: [],
+  trainingsBalance: [],
   subscribeStatus: false,
 };
 
@@ -274,6 +278,17 @@ export const userSlice = createSlice({
       .addCase(buyPersonalTrainingAction.fulfilled, (state, action) => {
         state.sliceStatus = SliceStatus.Fulfilled;
         state.outPersonalOrders?.push(action.payload);
+      })
+      .addCase(fetchTrainingsBalanceAction.pending, (state) => {
+        state.sliceStatus = SliceStatus.Loading;
+      })
+      .addCase(fetchTrainingsBalanceAction.fulfilled, (state, action) => {
+        state.sliceStatus = SliceStatus.Fulfilled;
+        state.trainingsBalance = action.payload;
+      })
+      .addCase(fetchTrainingsBalanceAction.rejected, (state) => {
+        state.sliceStatus = SliceStatus.Rejected;
+        state.trainingsBalance = [];
       });
   },
 });

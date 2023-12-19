@@ -124,6 +124,22 @@ export class ClientRoomController {
   }
 
   @ApiResponse({
+    type: TrainingRdo,
+    status: HttpStatus.OK,
+    description: 'Show all training by balance',
+  })
+  @UseGuards(JwtAuthGuard, RoleClientGuard)
+  @Get('balance-trainings')
+  public async getTrainingsBalance(
+    @Req() { user: payload }: IRequestWithTokenPayload,
+  ) {
+    const userTrainings = await this.clientRoomService.getAllTrainingsByBalance(
+      payload.sub,
+    );
+    return fillObject(TrainingRdo, userTrainings);
+  }
+
+  @ApiResponse({
     status: HttpStatus.OK,
     description: 'Users training successfully used.',
   })

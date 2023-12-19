@@ -2,7 +2,6 @@ import { IBalance, INotify, UserRole } from '@fit-friends/types';
 import { AuthStatus, NameSpace, SliceStatus } from '../../constants';
 import { State } from '../store';
 import { UserRdo } from '../../types/user.rdo';
-import { OrderRdo } from '../../types/order.rdo';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
 import { TrainerOrdersRdo } from '../../types/trainer-orders.rdo';
 
@@ -73,6 +72,9 @@ export const getOrders = (state: State): TrainerOrdersRdo[] =>
 
 export const getBalance = (state: State): IBalance[] | undefined =>
   state[NameSpace.UserSlice].balance;
+
+export const getTrainingsBalance = (state: State): TrainingRdo[] =>
+  state[NameSpace.UserSlice].trainingsBalance;
 
 export const getSubscribeStatus = (state: State): boolean =>
   state[NameSpace.UserSlice].subscribeStatus;

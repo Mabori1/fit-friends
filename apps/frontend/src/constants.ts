@@ -24,6 +24,7 @@ export const MAX_USERS_CATALOG_COUNT_PER_PAGE = 20;
 export const MAX_TRAINING_TYPES_COUNT_PER_PAGE = 4;
 export const DAYS_IN_A_WEEK = 7;
 export const MAX_ORDERS_COUNT_PER_PAGE = 4;
+export const MAX_PURCHASES_ITEMS_COUNT_PER_PAGE = 8;
 
 export enum AppRoute {
   Root = '/',
@@ -40,7 +41,7 @@ export enum AppRoute {
   CreateTraining = '/create-training',
   TrainerTrainings = '/trainer-trainings',
   TrainerOrders = '/trainer-orders',
-  ClientOrders = '/client-orders',
+  ClientBalance = '/client-balance',
   TrainingCard = '/training-card',
   TrainingCatalog = '/training-catalog',
   UsersCatalog = '/users-catalog',
@@ -97,6 +98,7 @@ export enum APIRoute {
   TrainingCatalog = 'trainer/training-catalog',
   TrainerOrders = '/trainer/orders',
   ClientBalance = '/client/balance',
+  ClientTrainingsBalance = '/client/balance-trainings',
   Training = 'trainer/training',
   SpendTraining = 'client/training',
   BuyOrder = 'client/order',

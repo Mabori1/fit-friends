@@ -24,6 +24,7 @@ import TrainingCard from './pages/training-card/training-card';
 import UserCard from './pages/user-card/user-card';
 import UsersCatalog from './pages/user-catalog/user-catalog';
 import OrdersPage from './pages/orders-page/orders-page';
+import BalancePage from './pages/balance-page/balance-page';
 
 export function App() {
   const isLoading = useAppSelector(getIsUserLoading);
@@ -170,6 +171,14 @@ export function App() {
         element={
           <PrivateRoute isAuth={isAuth}>
             <UserCard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={AppRoute.ClientBalance}
+        element={
+          <PrivateRoute isAuth={isAuth}>
+            {!isTrainer ? <BalancePage /> : <Navigate to={AppRoute.Root} />}
           </PrivateRoute>
         }
       />

@@ -752,7 +752,7 @@ function ClientRoomPage(): JSX.Element {
                     </Link>
                     <Link
                       className="thumbnail-link thumbnail-link--theme-light personal-account-user__shop"
-                      to={AppRoute.ClientOrders}
+                      to={AppRoute.ClientBalance}
                     >
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">

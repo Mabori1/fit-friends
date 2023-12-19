@@ -18,6 +18,7 @@ import { OrderRdo } from '../../types/order.rdo';
 import { OrderDto } from '../../types/order.dto';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
 import { PersonalOrderStatusQuery } from '../../types/personal-order-status-query';
+import { TrainingRdo } from '../../types/training.rdo';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -284,6 +285,17 @@ export const fetchBalanceAction = createAsyncThunk<
   AsyncThunkConfig
 >('user/fetchBalanceAction', async (_args, { extra: api }) => {
   const { data } = await api.get<IBalance[]>(APIRoute.ClientBalance);
+  return data;
+});
+
+export const fetchTrainingsBalanceAction = createAsyncThunk<
+  TrainingRdo[],
+  undefined,
+  AsyncThunkConfig
+>('user/fetchTrainingsBalanceAction', async (_args, { extra: api }) => {
+  const { data } = await api.get<TrainingRdo[]>(
+    APIRoute.ClientTrainingsBalance,
+  );
   return data;
 });
 

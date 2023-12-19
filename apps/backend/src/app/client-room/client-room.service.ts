@@ -69,13 +69,13 @@ export class ClientRoomService {
 
     await this.friendRepository.create(userFriendEntity);
 
-    // await this.notifyService.addFriend({
-    //   targetEmail: friend.email,
-    //   targetName: friend.name,
-    //   srcName: payload.name,
-    //   srcEmail: payload.email,
-    // });
-    //
+    await this.notifyService.addFriend({
+      targetEmail: friend.email,
+      targetName: friend.name,
+      srcName: payload.name,
+      srcEmail: payload.email,
+    });
+
     return friend;
   }
 
@@ -151,6 +151,19 @@ export class ClientRoomService {
     }
 
     return balances;
+  }
+
+  public async getAllTrainingsByBalance(userId: number) {
+    const balances = await this.balanceRepository.findByUserId(userId);
+
+    if (!balances) {
+      throw new NotFoundException('Balance not found');
+    }
+    const tranings = balances.map((balance) => {
+      return this.trainingRepository.findById(balance.trainingId);
+    });
+
+    return tranings;
   }
 
   public async spendTraining(userId: number, trainingId: number) {
