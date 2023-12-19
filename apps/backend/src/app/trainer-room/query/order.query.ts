@@ -10,11 +10,11 @@ export class OrderQuery {
 
   @IsIn(['asc', 'desc'])
   @IsOptional()
-  public sortQtt?: 'desc' | 'asc' = OrderQueryDefault.SortDirection;
+  public quantitySort?: 'desc' | 'asc';
 
   @IsIn(['asc', 'desc'])
   @IsOptional()
-  public sortPrice?: 'desc' | 'asc' = OrderQueryDefault.SortDirection;
+  public priceSort?: 'desc' | 'asc';
 
   @IsOptional()
   @Transform(({ value }) => +value)

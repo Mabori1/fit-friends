@@ -1,7 +1,4 @@
 import { Link } from 'react-router-dom';
-import { OrderRdo } from '../../types/order.rdo';
-import { useAppSelector } from '../../redux/store';
-import { getTrainingById } from '../../redux/trainingSlice/selectors';
 import {
   IconChart,
   IconInfo,
@@ -10,12 +7,29 @@ import {
 } from '../../helper/svg-const';
 
 type OrdersItemProps = {
-  order: OrderRdo;
+  order: {
+    backgroundPicture: string;
+    id: number;
+    caloriesQtt: number;
+    price: number;
+    title: string;
+    gender: string;
+    trainingId: number;
+    description: string;
+    trainerId: number;
+    typeOfTraining: string;
+    duration: string;
+    levelOfUser: string;
+    rating: number;
+    isPromo: boolean;
+    video: string;
+    totalPrice: number;
+    totalQuantity: number;
+  };
 };
 
 function OrdersItem({ order }: OrdersItemProps): JSX.Element {
-  const training = useAppSelector(getTrainingById(order.trainingId));
-  const features = [`#${order.type}`, `#${training?.caloriesQtt}ккал`];
+  const features = [`#${order.typeOfTraining}`, `#${order.caloriesQtt}ккал`];
 
   return (
     <li className="my-orders__item" data-testid="my-orders-item">
@@ -24,7 +38,7 @@ function OrdersItem({ order }: OrdersItemProps): JSX.Element {
           <div className="thumbnail-training__image">
             <picture>
               <img
-                src={training?.backgroundPicture}
+                src={`../${order.backgroundPicture}`}
                 width="330"
                 height="190"
                 alt="training thumbnail"
@@ -37,7 +51,7 @@ function OrdersItem({ order }: OrdersItemProps): JSX.Element {
             </span>
             <span>₽</span>
           </p>
-          <h2 className="thumbnail-training__title">{training?.title}</h2>
+          <h2 className="thumbnail-training__title">{order.title}</h2>
           <div className="thumbnail-training__info">
             <ul className="thumbnail-training__hashtags-list">
               {features.map((tag) => (
@@ -53,12 +67,12 @@ function OrdersItem({ order }: OrdersItemProps): JSX.Element {
                 <IconStar />
               </svg>
               <span className="thumbnail-training__rate-value">
-                {training?.rating}
+                {order.rating}
               </span>
             </div>
           </div>
           <div className="thumbnail-training__text-wrapper">
-            <p className="thumbnail-training__text">{training?.description}</p>
+            <p className="thumbnail-training__text">{order.description}</p>
           </div>
           <Link
             className="btn-flat btn-flat--underlined thumbnail-training__button-orders"
@@ -76,7 +90,7 @@ function OrdersItem({ order }: OrdersItemProps): JSX.Element {
               <IconChart />
             </svg>
             <p className="thumbnail-training__total-info-value">
-              {order.price * order.quantity}
+              {order.totalQuantity}
             </p>
             <p className="thumbnail-training__total-info-text">
               Куплено тренировок
@@ -87,7 +101,7 @@ function OrdersItem({ order }: OrdersItemProps): JSX.Element {
               <IconWallet />
             </svg>
             <p className="thumbnail-training__total-info-value">
-              {order.totalPrice * order.quantity}
+              {order.totalPrice}
               <span>₽</span>
             </p>
             <p className="thumbnail-training__total-info-text">Общая сумма</p>

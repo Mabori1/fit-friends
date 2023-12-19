@@ -61,6 +61,7 @@ export const createQueryString = (
     `${queryArgs.level ? `level=${queryArgs.level}` : ''}`,
     `${queryArgs.priceSort ? `priceSort=${queryArgs.priceSort}` : ''}`,
     `${queryArgs.ratingSort ? `ratingSort=${queryArgs.ratingSort}` : ''}`,
+    `${queryArgs.quantitySort ? `quantitySort=${queryArgs.quantitySort}` : ''}`,
     `${
       queryArgs.sortDirection ? `sortDirection=${queryArgs.sortDirection}` : ''
     }`,

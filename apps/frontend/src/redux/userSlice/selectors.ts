@@ -4,6 +4,7 @@ import { State } from '../store';
 import { UserRdo } from '../../types/user.rdo';
 import { OrderRdo } from '../../types/order.rdo';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
+import { TrainerOrdersRdo } from '../../types/trainer-orders.rdo';
 
 export const getAuthStatus = (state: State): AuthStatus =>
   state[NameSpace.UserSlice].authStatus;
@@ -67,7 +68,7 @@ export const getOutPersonalOrders = (state: State): PersonalOrderRdo[] =>
 export const getUsers = (state: State): UserRdo[] =>
   state[NameSpace.UserSlice].users;
 
-export const getOrders = (state: State): OrderRdo[] =>
+export const getOrders = (state: State): TrainerOrdersRdo[] =>
   state[NameSpace.UserSlice].orders ?? [];
 
 export const getBalance = (state: State): IBalance[] | undefined =>

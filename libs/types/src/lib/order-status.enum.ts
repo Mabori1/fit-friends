@@ -1,5 +1,5 @@
 export enum OrderStatus {
   Accepted = 'принят',
-  Declined = 'отклонен',
+  Declined = 'отклонён',
   Pending = 'на рассмотрении',
 }

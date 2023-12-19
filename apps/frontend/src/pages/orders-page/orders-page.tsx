@@ -7,7 +7,6 @@ import {
   AppRoute,
   MAX_ORDERS_COUNT_PER_PAGE,
   SortDirection,
-  SortType,
 } from '../../constants';
 import { ArrowLeft, IconSortDown, IconSortUp } from '../../helper/svg-const';
 import OrdersItem from '../../components/order-item/order-item';
@@ -24,56 +23,31 @@ function OrdersPage(): JSX.Element {
     currentOrders.length / MAX_ORDERS_COUNT_PER_PAGE,
   );
 
-  // выбранный в данный момент тип сортировки
-  const [activeSortType, setActiveSortType] = useState<SortType | undefined>(
-    undefined,
-  );
-  // выбранный в данный момент порядок сортировки
-  const [activeSortDirection, setActiveSortDirection] = useState<
-    SortDirection | undefined
-  >(undefined);
-  // состояния кнопок сортировки
   const [moneySelectedSortDirection, setMoneySelectedSortDirection] =
     useState<SortDirection>(SortDirection.Desc);
   const [quantitySelectedSortDirection, setQuantitySelectedSortDirection] =
     useState<SortDirection>(SortDirection.Desc);
 
-  // проверка и установка активного порядка сортировки
-  useEffect(() => {
-    switch (activeSortType) {
-      case SortType.AmountOfMoney:
-        setActiveSortDirection(moneySelectedSortDirection);
-        break;
-      case SortType.Quantity:
-        setActiveSortDirection(quantitySelectedSortDirection);
-        break;
-    }
-  }, [
-    activeSortType,
-    moneySelectedSortDirection,
-    quantitySelectedSortDirection,
-  ]);
-
   const handleSortForMoneyButtonClick = () => {
-    setActiveSortType(SortType.AmountOfMoney);
-    if (activeSortType === SortType.AmountOfMoney) {
-      setMoneySelectedSortDirection((prevState) =>
-        prevState === SortDirection.Desc
-          ? SortDirection.Asc
-          : SortDirection.Desc,
-      );
-    }
+    setMoneySelectedSortDirection((prevState) =>
+      prevState === SortDirection.Desc ? SortDirection.Asc : SortDirection.Desc,
+    );
+    dispatch(
+      fetchOrdersAction({
+        priceSort: moneySelectedSortDirection,
+      }),
+    );
   };
 
   const handleSortForQuantityButtonClick = () => {
-    setActiveSortType(SortType.Quantity);
-    if (activeSortType === SortType.Quantity) {
-      setQuantitySelectedSortDirection((prevState) =>
-        prevState === SortDirection.Desc
-          ? SortDirection.Asc
-          : SortDirection.Desc,
-      );
-    }
+    setQuantitySelectedSortDirection((prevState) =>
+      prevState === SortDirection.Desc ? SortDirection.Asc : SortDirection.Desc,
+    );
+    dispatch(
+      fetchOrdersAction({
+        quantitySort: quantitySelectedSortDirection,
+      }),
+    );
   };
 
   const handleShowMoreButtonClick = () => {
@@ -87,12 +61,8 @@ function OrdersPage(): JSX.Element {
   };
 
   useEffect(() => {
-    dispatch(
-      fetchOrdersAction({
-        sortDirection: activeSortDirection,
-      }),
-    );
-  }, [activeSortDirection, dispatch]);
+    dispatch(fetchOrdersAction());
+  }, [dispatch]);
 
   return (
     <>

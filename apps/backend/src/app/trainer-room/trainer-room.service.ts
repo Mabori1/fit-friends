@@ -146,22 +146,30 @@ export class TrainerRoomService {
     }
 
     function compareByPrice(a: ITotalOrder, b: ITotalOrder) {
-      if (query.sortPrice === 'asc') {
+      if (query.priceSort === 'asc') {
         return a.totalPrice - b.totalPrice;
-      } else if (query.sortPrice === 'desc') {
+      } else if (query.priceSort === 'desc') {
         return b.totalPrice - a.totalPrice;
       }
     }
 
     function compareByQtt(a: ITotalOrder, b: ITotalOrder) {
-      if (query.sortQtt === 'asc') {
+      if (query.quantitySort === 'asc') {
         return a.totalQuantity - b.totalQuantity;
-      } else if (query.sortQtt === 'desc') {
+      } else if (query.quantitySort === 'desc') {
         return b.totalQuantity - a.totalQuantity;
       }
     }
 
-    return totalOrders.sort(compareByPrice).sort(compareByQtt);
+    if (query.priceSort === 'desc' || query.priceSort === 'asc') {
+      return totalOrders.sort(compareByPrice);
+    }
+
+    if (query.quantitySort === 'desc' || query.quantitySort === 'asc') {
+      return totalOrders.sort(compareByQtt);
+    }
+
+    return totalOrders;
   }
 
   public async getFriends(friendId: number) {

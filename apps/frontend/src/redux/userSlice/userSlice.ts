@@ -27,8 +27,8 @@ import {
   fetchOutPersonalOrdersAction,
 } from './apiUserActions';
 import { UserRdo } from '../../types/user.rdo';
-import { OrderRdo } from '../../types/order.rdo';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
+import { TrainerOrdersRdo } from '../../types/trainer-orders.rdo';
 
 type UserSlice = {
   authStatus: AuthStatus;
@@ -38,7 +38,7 @@ type UserSlice = {
   trainerFriends: UserRdo[];
   clientFriends: UserRdo[];
   notices: INotify[] | [];
-  orders?: OrderRdo[];
+  orders?: TrainerOrdersRdo[];
   inPersonalOrders: PersonalOrderRdo[];
   outPersonalOrders: PersonalOrderRdo[];
   balance?: IBalance[];
