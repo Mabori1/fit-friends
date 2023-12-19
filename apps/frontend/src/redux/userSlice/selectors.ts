@@ -4,6 +4,7 @@ import { State } from '../store';
 import { UserRdo } from '../../types/user.rdo';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
 import { TrainerOrdersRdo } from '../../types/trainer-orders.rdo';
+import { TrainingRdo } from '../../types/training.rdo';
 
 export const getAuthStatus = (state: State): AuthStatus =>
   state[NameSpace.UserSlice].authStatus;

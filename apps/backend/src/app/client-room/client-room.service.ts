@@ -7,7 +7,7 @@ import {
 import { TrainingRepository } from '../training/training.repository';
 import { OrderRepository } from '../order/order.repository';
 import { FriendRepository } from '../friend/friend.repository';
-import { IFriend, ITokenPayload, IUser } from '@fit-friends/types';
+import { IFriend, ITokenPayload, ITraining, IUser } from '@fit-friends/types';
 import { FriendEntity } from '../friend/friend.entity';
 import { BalanceRepository } from '../balance/balance.repository';
 import { BalanceEntity } from '../balance/balance.entity';
@@ -159,11 +159,15 @@ export class ClientRoomService {
     if (!balances) {
       throw new NotFoundException('Balance not found');
     }
-    const tranings = balances.map((balance) => {
-      return this.trainingRepository.findById(balance.trainingId);
-    });
 
-    return tranings;
+    const trainings: ITraining[] = [];
+    for (let i = 0; i < balances.length; i++) {
+      const training = await this.trainingRepository.findById(
+        balances[i].trainingId,
+      );
+      trainings.push(training);
+    }
+    return trainings;
   }
 
   public async spendTraining(userId: number, trainingId: number) {

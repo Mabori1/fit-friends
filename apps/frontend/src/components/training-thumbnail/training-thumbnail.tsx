@@ -83,7 +83,7 @@ function TrainingThumbnail({ training }: TrainingThumbnailProps): JSX.Element {
           </Link>
           <Link
             className="btn btn--small btn--outlined thumbnail-training__button-catalog"
-            to="#"
+            to={AppRoute.TrainingCard}
           >
             Отзывы
           </Link>

@@ -291,7 +291,6 @@ function CreateTrainingPage(): JSX.Element {
               updateTrainingAction({ id, video: path }),
             );
             if (updateTrainingAction.fulfilled.match(dataUpdatedTraining)) {
-              console.log('Видео успешно загружено и тренировка обновлена');
               navigate(AppRoute.TrainerTrainings);
             }
           }

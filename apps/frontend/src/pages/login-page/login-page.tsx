@@ -57,10 +57,8 @@ function LoginPage(): JSX.Element {
           navigate(AppRoute.Main);
         }
         reset();
-        console.log('success', isAuth, isTrainer);
       })
       .catch(() => {
-        console.log('error');
         navigate(AppRoute.Intro);
       });
   };

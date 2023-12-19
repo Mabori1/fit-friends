@@ -3,10 +3,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import TrainingThumbnail from '../../components/training-thumbnail/training-thumbnail';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import {
-  getBalance,
-  getTrainingsBalance,
-} from '../../redux/userSlice/selectors';
+import { getTrainingsBalance } from '../../redux/userSlice/selectors';
 import { TypeOfOrder } from '@fit-friends/types';
 import { AppRoute, MAX_PURCHASES_ITEMS_COUNT_PER_PAGE } from '../../constants';
 import {
@@ -19,7 +16,6 @@ function BalancePage(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const balance = useAppSelector(getBalance);
   const trainings = useAppSelector(getTrainingsBalance);
 
   const [purchaseType, setPurchaseType] = useState<TypeOfOrder>(
@@ -28,8 +24,8 @@ function BalancePage(): JSX.Element {
 
   const [currentListPage, setCurrentListPage] = useState(1);
   const pagesCount = Math.ceil(
-    balance
-      ? balance.length / MAX_PURCHASES_ITEMS_COUNT_PER_PAGE
+    trainings
+      ? trainings.length / MAX_PURCHASES_ITEMS_COUNT_PER_PAGE
       : 1 / MAX_PURCHASES_ITEMS_COUNT_PER_PAGE,
   );
 
