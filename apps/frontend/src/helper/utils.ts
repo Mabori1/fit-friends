@@ -1,3 +1,4 @@
+import { OrderQuery } from '../types/order.query';
 import { PersonalOrderStatusQuery } from '../types/personal-order-status-query';
 import { TrainingQuery } from '../types/training.query';
 import { UserQuery } from '../types/user.query';
@@ -40,7 +41,7 @@ export const getNotificationDate = (dateArg: Date) => {
 };
 
 export const createQueryString = (
-  queryArgs?: TrainingQuery & UserQuery & PersonalOrderStatusQuery,
+  queryArgs?: TrainingQuery & UserQuery & PersonalOrderStatusQuery & OrderQuery,
 ) => {
   if (!queryArgs) {
     return '';

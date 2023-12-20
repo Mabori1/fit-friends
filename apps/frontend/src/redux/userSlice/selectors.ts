@@ -9,8 +9,8 @@ import { TrainingRdo } from '../../types/training.rdo';
 export const getAuthStatus = (state: State): AuthStatus =>
   state[NameSpace.UserSlice].authStatus;
 
-export const getIsUserLoading = (state: State): boolean =>
-  state[NameSpace.UserSlice].sliceStatus === SliceStatus.Loading;
+export const getIsUserLoaded = (state: State): boolean =>
+  state[NameSpace.UserSlice].userSliceStatus === SliceStatus.Loading;
 
 export const getIsAuth = (state: State): boolean =>
   state[NameSpace.UserSlice].authStatus === AuthStatus.Auth;

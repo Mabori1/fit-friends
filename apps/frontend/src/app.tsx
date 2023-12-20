@@ -11,7 +11,7 @@ import { useAppSelector } from './redux/store';
 import {
   getIsAuth,
   getIsTrainer,
-  getIsUserLoading,
+  getIsUserLoaded,
 } from './redux/userSlice/selectors';
 import PrivateRoute from './components/private-route/private-route';
 import FormRegisterTrainer from './components/form-register-trainer/form-register-trainer';
@@ -25,14 +25,17 @@ import UserCard from './pages/user-card/user-card';
 import UsersCatalog from './pages/user-catalog/user-catalog';
 import OrdersPage from './pages/orders-page/orders-page';
 import BalancePage from './pages/balance-page/balance-page';
+import { getIsTrainingLoaded } from './redux/trainingSlice/selectors';
+import LoadingPage from './pages/loading-page/loading-page';
 
 export function App() {
-  const isLoading = useAppSelector(getIsUserLoading);
+  const isUserLoading = useAppSelector(getIsUserLoaded);
+  const isTrainingLoading = useAppSelector(getIsTrainingLoaded);
   const isAuth = useAppSelector(getIsAuth);
   const isTrainer = useAppSelector(getIsTrainer);
 
-  if (isLoading) {
-    // return <LoadingPage />;
+  if (isUserLoading || isTrainingLoading) {
+    <LoadingPage />;
   }
 
   return (

@@ -5,6 +5,7 @@ import { setTraining } from '../../redux/trainingSlice/trainingSlice';
 import { saveTrainingId } from '../../helper/utils';
 import { fetchUserInfoAction } from '../../redux/trainingSlice/apiTrainingActions';
 import { AppRoute } from '../../constants';
+import { IconStar } from '../../helper/svg-const';
 
 type TrainingThumbnailProps = {
   training: TrainingRdo;
@@ -63,7 +64,7 @@ function TrainingThumbnail({ training }: TrainingThumbnailProps): JSX.Element {
           </ul>
           <div className="thumbnail-training__rate">
             <svg width="16" height="16" aria-hidden="true">
-              <use xlinkHref="#icon-star"></use>
+              <IconStar />
             </svg>
             <span className="thumbnail-training__rate-value">
               {training.rating}

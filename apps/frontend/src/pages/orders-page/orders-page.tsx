@@ -61,7 +61,7 @@ function OrdersPage(): JSX.Element {
   };
 
   useEffect(() => {
-    dispatch(fetchOrdersAction());
+    dispatch(fetchOrdersAction({ sortDirection: 'desc' }));
   }, [dispatch]);
 
   return (

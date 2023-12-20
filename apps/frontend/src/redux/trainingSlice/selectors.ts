@@ -1,4 +1,4 @@
-import { NameSpace } from '../../constants';
+import { NameSpace, SliceStatus } from '../../constants';
 import { FeedbackRdo } from '../../types/feedback.rdo';
 import { TrainingRdo } from '../../types/training.rdo';
 import { UserRdo } from '../../types/user.rdo';
@@ -34,3 +34,6 @@ export const getUserInfo = (state: State): UserRdo | null =>
 
 export const getFeedbacks = (state: State): FeedbackRdo[] | null =>
   state[NameSpace.TrainingSlice].feedbacks;
+
+export const getIsTrainingLoaded = (state: State): boolean =>
+  state[NameSpace.TrainingSlice].trainingSliceStatus === SliceStatus.Loading;

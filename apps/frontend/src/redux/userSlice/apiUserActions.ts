@@ -19,6 +19,7 @@ import { OrderDto } from '../../types/order.dto';
 import { PersonalOrderRdo } from '../../types/personal-order.rdo';
 import { PersonalOrderStatusQuery } from '../../types/personal-order-status-query';
 import { TrainingRdo } from '../../types/training.rdo';
+import { TrainerOrdersRdo } from '../../types/trainer-orders.rdo';
 
 export const registerUserAction = createAsyncThunk<
   UserResponse | undefined,
@@ -181,15 +182,6 @@ export const fetchClientFriendsAction = createAsyncThunk<
   return data;
 });
 
-// export const fetchOutPersonalOrderAction = createAsyncThunk<
-//   PersonalOrderRdo[],
-//   undefined,
-//   AsyncThunkConfig
-// >('user/fetchOutPersonalOrder', async (_arg, { extra: api }) => {
-//   const { data } = await api.post<PersonalOrderRdo[]>(APIRoute.Check);
-//   return data;
-// });
-
 export const addPersonalOrderAction = createAsyncThunk<
   PersonalOrderRdo,
   number,
@@ -249,11 +241,11 @@ export const fetchRemoveFriendAction = createAsyncThunk<
 });
 
 export const fetchOrdersAction = createAsyncThunk<
-  OrderRdo[],
+  TrainerOrdersRdo[],
   OrderQuery,
   AsyncThunkConfig
 >('user/fetchOrdersAction', async (query, { extra: api }) => {
-  const { data } = await api.get<OrderRdo[]>(
+  const { data } = await api.get<TrainerOrdersRdo[]>(
     `${APIRoute.TrainerOrders}${createQueryString(query)}`,
   );
   return data;

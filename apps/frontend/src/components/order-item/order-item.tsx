@@ -5,30 +5,13 @@ import {
   IconStar,
   IconWallet,
 } from '../../helper/svg-const';
+import { TrainerOrdersRdo } from '../../types/trainer-orders.rdo';
 
-type OrdersItemProps = {
-  order: {
-    backgroundPicture: string;
-    id: number;
-    caloriesQtt: number;
-    price: number;
-    title: string;
-    gender: string;
-    trainingId: number;
-    description: string;
-    trainerId: number;
-    typeOfTraining: string;
-    duration: string;
-    levelOfUser: string;
-    rating: number;
-    isPromo: boolean;
-    video: string;
-    totalPrice: number;
-    totalQuantity: number;
-  };
+type Props = {
+  order: TrainerOrdersRdo;
 };
 
-function OrdersItem({ order }: OrdersItemProps): JSX.Element {
+function OrdersItem({ order }: Props): JSX.Element {
   const features = [`#${order.typeOfTraining}`, `#${order.caloriesQtt}ккал`];
 
   return (

@@ -3,9 +3,11 @@ import { OrderQueryDefault } from '@fit-friends/types';
 export class OrderQuery {
   public limit?: number = OrderQueryDefault.Limit;
 
-  public sortDirection?: 'desc' | 'asc' = OrderQueryDefault.SortDirection;
+  public sortDirection?: 'desc' | 'asc';
 
-  public sortField?: 'sum' | 'sumTraining';
+  public quantitySort?: 'asc' | 'desc';
+
+  public priceSort?: 'asc' | 'desc';
 
   public page?: number;
 }
