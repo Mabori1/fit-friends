@@ -111,10 +111,7 @@ function UsersCatalogFilter(): JSX.Element {
   };
 
   return (
-    <form
-      className="user-catalog-form__form"
-      data-testid="users-catalog-filter"
-    >
+    <form className="user-catalog-form__form" data-testid="user-catalog-filter">
       <div className="user-catalog-form__block user-catalog-form__block--location">
         <h4 className="user-catalog-form__block-title">
           Локация, станция метро

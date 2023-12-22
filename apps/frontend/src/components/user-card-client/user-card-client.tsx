@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { useEffect } from 'react';
 import { UserRdo } from '../../types/user.rdo';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
@@ -34,7 +33,7 @@ function UserCardClient({ client }: UserCardProps): JSX.Element {
   };
 
   return (
-    <section className="user-card" data-testid="user-card-user">
+    <section className="user-card" data-testid="user-card-client">
       <h1 className="visually-hidden">Карточка пользователя</h1>
       <div className="user-card__wrapper">
         <div className="user-card__content">
@@ -76,7 +75,7 @@ function UserCardClient({ client }: UserCardProps): JSX.Element {
           </div>
           <ul className="user-card__hashtag-list">
             {client?.typesOfTraining.map((type) => (
-              <li key={nanoid()} className="user-card__hashtag-item">
+              <li key={type} className="user-card__hashtag-item">
                 <div className="hashtag">
                   <span>{`#${type}`}</span>
                 </div>

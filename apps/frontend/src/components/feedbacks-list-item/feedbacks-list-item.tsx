@@ -7,7 +7,7 @@ type FeedbackListItemProps = {
 
 function FeedbacksListItem({ feedback }: FeedbackListItemProps): JSX.Element {
   return (
-    <li className="reviews-side-bar__item" data-testid="reviews-list-item">
+    <li className="reviews-side-bar__item" data-testid="feedback-list-item">
       <div className="review">
         <div className="review__user-info">
           <div className="review__user-photo">
