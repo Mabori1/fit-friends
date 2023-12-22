@@ -21,7 +21,7 @@ import {
   fetchOutPersonalOrdersAction,
   fetchTrainerFriendsAction,
 } from '../../redux/userSlice/apiUserActions';
-import FriendsListItem from '../../components/friends-list-item/friend-list.item';
+import FriendsListItem from '../../components/friends-list-item/friend-list-item';
 import { ArrowCheck, ArrowLeft } from '../../helper/svg-const';
 import { UserRdo } from '../../types/user.rdo';
 

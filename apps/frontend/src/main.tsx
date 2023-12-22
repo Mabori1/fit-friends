@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { checkUserAction } from './redux/userSlice/apiUserActions';
 import { getToken } from './services/tokens';
-import HistoryRouter from './components/history-route/history-route';
+import HistoryRouter from './components/history-router/history-router';
 import browserHistory from './browser-history';
 
 const root = ReactDOM.createRoot(
