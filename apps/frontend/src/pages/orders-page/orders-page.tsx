@@ -9,7 +9,7 @@ import {
   SortDirection,
 } from '../../constants';
 import { ArrowLeft, IconSortDown, IconSortUp } from '../../helper/svg-const';
-import OrdersItem from '../../components/order-item/order-item';
+import OrderItem from '../../components/order-item/order-item';
 import { fetchOrdersAction } from '../../redux/userSlice/apiUserActions';
 
 function OrdersPage(): JSX.Element {
@@ -125,7 +125,7 @@ function OrdersPage(): JSX.Element {
                 {currentOrders
                   .slice(0, ordersPage * MAX_ORDERS_COUNT_PER_PAGE)
                   .map((order) => (
-                    <OrdersItem key={order.id} order={order} />
+                    <OrderItem key={order.id} order={order} />
                   ))}
               </ul>
               <div className="show-more my-orders__show-more">

@@ -4,16 +4,14 @@ import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { AppRoute, NameSpace } from '../../constants';
+import Header from './header';
 import HistoryRouter from '../history-router/history-router';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { api } from '../../redux/store';
 import { State } from '../../redux/store';
 import { Action } from 'redux';
-import FriendsListItem from './friend-list-item';
-import { personalOrderMock } from '../../mocks/personal-order.mock';
-import { userMock } from '../../mocks/user.mock';
 
-describe('Component: FriendsListItem', () => {
+describe('Component: Header', () => {
   const history = createMemoryHistory();
   const middlewares = [thunk.withExtraArgument(api)];
 
@@ -26,25 +24,18 @@ describe('Component: FriendsListItem', () => {
     history.push(AppRoute.Main);
     const store = mockStore({
       [NameSpace.UserSlice]: {
-        user: userMock,
+        notices: [],
       },
     });
-    const personalOrder = personalOrderMock;
-    const friend = userMock;
 
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <FriendsListItem
-            friend={friend}
-            inPersonalOrder={personalOrder}
-            outPersonalOrder={personalOrder}
-            isTrainer={false}
-          />
+          <Header />
         </HistoryRouter>
       </Provider>,
     );
 
-    expect(screen.getByTestId('friends-list-item')).toBeInTheDocument();
+    expect(screen.getByTestId('header')).toBeInTheDocument();
   });
 });

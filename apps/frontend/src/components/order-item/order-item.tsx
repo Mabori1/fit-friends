@@ -11,11 +11,11 @@ type Props = {
   order: TrainerOrdersRdo;
 };
 
-function OrdersItem({ order }: Props): JSX.Element {
+function OrderItem({ order }: Props): JSX.Element {
   const features = [`#${order.typeOfTraining}`, `#${order.caloriesQtt}ккал`];
 
   return (
-    <li className="my-orders__item" data-testid="my-orders-item">
+    <li className="my-orders__item" data-testid="trainer-order-item">
       <div className="thumbnail-training">
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image">
@@ -95,4 +95,4 @@ function OrdersItem({ order }: Props): JSX.Element {
   );
 }
 
-export default OrdersItem;
+export default OrderItem;

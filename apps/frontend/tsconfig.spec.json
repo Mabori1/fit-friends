@@ -7,7 +7,9 @@
       "vitest/importMeta",
       "vite/client",
       "node",
-      "vitest"
+      "vitest",
+      "jsdom",
+      "@testing-library/jest-dom"
     ]
   },
   "include": [

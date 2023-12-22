@@ -2,7 +2,10 @@ import { ArrowLeft, ArrowRight, IconChartFilled } from '../../helper/svg-const';
 
 function MyProgress() {
   return (
-    <section className="my-progress personal-account-user__my-progress">
+    <section
+      className="my-progress personal-account-user__my-progress"
+      data-testid="my-progress"
+    >
       <div className="my-progress__sidebar">
         <svg
           className="my-progress__icon"
