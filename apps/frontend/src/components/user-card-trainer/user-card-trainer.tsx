@@ -20,7 +20,7 @@ import {
   toggleSubscribeAction,
 } from '../../redux/userSlice/apiUserActions';
 import { fetchTrainerTrainingsAction } from '../../redux/trainingSlice/apiTrainingActions';
-import PopupTrainerCertificates from '../popup-trainer-certificate/pupup-trainer-certificate';
+import PopupTrainerCertificates from '../popup-trainer-certificate/popup-trainer-certificate';
 import {
   ArrowCheck,
   ArrowLeft,

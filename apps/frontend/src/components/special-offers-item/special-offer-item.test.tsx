@@ -10,9 +10,10 @@ import { State } from '../../redux/store';
 import { Action } from 'redux';
 import { Provider } from 'react-redux';
 import HistoryRouter from '../history-router/history-router';
-import UserCatalogFilter from './user-catalog-filter';
+import SpecialOffersItem from './special-offers-item';
+import { trainingMock } from '../../mocks/training.mock';
 
-describe('Component: UsersCatalogFilter', () => {
+describe('Component: SpecialOffersItem', () => {
   const history = createMemoryHistory();
   const middlewares = [thunk.withExtraArgument(api)];
 
@@ -28,11 +29,15 @@ describe('Component: UsersCatalogFilter', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <UserCatalogFilter />
+          <SpecialOffersItem
+            offer={trainingMock}
+            activeSliderPosition={0}
+            setActiveSliderPosition={() => 1}
+          />
         </HistoryRouter>
       </Provider>,
     );
 
-    expect(screen.getByTestId('user-catalog-filter')).toBeInTheDocument();
+    expect(screen.getByTestId('special-offers-item')).toBeInTheDocument();
   });
 });

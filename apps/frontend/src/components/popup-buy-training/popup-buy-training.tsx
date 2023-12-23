@@ -85,7 +85,10 @@ function PopupBuyTraining({
 
   return (
     <main>
-      <div className="popup-form popup-form--buy">
+      <div
+        className="popup-form popup-form--buy"
+        data-testid="popup-buy-training"
+      >
         <section className="popup">
           <div className="popup__wrapper">
             <div className="popup-head">

@@ -17,7 +17,7 @@ function SpecialOffersItem({
     : 0;
 
   return (
-    <aside className="promo-slider">
+    <aside className="promo-slider" data-testid="special-offers-item">
       <div className="promo-slider__overlay"></div>
       <div className="promo-slider__image">
         <img

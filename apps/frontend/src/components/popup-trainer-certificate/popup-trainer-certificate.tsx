@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { MAX_POPUP_CERTIFICATES_COUNT_PER_PAGE } from '../../constants';
 import CertificateItem from '../certificate-item/certificate-item';
-import {
-  ArrowLeft,
-  ArrowRight,
-  IconCross,
-  IconCrown,
-} from '../../helper/svg-const';
+import { ArrowLeft, ArrowRight, IconCross } from '../../helper/svg-const';
 
 type PopupTrainerCertificatesProps = {
   certificates: string[];
@@ -36,7 +31,7 @@ function PopupTrainerCertificates({
 
   return (
     <main>
-      <div className="popup-form">
+      <div className="popup-form" data-testid="popup-trainer-certificate">
         <section className="popup">
           <h2 className="visually-hidden">Слайдер с сертификатами.</h2>
           <div className="popup__wrapper">

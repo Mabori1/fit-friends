@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": ["vite/client", "vitest", "@testing-library/jest-dom"]
+    "types": ["vite/client", "vitest", "jsdom", "@testing-library/jest-dom"]
   },
   "files": [],
   "include": ["vite.config.ts", "src", ".eslintrc.json"],

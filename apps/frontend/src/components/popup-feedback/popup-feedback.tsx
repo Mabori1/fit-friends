@@ -92,7 +92,10 @@ function PopupFeedback({
 
   return (
     <main>
-      <div className="popup-form popup-form--feedback">
+      <div
+        className="popup-form popup-form--feedback"
+        data-testid="popup-feedback"
+      >
         <section className="popup">
           <div className="popup__wrapper">
             <div className="popup-head">

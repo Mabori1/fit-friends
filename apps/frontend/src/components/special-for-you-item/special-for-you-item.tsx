@@ -21,7 +21,7 @@ function SpecialForYouItem({ training }: SpecialForYouItemProps): JSX.Element {
   };
 
   return (
-    <li className="special-for-you__item">
+    <li className="special-for-you__item" data-testid="special-for-you-item">
       <div className="thumbnail-preview">
         <div className="thumbnail-preview__image">
           <picture>

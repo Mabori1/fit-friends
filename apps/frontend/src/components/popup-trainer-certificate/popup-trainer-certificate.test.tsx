@@ -10,9 +10,9 @@ import { State } from '../../redux/store';
 import { Action } from 'redux';
 import { Provider } from 'react-redux';
 import HistoryRouter from '../history-router/history-router';
-import UserCatalogFilter from './user-catalog-filter';
+import PopupTrainerCertificate from './popup-trainer-certificate';
 
-describe('Component: UsersCatalogFilter', () => {
+describe('Component: PopupTrainerCertificate', () => {
   const history = createMemoryHistory();
   const middlewares = [thunk.withExtraArgument(api)];
 
@@ -28,11 +28,14 @@ describe('Component: UsersCatalogFilter', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <UserCatalogFilter />
+          <PopupTrainerCertificate
+            certificates={[]}
+            setPopupOpened={() => true}
+          />
         </HistoryRouter>
       </Provider>,
     );
 
-    expect(screen.getByTestId('user-catalog-filter')).toBeInTheDocument();
+    expect(screen.getByTestId('popup-trainer-certificate')).toBeInTheDocument();
   });
 });

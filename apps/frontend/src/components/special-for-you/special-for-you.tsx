@@ -85,7 +85,7 @@ function SpecialForYou(): JSX.Element {
   };
 
   return (
-    <section className="special-for-you">
+    <section className="special-for-you" data-testid="special-for-you">
       <div className="container">
         <div className="special-for-you__wrapper">
           <div className="special-for-you__title-wrapper">

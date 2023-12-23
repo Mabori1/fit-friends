@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
-import { it, describe } from 'vitest';
+import { it, describe, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { AppRoute, NameSpace } from '../../constants';
