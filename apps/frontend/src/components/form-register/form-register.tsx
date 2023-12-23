@@ -168,7 +168,11 @@ function FormRegister() {
   };
 
   return (
-    <form method="post" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      method="post"
+      onSubmit={handleSubmit(onSubmit)}
+      data-testid="form-register"
+    >
       <div className="sign-up">
         <div
           className={`sign-up__load-photo ${

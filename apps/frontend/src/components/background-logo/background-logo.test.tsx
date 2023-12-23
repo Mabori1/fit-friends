@@ -10,10 +10,9 @@ import { State } from '../../redux/store';
 import { Action } from 'redux';
 import { Provider } from 'react-redux';
 import HistoryRouter from '../history-router/history-router';
-import { trainerOrderMock } from '../../mocks/trainer-order.mock';
-import OrderItem from './order-item';
+import BackgroundLogo from './background-logo';
 
-describe('Component: OrderItem', () => {
+describe('Component: BackgroundLogo', () => {
   const history = createMemoryHistory();
   const middlewares = [thunk.withExtraArgument(api)];
 
@@ -25,16 +24,15 @@ describe('Component: OrderItem', () => {
   it('should render correctly', () => {
     history.push(AppRoute.Main);
     const store = mockStore({});
-    const order = trainerOrderMock;
 
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <OrderItem order={order} />
+          <BackgroundLogo />
         </HistoryRouter>
       </Provider>,
     );
 
-    expect(screen.getByTestId('trainer-order-item')).toBeInTheDocument();
+    expect(screen.getByTestId('background-logo')).toBeInTheDocument();
   });
 });

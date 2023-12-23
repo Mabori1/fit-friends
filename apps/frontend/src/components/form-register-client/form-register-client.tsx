@@ -57,7 +57,6 @@ function FormRegisgerClient() {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { isDirty, isSubmitting, errors },
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
@@ -83,7 +82,10 @@ function FormRegisgerClient() {
   };
 
   return (
-    <div className="popup-form popup-form--questionnaire-user">
+    <div
+      className="popup-form popup-form--questionnaire-user"
+      data-testid="form-register-client"
+    >
       <div className="popup-form__wrapper">
         <div className="popup-form__content">
           <div className="popup-form__form">

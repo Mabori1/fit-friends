@@ -12,7 +12,7 @@ import HistoryRouter from '../history-router/history-router';
 import FeedbacksListItem from './feedbacks-list-item';
 import { feedbackMock } from '../../mocks/feedback.mock';
 
-describe('Component: FeedbacksListItem', () => {
+describe('Component: FeedbackListItem', () => {
   const history = createMemoryHistory();
   const middlewares = [thunk.withExtraArgument(api)];
 

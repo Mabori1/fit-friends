@@ -1,6 +1,6 @@
 function BackgroundLogo(): JSX.Element {
   return (
-    <div className="background-logo">
+    <div className="background-logo" data-testid="background-logo">
       <svg
         className="background-logo__logo"
         width="750"

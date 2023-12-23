@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function HeaderSearch(): JSX.Element {
   return (
-    <div className="search">
+    <div className="search" data-testid="header-search">
       <form action="#" method="get">
         <label>
           <span className="search__label">Поиск</span>

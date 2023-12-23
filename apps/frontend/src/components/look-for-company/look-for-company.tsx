@@ -46,7 +46,7 @@ function LookForCompany(): JSX.Element {
   };
 
   return (
-    <section className="look-for-company">
+    <section className="look-for-company" data-testid="look-for-company">
       <div className="container">
         <div className="look-for-company__wrapper">
           <div className="look-for-company__title-wrapper">

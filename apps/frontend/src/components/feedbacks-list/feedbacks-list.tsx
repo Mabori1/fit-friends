@@ -38,7 +38,7 @@ function FeedbacksList({ training }: FeedbasListProps): JSX.Element {
 
   return (
     <>
-      <aside className="reviews-side-bar">
+      <aside className="reviews-side-bar" data-testid="feedbacks-list">
         <button
           onClick={() => window.history.back()}
           className="btn-flat btn-flat--underlined reviews-side-bar__back"

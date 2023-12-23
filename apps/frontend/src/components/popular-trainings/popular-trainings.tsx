@@ -47,7 +47,7 @@ function PopularTrainings(): JSX.Element {
   };
 
   return (
-    <section className="popular-trainings">
+    <section className="popular-trainings" data-testid="popular-trainings">
       <div className="container">
         <div className="popular-trainings__wrapper">
           <div className="popular-trainings__title-wrapper">
