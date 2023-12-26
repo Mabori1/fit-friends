@@ -6,9 +6,7 @@
       "node",
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts",
-      "vite/client",
-      "jsdom",
-      "@testing-library/jest-dom"
+      "vite/client"
     ]
   },
   "exclude": [
@@ -26,6 +24,6 @@
     "src/**/*.jsx",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/pages/friends-list-page"
-  ]
+  ],
+
 }

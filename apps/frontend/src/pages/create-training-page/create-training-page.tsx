@@ -317,7 +317,10 @@ function CreateTrainingPage(): JSX.Element {
     <>
       <Header />
       <main>
-        <div className="popup-form popup-form--create-training">
+        <div
+          className="popup-form popup-form--create-training"
+          data-testid="create-training-page"
+        >
           <div className="popup-form__wrapper">
             <div className="popup-form__content">
               <div className="popup-form__title-wrapper">

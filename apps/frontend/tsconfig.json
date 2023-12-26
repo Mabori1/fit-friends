@@ -1,14 +1,15 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowJs": false,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": ["vite/client", "vitest", "jsdom", "@testing-library/jest-dom"]
+    "types": ["vite/client", "vitest"],
   },
   "files": [],
-  "include": ["vite.config.ts", "src", ".eslintrc.json"],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -17,5 +18,4 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "extends": "../../tsconfig.base.json"
 }

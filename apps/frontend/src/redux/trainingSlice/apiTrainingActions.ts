@@ -67,7 +67,7 @@ export const fetchTrainerTrainingsAction = createAsyncThunk<
   AsyncThunkConfig
 >('user/fetchTrainerTrainings', async (trainerIdAndQuery, { extra: api }) => {
   const { trainerId, ...query } = trainerIdAndQuery;
-  const queryString = createQueryString(query);
+  const queryString = createQueryString(query as TrainingQuery);
   const { data } = await api.get<TrainingRdo[]>(
     `${APIRoute.FetchTrainerTrainings}/${trainerId}` + queryString,
   );

@@ -256,7 +256,7 @@ function ClientRoomPage(): JSX.Element {
     <>
       <Header />
       <main>
-        <section className="inner-page">
+        <section className="inner-page" data-testid="client-room-page">
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Личный кабинет</h1>
