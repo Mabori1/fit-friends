@@ -67,6 +67,15 @@
       "options": {
         "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
       }
+    },
+    "buildImage": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx run frontend:build",
+          "docker build --file ./apps/frontend/Dockerfile --tag fit-friends-frontend:latest ."
+        ]
+      }
     }
   },
   "tags": []

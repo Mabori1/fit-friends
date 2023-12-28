@@ -59,6 +59,15 @@
           "codeCoverage": true
         }
       }
+    },
+    "buildImage": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx run backend:build",
+          "docker build --file ./apps/backend/Dockerfile --tag fit-friends-backend:latest ."
+        ]
+      }
     }
   },
   "tags": []
