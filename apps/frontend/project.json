@@ -72,7 +72,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "nx run frontend:build",
+          "nx build frontend",
           "docker build --file ./apps/frontend/Dockerfile --tag fit-friends-frontend:latest ."
         ]
       }

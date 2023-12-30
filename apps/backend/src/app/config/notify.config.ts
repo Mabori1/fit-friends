@@ -60,7 +60,7 @@ export default registerAs('notify', (): NotifyConfig => {
     db: Joi.object({
       host: Joi.string().valid().hostname(),
       port: Joi.number().port(),
-      name: Joi.string().required(),
+      name: Joi.string(),
       user: Joi.string().required(),
       password: Joi.string().required(),
       pgAdminEmail: Joi.string().required(),

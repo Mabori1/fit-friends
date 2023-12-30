@@ -1,3 +1,4 @@
+import joi from 'joi';
 import {
   IsEmail,
   IsISO8601,

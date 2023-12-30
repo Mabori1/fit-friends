@@ -2,17 +2,18 @@ version: '3.9'
 services:
   fitfriends.postgres:
     image: postgres:14.1-alpine
-    container_name: fitfriends.postgres
-    restart: always
+    container_name: fitfriends.db
+    restart: 'always'
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - fitfriends.postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
-    volumes:
-      - ~/db/fitfriends.postgres:/var/lib/postgresql/data
-
+    env_file:
+      - .fitfriends.postgres.env
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d fitfriends']
       interval: 10s
@@ -22,29 +23,49 @@ services:
     networks:
       - fitfriends
 
-  fitfriends.pgadmin:
-    image: dpage/pgadmin4:8.0
-    container_name: fitfriends.pgadmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: 'keks@htmlacademy.local'
-      PGADMIN_DEFAULT_PASSWORD: 'test'
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    ports:
-      - 8082:80
-    networks:
-      - fitfriends
-
   fitfriends.fakesmtp:
     image: gessnerfl/fake-smtp-server:2.0.0
     container_name: fitfriends.fakesmtp
-    restart: always
+    restart: 'always'
     hostname: fakesmtp
     ports:
       - 8025:8025
       - 1083:8080
     volumes:
       - ~/db/readme.notify.fakesmtp:/var/mail
+    networks:
+      - fitfriends
+
+  fitfriends.backend:
+    image: fit-friends-backend:latest
+    container_name: fitfriends.backend
+    restart: 'always'
+    depends_on:
+      - fitfriends.postgres
+      - fitfriends.fakesmtp
+    ports:
+      - 4000:4000
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .fitfriends.backend.env
+    networks:
+      - fitfriends
+
+  fitfriends.frontend:
+    image: fit-friends-frontend:latest
+    container_name: fitfriends.frontend
+    restart: 'always'
+    depends_on:
+      - fitfriends.postgres
+      - fitfriends.fakesmtp
+      - fitfriends.backend
+    ports:
+      - 4200:4200
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .fitfriends.frontend.env
     networks:
       - fitfriends
 
