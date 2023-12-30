@@ -5,6 +5,7 @@ services:
     container_name: fitfriends.db
     restart: 'always'
     environment:
+      POSTGRES_PORT: 5432
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
@@ -20,6 +21,19 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    networks:
+      - fitfriends
+
+  fitfriends.pgadmin:
+    image: dpage/pgadmin4:8.0
+    container_name: fitfriends.pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'keks@htmlacademy.local'
+      PGADMIN_DEFAULT_PASSWORD: 'test'
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - 8082:80
     networks:
       - fitfriends
 
@@ -61,7 +75,7 @@ services:
       - fitfriends.fakesmtp
       - fitfriends.backend
     ports:
-      - 4200:4200
+      - 80:80
     environment:
       - NODE_ENV=production
     env_file:
