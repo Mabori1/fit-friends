@@ -56,10 +56,20 @@ nx test frontend
 
 ## Для запуска приложения в режиме продакшена необходимо
 
+Создать docker image backend, frontend:
+
+```bash
+nx buildImage backend
+```
+
+```bash
+nx buildImage frontend
+```
+
 Запустить приложение в докере:
 
 ```bash
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-Приложение запускается по умолчанию на порту 80: localhost[localhost]
+Приложение запускается по умолчанию на порту 80: [localhost](http://localhost:80)
