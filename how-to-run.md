@@ -27,7 +27,7 @@ npm install
 Запустить в докере базу данных, почтовый сервер и администратор базы данных:
 
 ```bash
-docker-compose up -d
+docker compose -f docker-compose.dev.yml up -d
 ```
 
 Запустить backend:
@@ -54,7 +54,7 @@ nx run-many --all --target=lint
 nx test frontend
 ```
 
-## Для запуска приложения в режиме продакшена необходимо
+## Для запуска приложения в режиме stage необходимо
 
 Создать docker image backend, frontend:
 
@@ -69,7 +69,7 @@ nx buildImage frontend
 Запустить приложение в докере:
 
 ```bash
-docker compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.stage.yml up -d
 ```
 
 Приложение запускается по умолчанию на порту 80: [localhost](http://localhost:80)
