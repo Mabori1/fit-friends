@@ -49,22 +49,6 @@ services:
     networks:
       - fitfriends
 
-  fitfriends.frontend:
-    image: fit-friends-frontend:latest
-    container_name: fitfriends.frontend
-    restart: 'always'
-    depends_on:
-      - fitfriends.postgres
-      - fitfriends.fakesmtp
-    ports:
-      - 80:80
-    environment:
-      - NODE_ENV=production
-    env_file:
-      - .fitfriends.frontend.env
-    networks:
-      - fitfriends
-
 volumes:
   fitfriends.postgres:
 
