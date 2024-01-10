@@ -8,7 +8,7 @@ function MainPage() {
   return (
     <>
       <Header />
-      <main>
+      <main data-testid="main-page">
         <h1 className="visually-hidden">
           FitFriends — Время находить тренировки, спортзалы и друзей спортсменов
         </h1>

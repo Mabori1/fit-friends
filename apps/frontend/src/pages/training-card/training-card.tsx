@@ -277,7 +277,7 @@ function TrainingCard({ isTrainer }: TrainingCardProps): JSX.Element {
     <>
       <Header />
       <main>
-        <section className="inner-page">
+        <section className="inner-page" data-testid="training-card">
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Карточка тренировки</h1>

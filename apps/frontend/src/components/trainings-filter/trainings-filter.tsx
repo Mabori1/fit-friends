@@ -19,10 +19,9 @@ function TrainingsFilter(): JSX.Element {
 
   const allTrainings = useAppSelector(getAllTrainings);
 
-  const currentTrainingsPrices =
-    allTrainings.length !== 0
-      ? (allTrainings.map((training) => training.price) as number[])
-      : [TrainingPrice.Min, TrainingPrice.Max];
+  const currentTrainingsPrices = allTrainings?.length
+    ? (allTrainings.map((training) => training.price) as number[])
+    : [TrainingPrice.Min, TrainingPrice.Max];
   const minCurrentPrice = Math.min(...currentTrainingsPrices);
   const maxCurrentPrice = Math.max(...currentTrainingsPrices);
 
